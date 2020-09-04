@@ -1,0 +1,8 @@
+type: module
+name: 'Search API Solr Devel'
+description: 'Debugging your Solr integration.'
+package: Search
+core_version_requirement: ^8.8 || ^9
+dependencies:
+  - devel:devel
+  - search_api_solr:search_api_solr
