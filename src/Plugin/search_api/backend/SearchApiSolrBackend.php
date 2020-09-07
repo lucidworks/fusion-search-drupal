@@ -1570,12 +1570,12 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
 
         // Send search request.
         $response = $connector->search($solarium_query, $this->getCollectionEndpoint($index));
+        
         $body = $response->getBody();
         if (200 != $response->getStatusCode()) {
           throw new SearchApiSolrException(strip_tags($body), $response->getStatusCode());
         }
         $search_api_response = new Response($body, $response->getHeaders());
-
         $solarium_result = $connector->createSearchResult($solarium_query, $search_api_response);
         // Extract results.
         $search_api_result_set = $this->extractResults($query, $solarium_result);
@@ -2449,13 +2449,15 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     // SearchApiSolrBackend::getSolrFieldNames().
     $language_unspecific_field_names = $this->getSolrFieldNames($index);
 
-    // APPBASE CHANGED
     $id_field = $language_unspecific_field_names['search_api_id'];
     $score_field = $language_unspecific_field_names['search_api_relevance'];
+    // dump($score_field);
     $language_field = $language_unspecific_field_names['search_api_language'];
-   
+    // dump($language_field);
+    
+    // APPBASE CHANGED
     // $id_field = 'id';
-    // $score_field = 'score';
+    $score_field = 'score';
     // $language_field = 'langcode_t';
 
     // Set up the results array.
@@ -2514,11 +2516,25 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       // APPBASE CHANGED
       $newTempDoc = [];
       foreach($td as $key => $value){
-        $newKey = substr($key, 0, strrpos($key, '_'));
+        if ($key === 'id') {
+          $newKey = 'ss_search_api_id';
+        } else if ($key === 'langcode_s') {
+          $newKey = 'ss_search_api_language';
+        } else {
+          $newKey = 'tm_X3b_en_'.substr($key, 0, strrpos($key, '_'));
+        }
         $newTempDoc[$newKey] = $value;
       }
+      $newTempDoc["ss_search_api_datasource"] = "entity:node";
+      $renderItem = "Sorry no body field found";
+      if (isset($newTempDoc["tm_X3b_en_body.processed"])) {
+        $renderItem = $newTempDoc["tm_X3b_en_body.processed"];
+      }
+      $newTempDoc["tm_X3b_en_rendered_item"] = "<h2><a href='".$newTempDoc[$id_field]."'>".$newTempDoc["tm_X3b_en_title"]."</a></h2><br/><p>".$renderItem."</p><hr />";
+
 
       $doc = $newTempDoc;
+      // dump($doc);
       if (is_array($doc)) {
         $doc_fields = $doc;
       }
@@ -2526,6 +2542,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
         /** @var \Solarium\QueryType\Select\Result\Document $doc */
         $doc_fields = $doc->getFields();
       }
+      
 
       if (empty($doc_fields[$id_field])) {
         throw new SearchApiSolrException(sprintf('The result does not contain the essential ID field "%s".', $id_field));
