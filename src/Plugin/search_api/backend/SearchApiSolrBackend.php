@@ -2514,6 +2514,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     foreach ($docs as $td) {
 
       // APPBASE CHANGED
+      $prefix = "tm_X3b_".$td->getFields()["langcode_s"]."_";
       $newTempDoc = [];
       foreach($td as $key => $value){
         if ($key === 'id') {
@@ -2521,16 +2522,16 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
         } else if ($key === 'langcode_s') {
           $newKey = 'ss_search_api_language';
         } else {
-          $newKey = 'tm_X3b_en_'.substr($key, 0, strrpos($key, '_'));
+          $newKey = $prefix.substr($key, 0, strrpos($key, '_'));
         }
         $newTempDoc[$newKey] = $value;
       }
       $newTempDoc["ss_search_api_datasource"] = "entity:node";
       $renderItem = "Sorry no body field found";
-      if (isset($newTempDoc["tm_X3b_en_body.processed"])) {
-        $renderItem = $newTempDoc["tm_X3b_en_body.processed"];
+      if (isset($newTempDoc[$prefix."body.processed"])) {
+        $renderItem = $newTempDoc[$prefix."body.processed"];
       }
-      $newTempDoc["tm_X3b_en_rendered_item"] = "<h2><a href='".$newTempDoc[$id_field]."'>".$newTempDoc["tm_X3b_en_title"]."</a></h2><br/><p>".$renderItem."</p><hr />";
+      $newTempDoc[$prefix."rendered_item"] = "<h2><a href='".$newTempDoc[$id_field]."'>".$newTempDoc[$prefix."title"]."</a></h2><br/><p>".$renderItem."</p><hr />";
 
 
       $doc = $newTempDoc;
@@ -2598,26 +2599,6 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       // Extract properties from the Solr document, translating from Solr to
       // Search API property names. This reverses the mapping in
       // SearchApiSolrBackend::getSolrFieldNames().
-
-      // APPBASE CHANGED
-      // foreach ($doc as $search_api_property => $f) {
-      //   $field = $this->fieldsHelper->createField($index, $search_api_property);        
-      //   $doc_field = is_array($f) ? $f : [$f];
-      //   $field->setValues($doc_field);
-      //   $result_item->setField($search_api_property, $field); 
-      // }
-
-
-      // set render field
-      // $field = $this->fieldsHelper->createField($index, "tm_X3b_en_rendered_item");
-      // $doc_field = is_array($doc["body.processed_t"]) ? $doc["body.processed_t"] : [$doc["body.processed_t"]];
-      // foreach ($doc_field as &$value) {
-      //    $value = new TextValue($value);
-      // }
-      // $field->setValues($doc_field);
-     
-      // $result_item->setField("tm_X3b_en_rendered_item", $field);
-     
 
       foreach ($field_names as $search_api_property => $solr_property) {
         if (isset($doc_fields[$solr_property]) && isset($fields[$search_api_property])) {
