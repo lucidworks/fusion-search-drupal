@@ -269,10 +269,11 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
    * @throws \Drupal\search_api\SearchApiException
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $solr_connector_options = $this->getSolrConnectorOptions();
+    // $solr_connector_options = $this->getSolrConnectorOptions();
+    $solr_connector_options = array('standard' => 'Standard');
     $form['connector'] = [
       '#type' => 'radios',
-      '#title' => $this->t('Solr Connector'),
+      '#title' => $this->t('Fusion Connector'),
       '#description' => $this->t('Choose a connector to use for this Solr server.'),
       '#options' => $solr_connector_options,
       '#default_value' => $this->configuration['connector'],

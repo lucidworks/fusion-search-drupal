@@ -69,7 +69,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 	protected $eventDispatcher;
 
 	/**
-	 * A connection to the Solr server.
+	 * A connection to the Fusion server.
 	 *
 	 * @var \Solarium\Client
 	 */
@@ -140,35 +140,35 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 
 		$form['host'] = [
 			'#type' => 'textfield',
-			'#title' => $this->t('Solr host'),
-			'#description' => $this->t('The host name or IP of your Solr server, e.g. <code>localhost</code> or <code>www.example.com</code>.'),
+			'#title' => $this->t('Fusion Server host'),
+			'#description' => $this->t('The host name or IP of your Fusion server, e.g. <code>localhost</code> or <code>www.example.com</code>.'),
 			'#default_value' => isset($this->configuration['host']) ? $this->configuration['host'] : '',
 			'#required' => TRUE,
 		];
 
 		$form['port'] = [
 			'#type' => 'textfield',
-			'#title' => $this->t('Solr port'),
+			'#title' => $this->t('Fusion Server port'),
 			'#description' => $this->t('Lucidworks managed search uses port 443.'),
 			'#default_value' => isset($this->configuration['port']) ? $this->configuration['port'] : '',
 			'#required' => TRUE,
 		];
 
-		$form['oauth2_client_id'] = [
-			'#type' => 'textfield',
-			'#title' => $this->t('OAuth2 Client ID'),
-			'#description' => $this->t('OAuth2 Client ID.'),
-			'#default_value' => isset($this->configuration['oauth2_client_id']) ? $this->configuration['oauth2_client_id'] : '',
-			'#required' => FALSE,
-		];
+		// $form['oauth2_client_id'] = [
+		// 	'#type' => 'textfield',
+		// 	'#title' => $this->t('OAuth2 Client ID'),
+		// 	'#description' => $this->t('OAuth2 Client ID.'),
+		// 	'#default_value' => isset($this->configuration['oauth2_client_id']) ? $this->configuration['oauth2_client_id'] : '',
+		// 	'#required' => FALSE,
+		// ];
 		
-		$form['oauth2_client_secret'] = [
-				'#type' => 'textfield',
-				'#title' => $this->t('OAuth2 Client Secret'),
-				'#description' => $this->t('OAuth2 Client Secret.'),
-				'#default_value' => isset($this->configuration['oauth2_client_secret']) ? $this->configuration['oauth2_client_secret'] : '',
-				'#required' => FALSE,
-		];
+		// $form['oauth2_client_secret'] = [
+		// 		'#type' => 'textfield',
+		// 		'#title' => $this->t('OAuth2 Client Secret'),
+		// 		'#description' => $this->t('OAuth2 Client Secret.'),
+		// 		'#default_value' => isset($this->configuration['oauth2_client_secret']) ? $this->configuration['oauth2_client_secret'] : '',
+		// 		'#required' => FALSE,
+		// ];
 
 		$form['jwt_token'] = [
 				'#type' => 'textfield',
@@ -189,14 +189,14 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 
 		$form['path'] = [
 			'#type' => 'textfield',
-			'#title' => $this->t('Solr path'),
-			'#description' => $this->t('The path that identifies the Solr instance to use on the server. If you\'re using Lucidworks managed search, this is /:customer_id/:cluster_id/.'),
-			'#default_value' => isset($this->configuration['path']) ? $this->configuration['path'] : '/',
+			'#title' => $this->t('Fusion Server path'),
+			'#description' => $this->t('Lucidworks managed search path is, /api.'),
+			'#default_value' => isset($this->configuration['path']) ? $this->configuration['path'] : '/api',
 		];
 
 		$form['core'] = [
 			'#type' => 'textfield',
-			'#title' => $this->t('Solr core'),
+			'#title' => $this->t('Fusion app'),
 			'#description' => $this->t('The name that identifies the Solr core to use on the server.'),
 			'#default_value' => isset($this->configuration['core']) ? $this->configuration['core'] : '',
 			'#required' => TRUE,
@@ -207,7 +207,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 			'#min' => 1,
 			'#max' => 180,
 			'#title' => $this->t('Query timeout'),
-			'#description' => $this->t('The timeout in seconds for search queries sent to the Solr server.'),
+			'#description' => $this->t('The timeout in seconds for search queries sent to the Fusion server.'),
 			'#default_value' => isset($this->configuration['timeout']) ? $this->configuration['timeout'] : 5,
 			'#required' => TRUE,
 		];
@@ -217,7 +217,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 			'#min' => 1,
 			'#max' => 180,
 			'#title' => $this->t('Index timeout'),
-			'#description' => $this->t('The timeout in seconds for indexing requests to the Solr server.'),
+			'#description' => $this->t('The timeout in seconds for indexing requests to the Fusion server.'),
 			'#default_value' => isset($this->configuration[self::INDEX_TIMEOUT]) ? $this->configuration[self::INDEX_TIMEOUT] : 5,
 			'#required' => TRUE,
 		];
@@ -227,7 +227,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 			'#min' => 1,
 			'#max' => 180,
 			'#title' => $this->t('Optimize timeout'),
-			'#description' => $this->t('The timeout in seconds for background index optimization queries on a Solr server.'),
+			'#description' => $this->t('The timeout in seconds for background index optimization queries on a Fusion server.'),
 			'#default_value' => isset($this->configuration[self::OPTIMIZE_TIMEOUT]) ? $this->configuration[self::OPTIMIZE_TIMEOUT] : 10,
 			'#required' => TRUE,
 		];
@@ -237,7 +237,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 			'#min' => 1,
 			'#max' => 180,
 			'#title' => $this->t('Finalize timeout'),
-			'#description' => $this->t('The timeout in seconds for index finalization queries on a Solr server.'),
+			'#description' => $this->t('The timeout in seconds for index finalization queries on a Fusion server.'),
 			'#default_value' => isset($this->configuration[self::FINALIZE_TIMEOUT]) ? $this->configuration[self::FINALIZE_TIMEOUT] : 30,
 			'#required' => TRUE,
 		];
@@ -358,7 +358,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 	}
 
 	/**
-	 * Prepares the connection to the Solr server.
+	 * Prepares the connection to the Fusion server.
 	 */
 	protected function connect() {
 		if (!$this->solr) {
@@ -389,7 +389,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 	}
 
 	/**
-	 * Returns a the Solr server URI.
+	 * Returns a the Fusion server URI.
 	 */
 	protected function getServerUri() {
 		$this->connect();
@@ -685,7 +685,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 	}
 
 	/**
-	 * Sends a REST request to the Solr server endpoint and returns the result.
+	 * Sends a REST request to the Fusion server endpoint and returns the result.
 	 *
 	 * @param string $handler
 	 *   The handler used for the API query.
@@ -962,7 +962,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 
 			case '500':
 			case '0':
-				$description = 'internal Solr server error';
+				$description = 'internal Fusion server error';
 				break;
 
 			default:
