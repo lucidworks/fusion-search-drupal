@@ -2451,14 +2451,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
 
     $id_field = $language_unspecific_field_names['search_api_id'];
     $score_field = $language_unspecific_field_names['search_api_relevance'];
-    // dump($score_field);
     $language_field = $language_unspecific_field_names['search_api_language'];
-    // dump($language_field);
-    
-    // APPBASE CHANGED
-    // $id_field = 'id';
-    $score_field = 'score';
-    // $language_field = 'langcode_t';
 
     // Set up the results array.
     $result_set = $query->getResults();
@@ -2508,33 +2501,53 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       $result_set->setResultCount($result->getNumFound());
       $docs = $result->getDocuments();
     }
+    // APPBASE CHANGED
+    $field_map = array(
+      "_s" => "tm_X3b_",
+      "_t" => "tm_X3b_",
+      "_b" => "bs_",
+      "_dt" => "ds_",
+      "_ss" => "sm_",
+      // TODO not known
+      "_l" => "is_",
+      "_f" => "fs_",
+      "_d" => "ps_",
+    );
 
     // Add each search result to the results array.
     /** @var \Solarium\QueryType\Select\Result\Document $doc */
     foreach ($docs as $td) {
 
       // APPBASE CHANGED
-      $prefix = "tm_X3b_".$td->getFields()["langcode_s"]."_";
-      $newTempDoc = [];
+      
+      $new_temp_doc = [];
       foreach($td as $key => $value){
-        if ($key === 'id') {
-          $newKey = 'ss_search_api_id';
-        } else if ($key === 'langcode_s') {
-          $newKey = 'ss_search_api_language';
-        } else {
-          $newKey = $prefix.substr($key, 0, strrpos($key, '_'));
+        $prefix = "";
+        $current_field_map = '_'.substr( $key, strrpos( $key, '_' )+1 );
+        if (isset($field_map[$current_field_map])) {
+          $prefix = $field_map[$current_field_map];
+          if ($prefix === "tm_X3b_") {
+            $prefix = $prefix.$td->getFields()["langcode_s"]."_";
+          }
         }
-        $newTempDoc[$newKey] = $value;
+        if ($key === 'id') {
+          $new_key = 'ss_search_api_id';
+        } else if ($key === 'langcode_s') {
+          $new_key = 'ss_search_api_language';
+        } else {
+          $new_key = $prefix.substr($key, 0, strrpos($key, '_'));
+        }
+        $new_temp_doc[$new_key] = $value;
       }
-      $newTempDoc["ss_search_api_datasource"] = "entity:node";
+      $string_prefix = "tm_X3b_".$td->getFields()["langcode_s"]."_";
+      $new_temp_doc["ss_search_api_datasource"] = "entity:node";
       $renderItem = "Sorry no body field found";
-      if (isset($newTempDoc[$prefix."body.processed"])) {
-        $renderItem = $newTempDoc[$prefix."body.processed"];
+      if (isset($new_temp_doc[$string_prefix."body.processed"])) {
+        $renderItem = $new_temp_doc[$string_prefix."body.processed"];
       }
-      $newTempDoc[$prefix."rendered_item"] = "<h2><a href='".$newTempDoc[$id_field]."'>".$newTempDoc[$prefix."title"]."</a></h2><br/><p>".$renderItem."</p><hr />";
+      $new_temp_doc[$string_prefix."rendered_item"] = "<h2><a href='".$new_temp_doc[$id_field]."'>".$new_temp_doc[$string_prefix."title"]."</a></h2><br/><p>".$renderItem."</p><hr />";
 
-
-      $doc = $newTempDoc;
+      $doc = $new_temp_doc;
       // dump($doc);
       if (is_array($doc)) {
         $doc_fields = $doc;
