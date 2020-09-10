@@ -155,7 +155,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
    */
   protected $entityTypeManager;
 
-  // APPBASE CHANGED
+  // LUCIDWORKS CHANGED
   protected $field_map = array(
       "tm_X3b_" => "_t",
       "bs_" => "_b",
@@ -181,18 +181,6 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     $this->entityTypeManager = $entityTypeManager;
 
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-  }
-  
-  // APPBASE CHANGED
-  public function getFusionField($field) {
-    // dump($fi)
-    $current_field_map = explode('_', $field)[0].'_';
-    $suffix = "";
-    if (isset($this->field_map[$current_field_map])) {
-       $suffix = $this->field_map[$current_field_map];
-    }
-    $new_field = explode('_', $field, 2)[1].$suffix;
-    return $new_field;
   }
 
   /**
@@ -272,7 +260,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
    * {@inheritdoc}
    */
   public function setConfiguration(array $configuration) {
-    // APPBASE CHANGED
+    // LUCIDWORKS CHANGED
     // $configuration['retrieve_data'] = (bool) $configuration['retrieve_data'];
     // $configuration['highlight_data'] = (bool) $configuration['highlight_data'];
     // $configuration['skip_schema_check'] = (bool) $configuration['skip_schema_check'];
@@ -314,7 +302,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     $this->buildConnectorConfigForm($form, $form_state);
 
 
-    // APPBASE CHANGED
+    // LUCIDWORKS CHANGED
 
     // $form['advanced'] = [
     //   '#type' => 'details',
@@ -377,7 +365,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       '#description' => $this->t('For example "dev", "stage" or "prod".'),
       '#default_value' => isset($this->configuration['environment']) ? $this->configuration['environment'] : 'default',
     ];
-    // APPBASE CHANGED
+    // LUCIDWORKS CHANGED
     // $form['advanced']['i_know_what_i_do'] = [
     //   '#type' => 'checkbox',
     //   '#title' => $this->t('Optimize the Solr index'),
@@ -1462,7 +1450,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
 
       $unspecific_field_names = $this->getSolrFieldNames($index);
       // For solr_document datasource, search_api_language might not be mapped.
-      // APPBASE CHANGED
+      // LUCIDWORKS CHANGED
       // if (!empty($unspecific_field_names['search_api_language'])) {
       //   $solarium_query->createFilterQuery('language_filter')->setQuery(
       //     $this->createFilterQuery($unspecific_field_names['search_api_language'], $language_ids, 'IN', new Field($index, 'search_api_language'), $options)
@@ -1543,7 +1531,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
           $params = $solarium_query->getParams();
           // Extract keys.
           $keys = $query->getKeys();
-          // APPBASE CHANGED
+          // LUCIDWORKS CHANGED
           // $query_fields_boosted = $edismax->getQueryFields() ?? '';
           // if (isset($params['defType']) && 'edismax' === $params['defType']) {
           //   // Edismax was forced via API. In case of parse mode 'direct' we get
@@ -1579,7 +1567,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
           // }
           
           // $flatten_query[] = trim($flatten_keys ?: '*:*');
-          $flatten_query[] = $keys[0] ?: '*:*';
+          $flatten_query[] = $keys[0] ? Utility::flattenKeys($keys, [], 'keys') : '*:*';
 
           $solarium_query->setQuery(implode(' ', $flatten_query));
 
@@ -2485,11 +2473,10 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     // properties. Mappings are provided for these properties in
     // SearchApiSolrBackend::getSolrFieldNames().
     $language_unspecific_field_names = $this->getSolrFieldNames($index);
-
     $id_field = $language_unspecific_field_names['search_api_id'];
     $score_field = $language_unspecific_field_names['search_api_relevance'];
     $language_field = $language_unspecific_field_names['search_api_language'];
-
+    
     // Set up the results array.
     $result_set = $query->getResults();
     $result_set->setExtraData('search_api_solr_response', $result->getData()); 
@@ -2538,7 +2525,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       $result_set->setResultCount($result->getNumFound());
       $docs = $result->getDocuments();
     }
-    // APPBASE CHANGED
+    // LUCIDWORKS CHANGED
     $reverse_field_map = array(
       "_s" => "tm_X3b_",
       "_t" => "tm_X3b_",
@@ -2553,17 +2540,12 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
 
     // Add each search result to the results array.
     /** @var \Solarium\QueryType\Select\Result\Document $doc */
-    // APPBASE CHANGED
+    // LUCIDWORKS CHANGED
     $dt = $result->getData();
-    // dump($dt);
     foreach ($docs as $td) {
-
-      // APPBASE CHANGED
-      $new_temp_doc = [];
       $new_temp_doc["ss_search_api_id"] = $td["id"];
       $new_temp_doc["ss_search_api_language"] = $td["langcode_s"];
       $new_temp_doc["ss_search_api_datasource"] = "entity:node";
-  
       foreach($td as $key => $value){
         // $prefix = "";
         // $current_field_map = '_'.substr( $key, strrpos( $key, '_' )+1 );
@@ -2581,10 +2563,11 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
         //   $new_key = $prefix.substr($key, 0, strrpos($key, '_'));
         // }
         $renderData = $value;
-        if (!empty($dt['highlighting'][$new_temp_doc[$id_field]][$key]) && $key !== "id") {
-          $highlight_data = $dt['highlighting'][$new_temp_doc[$id_field]][$key];
-          forEach($highlight_data as $v) {
-            $string_without_em = preg_replace("/<\\/?" . "em" . "(.|\\s)*?>/","",$v);
+        
+        if (isset($dt['highlighting']) && !empty($dt['highlighting'][$td["id"]]) && isset($dt['highlighting'][$td["id"]][$key]) && !empty($dt['highlighting'][$td["id"]][$key])) {
+          $highlight_data = $dt['highlighting'][$td["id"]][$key];
+          foreach($highlight_data as $v) {
+            $string_without_em = preg_replace("/<\/?em(.|\\s)*?>/","",$v);
             $renderData = str_replace($string_without_em, $v, $value);
           }
         }
@@ -2592,7 +2575,6 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
         $new_temp_doc[$key] = $renderData;
       }
       
-      // dump($new_temp_doc);
       $renderBody = "Sorry no body field found";
       $renderTitle = $new_temp_doc["title_t"];
 
@@ -2602,13 +2584,10 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       } else if (isset($new_temp_doc["field_summary_processed_t"])) {
         $renderBody = $new_temp_doc["field_summary_processed_t"];
       }
-      // dump($renderBody);
-      $string_prefix = "tm_X3b_".$td->getFields()["langcode_s"]."_";
+      $string_prefix = "tm_X3b_und_";
 
       $new_temp_doc[$string_prefix."rendered_item"] = array('<article class="contextual-region node node--type-page node--promoted node--view-mode-teaser clearfix"><h2><a href="'.$new_temp_doc[$id_field].'">'.$renderTitle.'</a></h2>'.$renderBody.'</article>');
-      // dump($new_temp_doc);
       $doc = $new_temp_doc;
-      // dump($doc);
       if (is_array($doc)) {
         $doc_fields = $doc;
       }
@@ -2705,7 +2684,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
         str_replace('solr_document/', '', $result_item->getId()) :
         $this->createId($this->getTargetedSiteHash($index), $this->getTargetedIndexId($index), $result_item->getId());
       
-      // APPBASE CHANGED
+      // LUCIDWORKS CHANGED
       // $this->getHighlighting($result->getData(), $solr_id, $result_item, $field_names);
       $this->getHighlighting($result->getData(), $result_item->getId(), $result_item, $field_names);
       $result_set->addResultItem($result_item);
@@ -2748,7 +2727,6 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     if ($facet_fields = $resultset->getFacetSet()->getFacets()) {
       foreach ($extract_facets as $delta => $info) {
         $field = $field_names[$info['field']];
-        // $field = $this->getFusionField($field);
         if (!empty($facet_fields[$field])) {
           $min_count = $info['min_count'];
           $terms = $facet_fields[$field]->getValues();
@@ -3320,9 +3298,8 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       if (empty($field_names[$info['field']])) {
         continue;
       }
-      // APPBASE CHANGED
+      // LUCIDWORKS CHANGED
       $solr_field = $field_names[$info['field']];
-      // $solr_field = $this->getFusionField($solr_field);
       $facet_field = NULL;
 
       // Backward compatibility for facets.
@@ -3888,7 +3865,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
    *   Mapping from search_api field names to Solr field names.
    */
   protected function getHighlighting(array $data, $solr_id, ItemInterface $item, array $field_mapping) {
-    // APPBASE CHANGED
+    // LUCIDWORKS CHANGED
     // if (isset($data['highlighting'][$solr_id]) && !empty($this->configuration['highlight_data'])) {
       
     if (isset($data['highlighting'][$solr_id])){ 

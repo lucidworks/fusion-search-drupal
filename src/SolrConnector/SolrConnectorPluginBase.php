@@ -153,7 +153,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 			'#default_value' => isset($this->configuration['port']) ? $this->configuration['port'] : '',
 			'#required' => TRUE,
 		];
-		// APPBASE CHANGED
+		// LUCIDWORKS CHANGED
 		// $form['oauth2_client_id'] = [
 		// 	'#type' => 'textfield',
 		// 	'#title' => $this->t('OAuth2 Client ID'),
