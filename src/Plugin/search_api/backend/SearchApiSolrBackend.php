@@ -1567,7 +1567,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
           // }
           
           // $flatten_query[] = trim($flatten_keys ?: '*:*');
-          $flatten_query[] = $keys[0] ? Utility::flattenKeys($keys, [], 'keys') : '*:*';
+          $flatten_query[] = $keys[0] ? join(" ", array_slice($keys, 1)) : '*:*';
 
           $solarium_query->setQuery(implode(' ', $flatten_query));
 
