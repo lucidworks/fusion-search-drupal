@@ -153,7 +153,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 			'#default_value' => isset($this->configuration['port']) ? $this->configuration['port'] : '',
 			'#required' => TRUE,
 		];
-
+		// APPBASE CHANGED
 		// $form['oauth2_client_id'] = [
 		// 	'#type' => 'textfield',
 		// 	'#title' => $this->t('OAuth2 Client ID'),
@@ -208,7 +208,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 			'#max' => 180,
 			'#title' => $this->t('Query timeout'),
 			'#description' => $this->t('The timeout in seconds for search queries sent to the Fusion server.'),
-			'#default_value' => isset($this->configuration['timeout']) ? $this->configuration['timeout'] : 5,
+			'#default_value' => isset($this->configuration['timeout']) ? $this->configuration['timeout'] : 100,
 			'#required' => TRUE,
 		];
 
@@ -218,7 +218,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 			'#max' => 180,
 			'#title' => $this->t('Index timeout'),
 			'#description' => $this->t('The timeout in seconds for indexing requests to the Fusion server.'),
-			'#default_value' => isset($this->configuration[self::INDEX_TIMEOUT]) ? $this->configuration[self::INDEX_TIMEOUT] : 5,
+			'#default_value' => isset($this->configuration[self::INDEX_TIMEOUT]) ? $this->configuration[self::INDEX_TIMEOUT] : 100,
 			'#required' => TRUE,
 		];
 
@@ -228,7 +228,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 			'#max' => 180,
 			'#title' => $this->t('Optimize timeout'),
 			'#description' => $this->t('The timeout in seconds for background index optimization queries on a Fusion server.'),
-			'#default_value' => isset($this->configuration[self::OPTIMIZE_TIMEOUT]) ? $this->configuration[self::OPTIMIZE_TIMEOUT] : 10,
+			'#default_value' => isset($this->configuration[self::OPTIMIZE_TIMEOUT]) ? $this->configuration[self::OPTIMIZE_TIMEOUT] : 100,
 			'#required' => TRUE,
 		];
 

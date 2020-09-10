@@ -229,7 +229,7 @@ class Utility {
    * @return string|array
    *   The snippet(s), properly formatted as HTML.
    */
-  public static function formatHighlighting($snippet, $prefix = '<strong>', $suffix = '</strong>') {
+  public static function formatHighlighting($snippet, $prefix = '<em>', $suffix = '</em>') {
     return str_replace(['[HIGHLIGHT]', '[/HIGHLIGHT]'], [$prefix, $suffix], $snippet);
   }
 

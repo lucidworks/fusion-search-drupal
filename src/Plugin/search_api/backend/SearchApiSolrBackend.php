@@ -74,7 +74,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Laminas\Stdlib\ArrayUtils;
 
 /**
- * Apache Solr backend for search api.
+ * Apache solr backend for search api.
  *
  * @SearchApiBackend(
  *   id = "search_api_solr",
@@ -155,6 +155,18 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
    */
   protected $entityTypeManager;
 
+  // APPBASE CHANGED
+  protected $field_map = array(
+      "tm_X3b_" => "_t",
+      "bs_" => "_b",
+      "ds_" => "_dt",
+      "ss_" => "_s",
+      // TODO not known
+      "is_" => "_l",
+      "fs_" => "_f",
+      "ps_" => "_d",
+  );
+
   /**
    * {@inheritdoc}
    */
@@ -169,6 +181,18 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     $this->entityTypeManager = $entityTypeManager;
 
     parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }
+  
+  // APPBASE CHANGED
+  public function getFusionField($field) {
+    // dump($fi)
+    $current_field_map = explode('_', $field)[0].'_';
+    $suffix = "";
+    if (isset($this->field_map[$current_field_map])) {
+       $suffix = $this->field_map[$current_field_map];
+    }
+    $new_field = explode('_', $field, 2)[1].$suffix;
+    return $new_field;
   }
 
   /**
@@ -197,7 +221,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     return [
       'retrieve_data' => FALSE,
       'highlight_data' => FALSE,
-      'skip_schema_check' => FALSE,
+      'skip_schema_check' => TRUE,
       'site_hash' => FALSE,
       'server_prefix' => '',
       'domain' => 'generic',
@@ -248,11 +272,12 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
    * {@inheritdoc}
    */
   public function setConfiguration(array $configuration) {
-    $configuration['retrieve_data'] = (bool) $configuration['retrieve_data'];
-    $configuration['highlight_data'] = (bool) $configuration['highlight_data'];
-    $configuration['skip_schema_check'] = (bool) $configuration['skip_schema_check'];
-    $configuration['site_hash'] = (bool) $configuration['site_hash'];
-    $configuration['optimize'] = (bool) $configuration['optimize'];
+    // APPBASE CHANGED
+    // $configuration['retrieve_data'] = (bool) $configuration['retrieve_data'];
+    // $configuration['highlight_data'] = (bool) $configuration['highlight_data'];
+    // $configuration['skip_schema_check'] = (bool) $configuration['skip_schema_check'];
+    // $configuration['site_hash'] = (bool) $configuration['site_hash'];
+    // $configuration['optimize'] = (bool) $configuration['optimize'];
     $configuration['rows'] = (int) ($configuration['rows'] ?? 10);
 
     parent::setConfiguration($configuration);
@@ -288,49 +313,52 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
 
     $this->buildConnectorConfigForm($form, $form_state);
 
-    $form['advanced'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Advanced'),
-    ];
 
-    $form['advanced']['rows'] = [
-      '#type' => 'number',
-      '#min' => 0,
-      // The max rows that could be returned by Solr are the max 32bit integer.
-      '#max' => 2147483630,
-      '#title' => $this->t('Default result rows'),
-      '#description' => $this->t('Solr always requires to limit the search results. This default value will be set if the Search API query itself is not limited. 2147483630 is the theoretical maximum since the result pointer is an integer. But be careful! Especially in Solr Cloud setups too high values might cause an OutOfMemoryException because Solr reserves this rows limit per shard for sorting the combined result. This sum must not exceed the maximum integer value! And even if there is no exception any too high memory consumption per query on your server is a bad thing in general.'),
-      '#default_value' => $this->configuration['rows'] ?: 10,
-      '#required' => TRUE,
-    ];
+    // APPBASE CHANGED
 
-    $form['advanced']['retrieve_data'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Retrieve result data from Solr'),
-      '#description' => $this->t('When checked, result data will be retrieved directly from the Solr server. This might make item loads unnecessary. Only indexed fields can be retrieved. Note also that the returned field data might not always be correct, due to preprocessing and caching issues.'),
-      '#default_value' => $this->configuration['retrieve_data'],
-    ];
+    // $form['advanced'] = [
+    //   '#type' => 'details',
+    //   '#title' => $this->t('Advanced'),
+    // ];
 
-    $form['advanced']['highlight_data'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Retrieve highlighted snippets'),
-      '#description' => $this->t('Return a highlighted version of the indexed fulltext fields. These will be used by the "Highlighting Processor" directly instead of applying its own PHP algorithm.'),
-      '#default_value' => $this->configuration['highlight_data'],
-    ];
+    // $form['advanced']['rows'] = [
+    //   '#type' => 'number',
+    //   '#min' => 0,
+    //   // The max rows that could be returned by Solr are the max 32bit integer.
+    //   '#max' => 2147483630,
+    //   '#title' => $this->t('Default result rows'),
+    //   '#description' => $this->t('Solr always requires to limit the search results. This default value will be set if the Search API query itself is not limited. 2147483630 is the theoretical maximum since the result pointer is an integer. But be careful! Especially in Solr Cloud setups too high values might cause an OutOfMemoryException because Solr reserves this rows limit per shard for sorting the combined result. This sum must not exceed the maximum integer value! And even if there is no exception any too high memory consumption per query on your server is a bad thing in general.'),
+    //   '#default_value' => $this->configuration['rows'] ?: 10,
+    //   '#required' => TRUE,
+    // ];
 
-    $form['advanced']['skip_schema_check'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Skip schema verification'),
-      '#description' => $this->t('Skip the automatic check for schema-compatibillity. Use this override if you are seeing an error-message about an incompatible schema.xml configuration file, and you are sure the configuration is compatible.'),
-      '#default_value' => $this->configuration['skip_schema_check'],
-    ];
+    // $form['advanced']['retrieve_data'] = [
+    //   '#type' => 'checkbox',
+    //   '#title' => $this->t('Retrieve result data from Solr'),
+    //   '#description' => $this->t('When checked, result data will be retrieved directly from the Solr server. This might make item loads unnecessary. Only indexed fields can be retrieved. Note also that the returned field data might not always be correct, due to preprocessing and caching issues.'),
+    //   '#default_value' => $this->configuration['retrieve_data'],
+    // ];
 
-    $form['advanced']['server_prefix'] = [
-      '#type' => 'textfield',
-      '#title' => t('All index prefix'),
-      '#description' => t("By default, the index ID in the Solr server is the same as the index's machine name in Drupal. This setting will let you specify an additional prefix. Only use alphanumeric characters and underscores. Since changing the prefix makes the currently indexed data inaccessible, you should not change this variable when no data is indexed."),
-      '#default_value' => $this->configuration['server_prefix'],
-    ];
+    // $form['advanced']['highlight_data'] = [
+    //   '#type' => 'checkbox',
+    //   '#title' => $this->t('Retrieve highlighted snippets'),
+    //   '#description' => $this->t('Return a highlighted version of the indexed fulltext fields. These will be used by the "Highlighting Processor" directly instead of applying its own PHP algorithm.'),
+    //   '#default_value' => $this->configuration['highlight_data'],
+    // ];
+
+    // $form['advanced']['skip_schema_check'] = [
+    //   '#type' => 'checkbox',
+    //   '#title' => $this->t('Skip schema verification'),
+    //   '#description' => $this->t('Skip the automatic check for schema-compatibillity. Use this override if you are seeing an error-message about an incompatible schema.xml configuration file, and you are sure the configuration is compatible.'),
+    //   '#default_value' => $this->configuration['skip_schema_check'],
+    // ];
+
+    // $form['advanced']['server_prefix'] = [
+    //   '#type' => 'textfield',
+    //   '#title' => t('All index prefix'),
+    //   '#description' => t("By default, the index ID in the Solr server is the same as the index's machine name in Drupal. This setting will let you specify an additional prefix. Only use alphanumeric characters and underscores. Since changing the prefix makes the currently indexed data inaccessible, you should not change this variable when no data is indexed."),
+    //   '#default_value' => $this->configuration['server_prefix'],
+    // ];
 
     $domains = SolrFieldType::getAvailableDomains();
     $form['advanced']['domain'] = [
@@ -349,35 +377,35 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       '#description' => $this->t('For example "dev", "stage" or "prod".'),
       '#default_value' => isset($this->configuration['environment']) ? $this->configuration['environment'] : 'default',
     ];
+    // APPBASE CHANGED
+    // $form['advanced']['i_know_what_i_do'] = [
+    //   '#type' => 'checkbox',
+    //   '#title' => $this->t('Optimize the Solr index'),
+    //   '#description' => $this->t('Optimize the Solr index once a day. Even if this option "sounds good", think twice before activating it! For most Solr setups it\'s recommended to NOT enable this feature!'),
+    //   '#default_value' => $this->configuration['optimize'],
+    // ];
 
-    $form['advanced']['i_know_what_i_do'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Optimize the Solr index'),
-      '#description' => $this->t('Optimize the Solr index once a day. Even if this option "sounds good", think twice before activating it! For most Solr setups it\'s recommended to NOT enable this feature!'),
-      '#default_value' => $this->configuration['optimize'],
-    ];
+    // $form['advanced']['optimize'] = [
+    //   '#type' => 'checkbox',
+    //   '#title' => $this->t("Yes, I know what I'm doing and want to enable a daily optimization!"),
+    //   '#default_value' => $this->configuration['optimize'],
+    //   '#states' => [
+    //     'invisible' => [':input[name="backend_config[advanced][i_know_what_i_do]"]' => ['checked' => FALSE]],
+    //   ],
+    // ];
 
-    $form['advanced']['optimize'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t("Yes, I know what I'm doing and want to enable a daily optimization!"),
-      '#default_value' => $this->configuration['optimize'],
-      '#states' => [
-        'invisible' => [':input[name="backend_config[advanced][i_know_what_i_do]"]' => ['checked' => FALSE]],
-      ],
-    ];
-
-    $form['multisite'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Multi-site compatibility'),
-      '#description' => $this->t("By default a single Solr backend based Search API server is able to index the data of multiple Drupal sites. But this is an expert-only and dangerous feature that mainly exists for backward compatibility. If you really index multiple sites in one index and don't activate 'Retrieve results for this site only' below you have to ensure that you enable 'Retrieve result data from Solr'! Otherwise it could lead to any kind of errors!"),
-    ];
-    $description = $this->t("Automatically filter all searches to only retrieve results from this Drupal site. The default and intended behavior is to display results from all sites. WARNING: Enabling this filter might break features like autocomplete, spell checking or suggesters!");
-    $form['multisite']['site_hash'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Retrieve results for this site only'),
-      '#description' => $description,
-      '#default_value' => $this->configuration['site_hash'],
-    ];
+    // $form['multisite'] = [
+    //   '#type' => 'details',
+    //   '#title' => $this->t('Multi-site compatibility'),
+    //   '#description' => $this->t("By default a single fusion backend based Search API server is able to index the data of multiple Drupal sites. But this is an expert-only and dangerous feature that mainly exists for backward compatibility. If you really index multiple sites in one index and don't activate 'Retrieve results for this site only' below you have to ensure that you enable 'Retrieve result data from Solr'! Otherwise it could lead to any kind of errors!"),
+    // ];
+    // $description = $this->t("Automatically filter all searches to only retrieve results from this Drupal site. The default and intended behavior is to display results from all sites. WARNING: Enabling this filter might break features like autocomplete, spell checking or suggesters!");
+    // $form['multisite']['site_hash'] = [
+    //   '#type' => 'checkbox',
+    //   '#title' => $this->t('Retrieve results for this site only'),
+    //   '#description' => $description,
+    //   '#default_value' => $this->configuration['site_hash'],
+    // ];
 
     $form['disabled_field_types'] = [
       '#type' => 'value',
@@ -523,9 +551,9 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     // Since the form is nested into another, we can't simply use #parents for
     // doing this array restructuring magic. (At least not without creating an
     // unnecessary dependency on internal implementation.)
-    $values += $values['advanced'];
-    $values += $values['multisite'];
-    $values['optimize'] &= $values['i_know_what_i_do'];
+    // $values += $values['advanced'];
+    // $values += $values['multisite'];
+    // $values['optimize'] &= $values['i_know_what_i_do'];
 
     foreach ($values as $key => $value) {
       $form_state->setValue($key, $value);
@@ -1580,7 +1608,6 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
         $solarium_result = $connector->createSearchResult($solarium_query, $search_api_response);
         // Extract results.
         $search_api_result_set = $this->extractResults($query, $solarium_result);
-
         if ($solarium_result instanceof Result) {
           // Extract facets.
           if ($solarium_facet_set = $solarium_result->getFacetSet()) {
@@ -2428,6 +2455,15 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
   protected function alterSolrDocuments(array &$documents, IndexInterface $index, array $items) {
   }
 
+  public function get_string_between($string, $start, $end){
+      $string = ' ' . $string;
+      $ini = strpos($string, $start);
+      if ($ini == 0) return '';
+      $ini += strlen($start);
+      $len = strpos($string, $end, $ini) - $ini;
+      return substr($string, $ini, $len);
+  }
+
   /**
    * Extract results from a Solr response.
    *
@@ -2503,7 +2539,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       $docs = $result->getDocuments();
     }
     // APPBASE CHANGED
-    $field_map = array(
+    $reverse_field_map = array(
       "_s" => "tm_X3b_",
       "_t" => "tm_X3b_",
       "_b" => "bs_",
@@ -2517,37 +2553,60 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
 
     // Add each search result to the results array.
     /** @var \Solarium\QueryType\Select\Result\Document $doc */
+    // APPBASE CHANGED
+    $dt = $result->getData();
+    // dump($dt);
     foreach ($docs as $td) {
 
       // APPBASE CHANGED
-      
       $new_temp_doc = [];
+      $new_temp_doc["ss_search_api_id"] = $td["id"];
+      $new_temp_doc["ss_search_api_language"] = $td["langcode_s"];
+      $new_temp_doc["ss_search_api_datasource"] = "entity:node";
+  
       foreach($td as $key => $value){
-        $prefix = "";
-        $current_field_map = '_'.substr( $key, strrpos( $key, '_' )+1 );
-        if (isset($field_map[$current_field_map])) {
-          $prefix = $field_map[$current_field_map];
-          if ($prefix === "tm_X3b_") {
-            $prefix = $prefix.$td->getFields()["langcode_s"]."_";
+        // $prefix = "";
+        // $current_field_map = '_'.substr( $key, strrpos( $key, '_' )+1 );
+        // if (isset($reverse_field_map[$current_field_map])) {
+        //   $prefix = $reverse_field_map[$current_field_map];
+        //   if ($prefix === "tm_X3b_") {
+        //     $prefix = $prefix.$td->getFields()["langcode_s"]."_";
+        //   }
+        // }
+        // if ($key === 'id') {
+        //   $new_key = 'ss_search_api_id';
+        // } else if ($key === 'langcode_s') {
+        //   $new_key = 'ss_search_api_language';
+        // } else {
+        //   $new_key = $prefix.substr($key, 0, strrpos($key, '_'));
+        // }
+        $renderData = $value;
+        if (!empty($dt['highlighting'][$new_temp_doc[$id_field]][$key]) && $key !== "id") {
+          $highlight_data = $dt['highlighting'][$new_temp_doc[$id_field]][$key];
+          forEach($highlight_data as $v) {
+            $string_without_em = preg_replace("/<\\/?" . "em" . "(.|\\s)*?>/","",$v);
+            $renderData = str_replace($string_without_em, $v, $value);
           }
         }
-        if ($key === 'id') {
-          $new_key = 'ss_search_api_id';
-        } else if ($key === 'langcode_s') {
-          $new_key = 'ss_search_api_language';
-        } else {
-          $new_key = $prefix.substr($key, 0, strrpos($key, '_'));
-        }
-        $new_temp_doc[$new_key] = $value;
+        
+        $new_temp_doc[$key] = $renderData;
       }
-      $string_prefix = "tm_X3b_".$td->getFields()["langcode_s"]."_";
-      $new_temp_doc["ss_search_api_datasource"] = "entity:node";
-      $renderItem = "Sorry no body field found";
-      if (isset($new_temp_doc[$string_prefix."body.processed"])) {
-        $renderItem = $new_temp_doc[$string_prefix."body.processed"];
-      }
-      $new_temp_doc[$string_prefix."rendered_item"] = "<h2><a href='".$new_temp_doc[$id_field]."'>".$new_temp_doc[$string_prefix."title"]."</a></h2><br/><p>".$renderItem."</p><hr />";
+      
+      // dump($new_temp_doc);
+      $renderBody = "Sorry no body field found";
+      $renderTitle = $new_temp_doc["title_t"];
 
+
+      if (isset($new_temp_doc["body.processed_t"])) {
+        $renderBody = $new_temp_doc["body.processed_t"];
+      } else if (isset($new_temp_doc["field_summary_processed_t"])) {
+        $renderBody = $new_temp_doc["field_summary_processed_t"];
+      }
+      // dump($renderBody);
+      $string_prefix = "tm_X3b_".$td->getFields()["langcode_s"]."_";
+
+      $new_temp_doc[$string_prefix."rendered_item"] = array('<article class="contextual-region node node--type-page node--promoted node--view-mode-teaser clearfix"><h2><a href="'.$new_temp_doc[$id_field].'">'.$renderTitle.'</a></h2>'.$renderBody.'</article>');
+      // dump($new_temp_doc);
       $doc = $new_temp_doc;
       // dump($doc);
       if (is_array($doc)) {
@@ -2645,7 +2704,10 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       $solr_id = Utility::hasIndexJustSolrDatasources($index) ?
         str_replace('solr_document/', '', $result_item->getId()) :
         $this->createId($this->getTargetedSiteHash($index), $this->getTargetedIndexId($index), $result_item->getId());
-      $this->getHighlighting($result->getData(), $solr_id, $result_item, $field_names);
+      
+      // APPBASE CHANGED
+      // $this->getHighlighting($result->getData(), $solr_id, $result_item, $field_names);
+      $this->getHighlighting($result->getData(), $result_item->getId(), $result_item, $field_names);
       $result_set->addResultItem($result_item);
     }
 
@@ -2686,6 +2748,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     if ($facet_fields = $resultset->getFacetSet()->getFacets()) {
       foreach ($extract_facets as $delta => $info) {
         $field = $field_names[$info['field']];
+        // $field = $this->getFusionField($field);
         if (!empty($facet_fields[$field])) {
           $min_count = $info['min_count'];
           $terms = $facet_fields[$field]->getValues();
@@ -3257,7 +3320,9 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       if (empty($field_names[$info['field']])) {
         continue;
       }
+      // APPBASE CHANGED
       $solr_field = $field_names[$info['field']];
+      // $solr_field = $this->getFusionField($solr_field);
       $facet_field = NULL;
 
       // Backward compatibility for facets.
@@ -3337,6 +3402,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       if ($info['min_count'] != 1) {
         $facet_field->setMinCount($info['min_count']);
       }
+      
     }
   }
 
@@ -3822,9 +3888,12 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
    *   Mapping from search_api field names to Solr field names.
    */
   protected function getHighlighting(array $data, $solr_id, ItemInterface $item, array $field_mapping) {
-    if (isset($data['highlighting'][$solr_id]) && !empty($this->configuration['highlight_data'])) {
-      $prefix = '<strong>';
-      $suffix = '</strong>';
+    // APPBASE CHANGED
+    // if (isset($data['highlighting'][$solr_id]) && !empty($this->configuration['highlight_data'])) {
+      
+    if (isset($data['highlighting'][$solr_id])){ 
+      $prefix = '<mark>';
+      $suffix = '</mark>';
       try {
         $highlight_config = $item->getIndex()->getProcessor('highlight')->getConfiguration();
         if ($highlight_config['highlight'] === 'never') {
@@ -3832,10 +3901,12 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
         }
         $prefix = $highlight_config['prefix'];
         $suffix = $highlight_config['suffix'];
+       
       }
       catch (SearchApiException $exception) {
         // Highlighting processor is not enabled for this index.
       }
+      
       $snippets = [];
       $keys = [];
       foreach ($field_mapping as $search_api_property => $solr_property) {
@@ -3848,6 +3919,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
           }
         }
       }
+
       if ($snippets) {
         $item->setExtraData('highlighted_fields', $snippets);
         $item->setExtraData('highlighted_keys', array_unique(array_merge(...$keys)));
@@ -4111,7 +4183,6 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       // @todo Check if these defaults make any sense.
       $steps = $limit > 0 ? $limit : 5;
       $step = ($spatial['radius'] - $spatial['min_radius']) / $steps;
-
       for ($i = 0; $i < $steps; $i++) {
         $distance_min = $spatial['min_radius'] + ($step * $i);
         // @todo $step - 1 means 1km less. That opens a gap in the facets of
