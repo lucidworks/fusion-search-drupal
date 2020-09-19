@@ -1,12 +1,14 @@
-Fusion Search
--------------
+Fusion Search Drupal
+--------------------
 
-Fusion Search provides a Lucidworks Fusion powered search experience for a Drupal site.
+Fusion Search Drupal module provides a Lucidworks Fusion powered search experience for a Drupal site.
+
+This module uses the following modules as dependencies to achieve this.
 
 1. The source code for the indexing module is present at [lucidworks/drupal-connector-module](https://github.com/lucidworks/drupal-connector-module).
-2. The source code for the search module is forked from the search api solr module to add support for Fusion as a backend. The changes reside in:
-  a. [lucidworks/drupal_search_api](https://github.com/lucidworks/drupal_search_api/) - Drupal Search API is a fork of the [Search API](https://www.drupal.org/project/search_api) project. The Search API module provides a framework for easily creating searches on any entity known to Drupal, using any kind of search engine.
-  b. [lucidworks/fusion-search-drupal](https://github.com/lucidworks/fusion-search-drupal) aka this repository - Fusion Search Drupal provides an implementation of the Search API module which uses Lucidworks Fusion search server for searching.
+2. The source code for the search module is forked from the search api solr module to add support for Fusion as a backend. The changes reside in:  
+  a. [lucidworks/drupal_search_api](https://github.com/lucidworks/drupal_search_api/) - Drupal Search API is a fork of the [Search API](https://www.drupal.org/project/search_api) project. The Search API module provides a framework for easily creating searches on any entity known to Drupal, using any kind of search engine.  
+  b. [lucidworks/fusion-search-drupal](https://github.com/lucidworks/fusion-search-drupal) aka this repository - Fusion Search Drupal provides an implementation of the Search API module which uses Lucidworks Fusion search server for searching.  
   c. [lucidworks/fusion-search-solarium](https://github.com/lucidworks/fusion-search-solarium) - This module adds support for a Fusion backend within Solarium, a PHP client library for Solr.
 
 
@@ -100,9 +102,8 @@ Support
 -------
 
 // TODO: Update support section
-Support is currently provided via our
-[issue queue](https://www.drupal.org/project/issues/search_api_solr?version=8.x)
-or on https://drupalchat.me/channel/search.
+
+Support is currently provided via TBD.
 
 Developers
 ----------
