@@ -23,7 +23,7 @@
         "ext-dom": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
-        "lucidworks/fusion-connector": "*",
+        "lucidworks/drupal-connector-module": "*",
         "lucidworks/drupal_search_api": "*",
         "consolidation/annotated-command": "^2.12|^4.1",
         "maennchen/zipstream-php": "^1.2|^2.0",
