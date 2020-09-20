@@ -24,7 +24,7 @@
         "ext-json": "*",
         "ext-simplexml": "*",
         "lucidworks/fusion-connector": "*",
-        "lucidworks/drupal_search_api": "8.x-1.x-fusion",
+        "lucidworks/drupal_search_api": "*",
         "consolidation/annotated-command": "^2.12|^4.1",
         "maennchen/zipstream-php": "^1.2|^2.0",
         "lucidworks/fusion-search-solarium": "dev-fusion-vendor",
