@@ -55,5 +55,9 @@
                 "drush.services.yml": "^9"
             }
         }
-    }
+    },
+    "repositories": [
+        {"type": "composer", "url": "https://repo.packagist.com/lucidworks/"},
+        {"packagist.org": false}
+    ]
 }
