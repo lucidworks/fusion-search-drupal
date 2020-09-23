@@ -26,7 +26,7 @@ composer require lucidworks/fusion-search-drupal
 
 ![](http://recordit.co/ir3r7F3KqH.gif)
 
-3. Add the following modules from the Extend panel:
+2. Add the following modules from the Extend panel:
 
 - Fusion Connector
 - Search API
@@ -37,21 +37,21 @@ And remove the default `Search` module from the Extend panel.
 
 ![](http://recordit.co/TC9ye3wCn9.gif)
    
-4. Configure the Search API module in the admin page to connect to the Fusion server.
+3. Configure the Search API module in the admin page to connect to the Fusion server.
 
 ![](http://recordit.co/nY0tD0OL7I.gif)
 
-5. Add an index within the server and select the fields to use for the search view.
+4. Add an index within the server and select the fields to use for the search view.
 
 ![](http://recordit.co/A5qkqDgFm5.gif)
    
-6. Create the Search view from the Structure panel and test the search UI view.
+5. Create the Search view from the Structure panel and test the search UI view.
 
 ![](http://recordit.co/O6yl4wKcRZ.gif)
 
 ![](http://recordit.co/qhr5cSBW7l.gif)
 
-7. Install the facets module and test it. 
+6. Install the facets module and test it. 
 
 ```sh
 composer require drupal/facets
