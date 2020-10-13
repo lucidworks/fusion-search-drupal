@@ -452,7 +452,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       if ($connector instanceof PluginFormInterface) {
         $form_state->set('connector', $connector_id);
         if ($form_state->isRebuilding()) {
-          \Drupal::messenger()->addWarning($this->t('Please configure the selected Solr connector.'));
+          // \Drupal::messenger()->addWarning($this->t('Please configure the selected Solr connector.'));
         }
         // Attach the Solr connector plugin configuration form.
         $connector_form_state = SubformState::createForSubform($form['connector_config'], $form, $form_state);
