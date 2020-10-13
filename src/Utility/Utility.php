@@ -1078,4 +1078,20 @@ class Utility {
     return [$version_number, $document->saveXML()];
   }
 
+  public static function fetch($url, $options) {
+    $cURLConnection = curl_init($url);
+
+    foreach ($options as $key => $element) {
+        curl_setopt($cURLConnection, $key, $element);
+    }
+
+    curl_setopt($cURLConnection, CURLOPT_RETURNTRANSFER, true);
+    $apiResponse = curl_exec($cURLConnection);
+    curl_close($cURLConnection);
+    // $apiResponse - available data from the API request
+    $jsonArrayResponse = json_decode($apiResponse, true);
+
+    return $jsonArrayResponse;
+  }
+
 }

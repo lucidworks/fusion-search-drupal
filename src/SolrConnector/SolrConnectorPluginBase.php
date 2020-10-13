@@ -12,6 +12,7 @@ use Drupal\search_api\Plugin\PluginFormTrait;
 use Drupal\search_api_solr\SearchApiSolrException;
 use Drupal\search_api_solr\Solarium\Autocomplete\Query as AutocompleteQuery;
 use Drupal\search_api_solr\SolrConnectorInterface;
+use Drupal\search_api_solr\Utility\Utility;
 use Solarium\Client;
 use Solarium\Core\Client\Adapter\Curl;
 use Solarium\Core\Client\Adapter\Http;
@@ -25,6 +26,10 @@ use Solarium\QueryType\Extract\Result as ExtractResult;
 use Solarium\QueryType\Update\Query\Query as UpdateQuery;
 use Solarium\QueryType\Select\Query\Query;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Ajax\CssCommand;
+use Drupal\Core\Ajax\HtmlCommand;
 
 /**
  * Defines a base class for Solr connector plugins.
@@ -53,6 +58,57 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @see \Drupal\search_api_solr\SolrConnectorInterface
  * @see plugin_api
  */
+
+function getFusionApps($configValues) {
+
+	$url = $configValues['scheme'].'://'.rtrim($configValues['host'], '/').':'.$configValues['port'].'/'.ltrim($configValues['path'], '/').'/apps';
+	$fetchRes = Utility::fetch($url, array(
+		CURLOPT_HTTPHEADER => array(
+			'Authorization: Bearer '.$configValues['jwt_token']
+		)
+	));
+
+	$isError = false;
+	if (isset($fetchRes['error'])) {
+		return array(
+			'error' => $fetchRes['messages'][0]
+		);
+	}
+
+
+	$fusionApps = array();
+	if (!$isError) {
+		foreach ($fetchRes as $val) {
+			$fusionApps[$val['id']] = $val['name'];
+		}
+	}
+	return $fusionApps;
+}
+
+function getQueryProfiles($configValues) {
+	$url = $configValues['scheme'].'://'.rtrim($configValues['host'], '/').':'.$configValues['port'].'/'.ltrim($configValues['path'], '/').'/apps'.'/'.$configValues['core'].'/query-profiles';
+	$fetchRes = Utility::fetch($url, array(
+		CURLOPT_HTTPHEADER => array(
+			'Authorization: Bearer '.$configValues['jwt_token']
+		)
+	));
+	$isError = false;
+	if (isset($fetchRes['error'])) {
+		return array(
+			'error' => $fetchRes['messages'][0]
+		);
+	}
+
+
+	$queryProfiles = array();
+	if (!$isError) {
+		foreach ($fetchRes as $val) {
+			$queryProfiles[$val['id']] = $val['id'];
+		}
+	}
+	return $queryProfiles;
+}
+
 abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements SolrConnectorInterface, PluginFormInterface {
 
 	use PluginFormTrait {
@@ -79,6 +135,28 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 	 * {@inheritdoc}
 	 */
 	public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+		$fusionApps = array(
+			'' => 'Select fusion app'
+		);
+		$queryProfiles = array(
+			'' => 'Select fusion query profile'
+		);
+
+		if (isset($configuration['jwt_token'])) {
+			$fusionAppsRes = getFusionApps($configuration);
+			if (!isset($fusionAppsRes['error'])) {
+				$fusionApps = array_merge($fusionApps, $fusionAppsRes);
+			}
+		}
+
+		if (isset($configuration['core'])) {
+			$queryProfilesRes = getQueryProfiles($configuration);
+			if (!isset($queryProfilesRes['error'])) {
+				$queryProfiles = array_merge($queryProfiles, $queryProfilesRes);
+			}
+		}
+		$configuration['fusion_apps'] = $fusionApps;
+		$configuration['query_profiles'] = $queryProfiles;
 		$plugin = parent::create($container, $configuration, $plugin_id, $plugin_definition);
 
 		$plugin->eventDispatcher = $container->get('event_dispatcher');
@@ -94,17 +172,19 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 			'scheme' => 'http',
 			'host' => 'localhost',
 			'port' => 8983,
-			'path' => '/',
+			'path' => '/api',
 			'core' => '',
-			'timeout' => 5,
-			self::INDEX_TIMEOUT => 5,
-			self::OPTIMIZE_TIMEOUT => 10,
+			'timeout' => 100,
+			self::INDEX_TIMEOUT => 100,
+			self::OPTIMIZE_TIMEOUT => 100,
 			self::FINALIZE_TIMEOUT => 30,
 			'solr_version' => '',
 			'http_method' => 'AUTO',
 			'commit_within' => 1000,
 			'jmx' => FALSE,
 			'solr_install_dir' => '',
+			'fusion_apps' => array(),
+			'query_profiles' => array(),
 		];
 	}
 
@@ -121,6 +201,58 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 		$configuration['jmx'] = (bool) $configuration['jmx'];
 
 		parent::setConfiguration($configuration);
+	}
+
+	public function handleJWTChange(array $form, FormStateInterface $form_state) {
+		$configValues = $form_state->getValues()['backend_config']['connector_config'];
+		$fusionApps = getFusionApps($configValues);
+
+		if (isset($fusionApps['error'])) {
+			$css = ['color' => 'red'];
+			$message = $fusionApps['error'];
+			$fusionApps = array('' => 'Select fusion app');
+			$isError = true;
+		} else {
+			$css = ['color' => 'black'];
+			$message = ('Fusion JWT token.');
+			$fusionApps = array_merge(['' => 'Select fusion app'], $fusionApps);
+		}
+
+		$form['backend_config']['connector_config']['core']['#options']  = $fusionApps;
+		$form['backend_config']['connector_config']['core']['#default_value'] = '';
+		$form['backend_config']['connector_config']['core']['#value'] = '';
+
+		$form['backend_config']['connector_config']['query_profile']['#options']  = array('' => 'Select fusion query profile');
+		$form['backend_config']['connector_config']['query_profile']['#default_value'] = '';
+		$form['backend_config']['connector_config']['query_profile']['#value'] = '';
+
+		$response = new AjaxResponse();
+		$response->addCommand(new ReplaceCommand("#edit-backend-config-connector-config-core", ($form['backend_config']['connector_config']['core'])));
+		$response->addCommand(new ReplaceCommand("#edit-backend-config-connector-config-query_profile", ($form['backend_config']['connector_config']['query_profile'])));
+		$response->addCommand(new CssCommand('#edit-jwt', $css));
+		$response->addCommand(new HtmlCommand('#edit-jwt', $message));
+		return $response;
+	}
+
+	public function handleFusionAppChange(array $form, FormStateInterface $form_state) {
+		$configValues = $form_state->getValues()['backend_config']['connector_config'];
+		$queryProfiles = getQueryProfiles($configValues);
+
+		if (isset($queryProfiles['error'])) {
+			$message = $queryProfiles['error'];
+			$queryProfiles = array('' => 'Select fusion query profile');
+			$isError = true;
+		} else {
+			$queryProfiles = array_merge(['' => 'Select fusion query profile'], $queryProfiles);
+		}
+
+		$form['backend_config']['connector_config']['query_profile']['#options']  = $queryProfiles;
+		$form['backend_config']['connector_config']['query_profile']['#default_value'] = '';
+		$form['backend_config']['connector_config']['query_profile']['#value'] = '';
+
+		$response = new AjaxResponse();
+		$response->addCommand(new ReplaceCommand("#edit-backend-config-connector-config-query_profile", ($form['backend_config']['connector_config']['query_profile'])));
+		return $response;
 	}
 
 	/**
@@ -161,7 +293,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 		// 	'#default_value' => isset($this->configuration['oauth2_client_id']) ? $this->configuration['oauth2_client_id'] : '',
 		// 	'#required' => FALSE,
 		// ];
-		
+
 		// $form['oauth2_client_secret'] = [
 		// 		'#type' => 'textfield',
 		// 		'#title' => $this->t('OAuth2 Client Secret'),
@@ -173,18 +305,44 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 		$form['jwt_token'] = [
 				'#type' => 'textfield',
 				'#title' => $this->t('Fusion JWT Token'),
-				'#description' => $this->t('Fusion JWT token.'),
+				'#description' => '<div id="edit-jwt">'.$this->t('Fusion JWT token.').'</div>',
 				'#default_value' => isset($this->configuration['jwt_token']) ? $this->configuration['jwt_token'] : '',
 				'#required' => TRUE,
 				'#maxlength' => 10000,
+				'#ajax' => [
+					'callback' => [$this, 'handleJWTChange'],
+					'method' => 'replace',
+					'effect' => 'fade',
+					'event' => 'change',
+				],
+		];
+
+		$form['core'] = [
+			'#type' => 'select',
+			'#title' => $this->t('Fusion app'),
+			'#description' => $this->t('The name that identifies the Solr core to use on the server.'),
+			'#default_value' => isset($this->configuration['core']) ? $this->configuration['core'] : '',
+			'#required' => TRUE,
+			'#options' => isset($this->configuration['fusion_apps']) ? $this->configuration['fusion_apps'] : array(),
+			'#prefix' => '<div id="edit-backend-config-connector-config-core">',
+			'#suffix' => '</div>',
+			'#ajax' => [
+				'callback' => [$this, 'handleFusionAppChange'],
+				'method' => 'replace',
+				'effect' => 'fade',
+				'event' => 'change',
+			],
 		];
 
 		$form['query_profile'] = [
-				'#type' => 'textfield',
+				'#type' => 'select',
 				'#title' => $this->t('Fusion Query Profile'),
 				'#description' => $this->t('Fusion Query Profile.'),
 				'#default_value' => isset($this->configuration['query_profile']) ? $this->configuration['query_profile'] : '',
 				'#required' => TRUE,
+				'#prefix' => '<div id="edit-backend-config-connector-config-query_profile">',
+				'#suffix' => '</div>',
+				'#options' => isset($this->configuration['query_profiles']) ? $this->configuration['query_profiles'] : array()
 		];
 
 		$form['path'] = [
@@ -192,14 +350,6 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 			'#title' => $this->t('Fusion Server path'),
 			'#description' => $this->t('Lucidworks managed search path is, /api.'),
 			'#default_value' => isset($this->configuration['path']) ? $this->configuration['path'] : '/api',
-		];
-
-		$form['core'] = [
-			'#type' => 'textfield',
-			'#title' => $this->t('Fusion app'),
-			'#description' => $this->t('The name that identifies the Solr core to use on the server.'),
-			'#default_value' => isset($this->configuration['core']) ? $this->configuration['core'] : '',
-			'#required' => TRUE,
 		];
 
 		$form['timeout'] = [
