@@ -674,29 +674,44 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     /** @var \Drupal\search_api_solr\Plugin\SolrConnector\StandardSolrCloudConnector $connector */
     $connector = $this->getSolrConnector();
     $cloud = $connector instanceof SolrCloudConnectorInterface;
+    // LUCIDWORKS CHANGED
+    // $info[] = [
+    //   'label' => $this->t('Solr connector plugin'),
+    //   'info' => $connector->label(),
+    // ];
+
+    $stats = $connector->getStats();
+    $statusInfo = '';
+
+    if (isset($stats['error'])) {
+      $statusInfo = '🔴 Unable to connect to funsion server';
+    } else {
+      $statusInfo = $stats['response']['numFound'].' docs indexed';
+    }
 
     $info[] = [
-      'label' => $this->t('Solr connector plugin'),
-      'info' => $connector->label(),
+      'label' => $this->t('Status'),
+      'info' => $statusInfo,
     ];
 
     $info[] = [
-      'label' => $this->t('Solr server URI'),
+      'label' => $this->t('Fusion Server URI'),
       'info' => $connector->getServerLink(),
     ];
 
-    if ($cloud) {
-      $info[] = [
-        'label' => $this->t('Solr collection URI'),
-        'info' => $connector->getCollectionLink(),
-      ];
-    }
-    else {
-      $info[] = [
-        'label' => $this->t('Solr core URI'),
-        'info' => $connector->getCoreLink(),
-      ];
-    }
+    // LUCIDWORKS CHANGED
+    // if ($cloud) {
+    //   $info[] = [
+    //     'label' => $this->t('Solr collection URI'),
+    //     'info' => $connector->getCollectionLink(),
+    //   ];
+    // }
+    // else {
+    //   $info[] = [
+    //     'label' => $this->t('Solr core URI'),
+    //     'info' => $connector->getCoreLink(),
+    //   ];
+    // }
 
     // Add connector-specific information.
     $info = array_merge($info, $connector->viewSettings());
@@ -715,11 +730,13 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       else {
         $msg = $this->t('The Solr server could not be reached or is protected by your service provider.');
       }
-      $info[] = [
-        'label' => $this->t('Server Connection'),
-        'info' => $msg,
-        'status' => $ping_server ? 'ok' : 'error',
-      ];
+
+      // LUCIDWORKS CHANGED
+      // $info[] = [
+      //   'label' => $this->t('Server Connection'),
+      //   'info' => $msg,
+      //   'status' => $ping_server ? 'ok' : 'error',
+      // ];
 
       try {
         $ping = $connector->pingCore();
@@ -733,25 +750,28 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
       else {
         $msg = $this->t('The Solr @core could not be accessed. Further data is therefore unavailable.', ['@core' => $cloud ? 'collection' : 'core']);
       }
-      $info[] = [
-        'label' => $cloud ? $this->t('Collection Connection') : $this->t('Core Connection'),
-        'info' => $msg,
-        'status' => $ping ? 'ok' : 'error',
-      ];
+      // LUCIDWORKS CHANGED
+      // $info[] = [
+      //   'label' => $cloud ? $this->t('Collection Connection') : $this->t('Core Connection'),
+      //   'info' => $msg,
+      //   'status' => $ping ? 'ok' : 'error',
+      // ];
 
       $version = $connector->getSolrVersion();
-      $info[] = [
-        'label' => $this->t('Configured Solr Version'),
-        'info' => $version,
-        'status' => version_compare($version, '0.0.0', '>') ? 'ok' : 'error',
-      ];
+      // LUCIDWORKS CHANGED
+      // $info[] = [
+      //   'label' => $this->t('Configured Solr Version'),
+      //   'info' => $version,
+      //   'status' => version_compare($version, '0.0.0', '>') ? 'ok' : 'error',
+      // ];
 
       if ($ping_server || $ping) {
-        $info[] = [
-          'label' => $this->t('Detected Solr Version'),
-          'info' => $connector->getSolrVersion(TRUE),
-          'status' => 'ok',
-        ];
+        // LUCIDWORKS CHANGED
+        // $info[] = [
+        //   'label' => $this->t('Detected Solr Version'),
+        //   'info' => $connector->getSolrVersion(TRUE),
+        //   'status' => 'ok',
+        // ];
 
         try {
           $endpoints[0] = $connector->getEndpoint();
@@ -896,44 +916,47 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
           }
         }
         catch (SearchApiException $e) {
-          $info[] = [
-            'label' => $this->t('Additional information'),
-            'info' => $this->t('An error occurred while trying to retrieve additional information from the Solr server: %msg', ['%msg' => $e->getMessage()]),
-            'status' => 'error',
-          ];
+          // LUCIDWORKS CHANGED
+          // $info[] = [
+          //   'label' => $this->t('Additional information'),
+          //   'info' => $this->t('An error occurred while trying to retrieve additional information from the Solr server: %msg', ['%msg' => $e->getMessage()]),
+          //   'status' => 'error',
+          // ];
         }
       }
     }
 
-    $info[] = [
-      'label' => $this->t('Targeted content domain'),
-      'info' => $this->getDomain(),
-    ];
+    // LUCIDWORKS CHANGED
 
-    if (!empty($this->configuration['disabled_field_types'])) {
-      \Drupal::messenger()
-        ->addWarning($this->t('You disabled some Solr Field Types for this server.'));
+    // $info[] = [
+    //   'label' => $this->t('Targeted content domain'),
+    //   'info' => $this->getDomain(),
+    // ];
 
-      $info[] = [
-        'label' => $this->t('Disabled Solr Field Types'),
-        'info' => implode(', ', $this->configuration['disabled_field_types']),
-      ];
-    }
+    // if (!empty($this->configuration['disabled_field_types'])) {
+    //   \Drupal::messenger()
+    //     ->addWarning($this->t('You disabled some Solr Field Types for this server.'));
 
-    $info[] = [
-      'label' => $this->t('Targeted environment'),
-      'info' => $this->getEnvironment(),
-    ];
+    //   $info[] = [
+    //     'label' => $this->t('Disabled Solr Field Types'),
+    //     'info' => implode(', ', $this->configuration['disabled_field_types']),
+    //   ];
+    // }
 
-    if (!empty($this->configuration['disabled_caches'])) {
-      \Drupal::messenger()
-        ->addWarning($this->t('You disabled some Solr Caches for this server.'));
+    // $info[] = [
+    //   'label' => $this->t('Targeted environment'),
+    //   'info' => $this->getEnvironment(),
+    // ];
 
-      $info[] = [
-        'label' => $this->t('Disabled Solr Caches'),
-        'info' => implode(', ', $this->configuration['disabled_caches']),
-      ];
-    }
+    // if (!empty($this->configuration['disabled_caches'])) {
+    //   \Drupal::messenger()
+    //     ->addWarning($this->t('You disabled some Solr Caches for this server.'));
+
+    //   $info[] = [
+    //     'label' => $this->t('Disabled Solr Caches'),
+    //     'info' => implode(', ', $this->configuration['disabled_caches']),
+    //   ];
+    // }
 
     return $info;
   }

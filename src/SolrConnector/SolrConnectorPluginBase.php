@@ -564,6 +564,23 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 	/**
 	 * {@inheritdoc}
 	 */
+	public function getStats() {
+		$configValues = $this->configuration;
+
+		$queryURL = $configValues['scheme'].'://'.rtrim($configValues['host'], '/').':'.$configValues['port'].'/'.ltrim($configValues['path'], '/').'/apps/'.$configValues['core'].'/query/'.$configValues['query_profile'].'?q=*:*&rows=0';
+
+		$fetchRes = Utility::fetch($queryURL, array(
+			CURLOPT_HTTPHEADER => array(
+				'Authorization: Bearer '.$configValues['jwt_token']
+			)
+		));
+
+		return $fetchRes;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getCoreLink() {
 		$url_path = $this->getServerUri() . ''. $this->configuration['core'];
 		$url = Url::fromUri($url_path);

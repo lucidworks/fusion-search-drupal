@@ -46,6 +46,14 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    */
   public function getCoreLink();
 
+   /**
+   * Gets the current fusion query profile.
+   *
+   * @return array
+   *   The fusion query profile
+   */
+  public function getStats();
+
   /**
    * Gets the current Solr version.
    *

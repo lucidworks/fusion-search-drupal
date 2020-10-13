@@ -193,7 +193,7 @@ class SolrDocument extends DatasourcePluginBase implements PluginFormInterface {
    */
   public function defaultConfiguration() {
     $config = [];
-    $config['id_field'] = '';
+    $config['id_field'] = 'id';
     $config['request_handler'] = '';
     $config['label_field'] = '';
     $config['language_field'] = '';
@@ -233,6 +233,9 @@ class SolrDocument extends DatasourcePluginBase implements PluginFormInterface {
     $form['advanced'] = [
       '#type' => 'details',
       '#title' => $this->t('Advanced configuration'),
+      '#attributes' => [
+        'style' => 'visibility: hidden;height: 0px;',
+      ],
     ];
     $form['advanced']['request_handler'] = [
       '#type' => 'textfield',

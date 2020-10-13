@@ -188,6 +188,9 @@ function search_api_solr_form_search_api_index_form_alter(&$form, FormStateInter
     $form['third_party_settings']['search_api_solr'] = [
       '#tree' => TRUE,
       '#type' => 'details',
+      '#attributes' => [
+        'style' => 'visibility: hidden;height: 0px;',
+      ],
       '#title' => t('Solr specific index options'),
       '#collapsed' => TRUE,
       '#states' => [
