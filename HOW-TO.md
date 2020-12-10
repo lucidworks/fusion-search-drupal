@@ -24,6 +24,14 @@ The auth token is specific to a user.
 composer require lucidworks/fusion-search-drupal
 ```
 
+If you see a conflict related to `symphony/event-dispatcher`'s version, run this command:
+
+```sh
+composer require symfony/event-dispatcher:"4.3.4 as 3.4.41"
+```
+
+**Note:** The last value (i.e. 3.4.41) should match the version mentioned in the conflict message. Read more about why this is required in this issue: https://www.drupal.org/project/drupal/issues/2876675.
+
 ![](http://recordit.co/ir3r7F3KqH.gif)
 
 2. Add the following modules from the Extend panel:
