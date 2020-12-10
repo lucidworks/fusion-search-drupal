@@ -666,7 +666,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 	 */
 	public function getLuke() {
 		$this->useTimeout();
-		return $this->getDataFromHandler('solrAdmin/default/'.$this->configuration['core'] . '/admin/luke', TRUE);
+		return $this->getDataFromHandler('solrAdmin/default/'.$this->configuration['query_profile'] . '/admin/luke', TRUE);
 	}
 
 	/**

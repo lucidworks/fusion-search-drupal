@@ -684,7 +684,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     $statusInfo = '';
 
     if (isset($stats['error'])) {
-      $statusInfo = '🔴 Unable to connect to funsion server';
+      $statusInfo = '🔴 Unable to connect to fusion server';
     } else {
       $statusInfo = $stats['response']['numFound'].' docs indexed';
     }
