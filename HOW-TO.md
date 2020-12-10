@@ -24,7 +24,7 @@ The auth token is specific to a user.
 composer require lucidworks/fusion-search-drupal
 ```
 
-If you see a conflict related to `symphony/event-dispatcher`'s version, run this command:
+If you see a conflict related to `symfony/event-dispatcher`'s version, run this command:
 
 ```sh
 composer require symfony/event-dispatcher:"4.3.4 as 3.4.41"
