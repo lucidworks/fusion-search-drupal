@@ -52,17 +52,22 @@ And remove the default `Search` module from the Extend panel.
 
 ![](http://recordit.co/nY0tD0OL7I.gif)
 
+
 4. Add an index within the server and select the fields to use for the search view.
 
 ![](http://recordit.co/A5qkqDgFm5.gif)
+
+Only the fields added to the index can be used for search, filtering and displaying the UI. You can add as many fields as are useful for the search view. At the very least, the `Rendered HTML output (rendered_item)` field should be added.
    
 5. Create the Search view from the Structure panel and test the search UI view.
 
 ![](http://recordit.co/O6yl4wKcRZ.gif)
 
+Go to Structure > Views. Add a Search view. In View Settings dropdown, select the index. Create a menu link so the search page is accessible via the main navigation.
+
 ![](http://recordit.co/qhr5cSBW7l.gif)
 
-6. Install the facets module and test it. 
+6. Install the facets module and test it.
 
 ```sh
 composer require drupal/facets
