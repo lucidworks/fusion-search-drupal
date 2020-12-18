@@ -24,17 +24,20 @@ The auth token is specific to a user.
 composer require lucidworks/fusion-search-drupal
 ```
 
-If you see a conflict related to `symfony/event-dispatcher`'s version, run this command:
+> `Note:` If you see an error regarding the package not matching the minimum-stability of "stable", edit composer.json file and change the minimum-stability key's value to "dev" instead of "stable". (The reason for this error is that fusion-search-drupal and some of its dependencies aren't released as stable versions. A long-term solution is to have them released as stable versions.)
+ 
+> `Note:` If you see a conflict related to `symfony/event-dispatcher`'s version, run this command:
+>
+> ```sh
+> composer require symfony/event-dispatcher:"4.3.4 as 3.4.41"
+> ```
+> 
+> The last value (i.e. 3.4.41) should match the version mentioned in the conflict message. Read more about why this is required in this issue: https://www.drupal.org/project/drupal/issues/2876675.
 
-```sh
-composer require symfony/event-dispatcher:"4.3.4 as 3.4.41"
-```
-
-**Note:** The last value (i.e. 3.4.41) should match the version mentioned in the conflict message. Read more about why this is required in this issue: https://www.drupal.org/project/drupal/issues/2876675.
 
 ![](http://recordit.co/ir3r7F3KqH.gif)
 
-2. Add the following modules from the Extend panel:
+1. Add the following modules from the Extend panel:
 
 - Fusion Connector
 - Search API
