@@ -287,7 +287,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
     $form['connector'] = [
       '#type' => 'radios',
       '#title' => $this->t('Fusion Connector'),
-      '#description' => $this->t('Choose a connector to use for this Solr server.'),
+      '#description' => $this->t('Choose a connector to use for this Fusion server.'),
       '#options' => $solr_connector_options,
       '#default_value' => $this->configuration['connector'],
       '#required' => TRUE,
@@ -460,8 +460,8 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
 
         // Modify the backend plugin configuration container element.
         $form['connector_config']['#type'] = 'details';
-        $form['connector_config']['#title'] = $this->t('Configure %plugin Solr connector', ['%plugin' => $connector->label()]);
-        $form['connector_config']['#description'] = $connector->getDescription();
+        $form['connector_config']['#title'] = $this->t('Configure %plugin Fusion connector', ['%plugin' => $connector->label()]);
+        $form['connector_config']['#description'] = $this->t('A standard connector for Fusion server');
         $form['connector_config']['#open'] = TRUE;
       }
     }

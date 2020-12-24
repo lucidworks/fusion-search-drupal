@@ -12,7 +12,7 @@ use Solarium\Exception\HttpException;
  * @SolrConnector(
  *   id = "standard",
  *   label = @Translation("Standard"),
- *   description = @Translation("A standard connector usable for local installations of the standard Solr distribution.")
+ *   description = @Translation("A standard connector usable for Fusion Server.")
  * )
  */
 class StandardSolrConnector extends SolrConnectorPluginBase {
