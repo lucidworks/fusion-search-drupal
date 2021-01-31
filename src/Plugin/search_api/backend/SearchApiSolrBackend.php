@@ -282,6 +282,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
    * @throws \Drupal\search_api\SearchApiException
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+    print_r("fusion orig: building the form");
     // $solr_connector_options = $this->getSolrConnectorOptions();
     $solr_connector_options = array('standard' => 'Standard');
     $form['connector'] = [
@@ -446,6 +447,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
   public function buildConnectorConfigForm(array &$form, FormStateInterface $form_state) {
     $form['connector_config'] = [];
 
+    print_r("fusion orig: inside build connector config form");
     $connector_id = $this->configuration['connector'];
     if ($connector_id) {
       $connector = $this->solrConnectorPluginManager->createInstance($connector_id, $this->configuration['connector_config']);
