@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Kernel\Processor;
+namespace Drupal\Tests\search_api_fusion\Kernel\Processor;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\datetime_range\Plugin\Field\FieldType\DateRangeItem;
@@ -15,10 +15,10 @@ use Drupal\Tests\search_api\Kernel\ResultsTrait;
 /**
  * Tests the "Date range" processor.
  *
- * @group search_api_solr
+ * @group search_api_fusion
  * @group min_solr_5
  *
- * @see \Drupal\search_api_solr\Plugin\search_api\processor\DateRange
+ * @see \Drupal\search_api_fusion\Plugin\search_api\processor\DateRange
  */
 class DateRangeTest extends ProcessorTestBase {
 
@@ -39,9 +39,9 @@ class DateRangeTest extends ProcessorTestBase {
     'datetime',
     'datetime_range',
     'devel',
-    'search_api_solr',
-    'search_api_solr_devel',
-    'search_api_solr_test',
+    'search_api_fusion',
+    'search_api_fusion_devel',
+    'search_api_fusion_test',
   ];
 
   /**

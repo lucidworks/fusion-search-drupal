@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\search_api_solr\Controller;
+namespace Drupal\search_api_fusion\Controller;
 
 use Drupal\search_api\ServerInterface;
-use Drupal\search_api_solr\SolrConfigInterface;
+use Drupal\search_api_fusion\SolrConfigInterface;
 
 /**
  * Provides different listings of SolrRequestHandler.
@@ -22,7 +22,7 @@ class SolrRequestHandlerController extends AbstractSolrEntityController {
    *
    * @param \Drupal\search_api\ServerInterface $search_api_server
    *   Search API server.
-   * @param \Drupal\search_api_solr\SolrConfigInterface $solr_request_handler
+   * @param \Drupal\search_api_fusion\SolrConfigInterface $solr_request_handler
    *   Solr request handler.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -39,7 +39,7 @@ class SolrRequestHandlerController extends AbstractSolrEntityController {
    *
    * @param \Drupal\search_api\ServerInterface $search_api_server
    *   Search API server.
-   * @param \Drupal\search_api_solr\SolrConfigInterface $solr_request_handler
+   * @param \Drupal\search_api_fusion\SolrConfigInterface $solr_request_handler
    *   Solr request handler.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse

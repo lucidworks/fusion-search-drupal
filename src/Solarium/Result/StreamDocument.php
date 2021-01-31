@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Solarium\Result;
+namespace Drupal\search_api_fusion\Solarium\Result;
 
 use Solarium\Core\Query\AbstractDocument;
 use Solarium\Core\Query\DocumentInterface;

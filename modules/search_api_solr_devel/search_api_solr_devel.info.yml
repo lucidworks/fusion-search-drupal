@@ -5,4 +5,4 @@ package: Search
 core_version_requirement: ^8.8 || ^9
 dependencies:
   - devel:devel
-  - search_api_solr:search_api_solr
+  - search_api_fusion:search_api_fusion

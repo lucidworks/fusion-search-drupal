@@ -1,16 +1,16 @@
 <?php
 
-namespace Drupal\search_api_solr\Commands;
+namespace Drupal\search_api_fusion\Commands;
 
 use Consolidation\AnnotatedCommand\Input\StdinAwareInterface;
 use Consolidation\AnnotatedCommand\Input\StdinAwareTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\search_api\ConsoleException;
-use Drupal\search_api_solr\SearchApiSolrException;
-use Drupal\search_api_solr\SolrBackendInterface;
-use Drupal\search_api_solr\SolrCloudConnectorInterface;
-use Drupal\search_api_solr\Utility\SolrCommandHelper;
+use Drupal\search_api_fusion\SearchApiSolrException;
+use Drupal\search_api_fusion\SolrBackendInterface;
+use Drupal\search_api_fusion\SolrCloudConnectorInterface;
+use Drupal\search_api_fusion\Utility\SolrCommandHelper;
 use Drush\Commands\DrushCommands;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -25,7 +25,7 @@ class SearchApiSolrCommands extends DrushCommands implements StdinAwareInterface
   /**
    * The command helper.
    *
-   * @var \Drupal\search_api_solr\Utility\SolrCommandHelper
+   * @var \Drupal\search_api_fusion\Utility\SolrCommandHelper
    */
   protected $commandHelper;
 
@@ -58,12 +58,12 @@ class SearchApiSolrCommands extends DrushCommands implements StdinAwareInterface
   /**
    * Re-install Solr Field Types from their yml files.
    *
-   * @command search-api-solr:reinstall-fieldtypes
+   * @command search-api-fusion:reinstall-fieldtypes
    *
-   * @usage drush search-api-solr:reinstall-fieldtypes
+   * @usage drush search-api-fusion:reinstall-fieldtypes
    *   Deletes all Solr Field Type and re-installs them from their yml files.
    *
-   * @aliases solr-reinstall-ft,sasm-reinstall-ft,search-api-solr-delete-and-reinstall-all-field-types,search-api-solr-multilingual-delete-and-reinstall-all-field-types
+   * @aliases solr-reinstall-ft,sasm-reinstall-ft,search-api-fusion-delete-and-reinstall-all-field-types,search-api-fusion-multilingual-delete-and-reinstall-all-field-types
    *
    * @throws \Drupal\search_api\SearchApiException
    *   Thrown if an index has a server which couldn't be loaded.
@@ -75,16 +75,16 @@ class SearchApiSolrCommands extends DrushCommands implements StdinAwareInterface
   /**
    * Install missing Solr Field Types from their yml files.
    *
-   * @command search-api-solr:install-missing-fieldtypes
+   * @command search-api-fusion:install-missing-fieldtypes
    *
-   * @usage drush search-api-solr:install-missing-fieldtypes
+   * @usage drush search-api-fusion:install-missing-fieldtypes
    *   Install missing Solr Field Types.
    *
    * @throws \Drupal\search_api\SearchApiException
    *   Thrown if an index has a server which couldn't be loaded.
    */
   public function installMissingFieldtypes() {
-    search_api_solr_install_missing_field_types();
+    search_api_fusion_install_missing_field_types();
   }
 
   /**
@@ -103,12 +103,12 @@ class SearchApiSolrCommands extends DrushCommands implements StdinAwareInterface
    * @throws \ZipStream\Exception\FileNotReadableException
    * @throws \ZipStream\Exception\OverflowException
    *
-   * @command search-api-solr:get-server-config
+   * @command search-api-fusion:get-server-config
    *
-   * @usage drush search-api-solr:get-server-config server_id file_name
+   * @usage drush search-api-fusion:get-server-config server_id file_name
    *   Get the config files for a solr server and save it as zip file.
    *
-   * @aliases solr-gsc,sasm-gsc,search-api-solr-get-server-config,search-api-solr-multilingual-get-server-config
+   * @aliases solr-gsc,sasm-gsc,search-api-fusion-get-server-config,search-api-fusion-multilingual-get-server-config
    */
   public function getServerConfig($server_id, $file_name = NULL, $solr_version = NULL, array $options = []) {
     if (!$options['pipe'] && ($file_name === NULL)) {
@@ -124,17 +124,17 @@ class SearchApiSolrCommands extends DrushCommands implements StdinAwareInterface
    *   (optional) A search index ID, or NULL to index items for all enabled
    *   indexes.
    *
-   * @command search-api-solr:finalize-index
+   * @command search-api-fusion:finalize-index
    *
    * @option force
    *   Force the finalization, even if the index isn't "dirty".
    *   Defaults to FALSE.
    *
-   * @usage drush search-api-solr:finalize-index
+   * @usage drush search-api-fusion:finalize-index
    *   Finalize all enabled indexes.
-   * @usage drush search-api-solr:finalize-index node_index
+   * @usage drush search-api-fusion:finalize-index node_index
    *   Finalize the index with the ID node_index.
-   * @usage drush search-api-solr:finalize-index node_index --force
+   * @usage drush search-api-fusion:finalize-index node_index --force
    *   Index a maximum number of 100 items for the index with the ID node_index.
    *
    * @option force Start the finalization even if the internal tracker indicates that no finalization is required.
@@ -157,9 +157,9 @@ class SearchApiSolrCommands extends DrushCommands implements StdinAwareInterface
    * @param mixed $expression
    *   The streaming expression. Use '-' to read from STDIN.
    *
-   * @command search-api-solr:execute-raw-streaming-expression
+   * @command search-api-fusion:execute-raw-streaming-expression
    *
-   * @usage drush search-api-solr:execute-streaming-expression node_index - < streaming_expression.txt
+   * @usage drush search-api-fusion:execute-streaming-expression node_index - < streaming_expression.txt
    *  Execute the raw streaming expression in streaming_expression.txt
    *
    * @aliases solr-erse
@@ -167,7 +167,7 @@ class SearchApiSolrCommands extends DrushCommands implements StdinAwareInterface
    * @return string
    *   The JSON encoded raw streaming expression result
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    * @throws \Drupal\search_api\SearchApiException
    */
   public function executeRawStreamingExpression($indexId, $expression) {
@@ -193,14 +193,14 @@ class SearchApiSolrCommands extends DrushCommands implements StdinAwareInterface
     }
 
     if ($server = $index->getServerInstance()) {
-      /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+      /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
       $backend = $server->getBackend();
 
       if (!($backend instanceof SolrBackendInterface) || !($backend->getSolrConnector() instanceof SolrCloudConnectorInterface)) {
         throw new SearchApiSolrException('The index must be located on Solr Cloud to execute streaming expressions.');
       }
 
-      $queryHelper = \Drupal::service('search_api_solr.streaming_expression_query_helper');
+      $queryHelper = \Drupal::service('search_api_fusion.streaming_expression_query_helper');
       $query = $queryHelper->createQuery($index);
       $queryHelper->setStreamingExpression($query,
         $expression,

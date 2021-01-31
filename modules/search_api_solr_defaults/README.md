@@ -10,11 +10,11 @@ It provides a simple view for a node search.
 Installation
 ------------
 
-The search_api_solr_defaults module can be enabled in the GUI (Manage -> Extend) or via a drush command
+The search_api_fusion_defaults module can be enabled in the GUI (Manage -> Extend) or via a drush command
 
 ```
 cd $DRUPAL/htdocs
-drush en search_api_solr_defaults
+drush en search_api_fusion_defaults
 ```
 
 For the search to work you also need a Solr collection with the proper configuration.
@@ -26,7 +26,7 @@ admin/config/search/search-api/server/default_solr_server or by
 running the drush command
 ```
 cd $DRUPAL/htdocs
-drush search-api-solr-get-server-config default_solr_server config-d8.zip $SOLR_VERSION
+drush search-api-fusion-get-server-config default_solr_server config-d8.zip $SOLR_VERSION
 ```
 where $SOLR_VERSION is the minimum Solr version you target, e.g. 7.4.0.
 

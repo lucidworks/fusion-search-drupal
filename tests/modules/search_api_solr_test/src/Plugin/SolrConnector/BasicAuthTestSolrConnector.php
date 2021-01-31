@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\search_api_solr_test\Plugin\SolrConnector;
+namespace Drupal\search_api_fusion_test\Plugin\SolrConnector;
 
-use Drupal\search_api_solr\Plugin\SolrConnector\BasicAuthSolrConnector;
-use Drupal\search_api_solr\Utility\Utility;
+use Drupal\search_api_fusion\Plugin\SolrConnector\BasicAuthSolrConnector;
+use Drupal\search_api_fusion\Utility\Utility;
 use Solarium\Core\Client\Endpoint;
 use Solarium\Core\Client\Request;
 use Solarium\Core\Client\Response;

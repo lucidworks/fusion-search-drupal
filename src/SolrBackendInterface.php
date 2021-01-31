@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr;
+namespace Drupal\search_api_fusion;
 
 use Drupal\search_api\Backend\BackendInterface;
 use Drupal\search_api\IndexInterface;
@@ -19,7 +19,7 @@ interface SolrBackendInterface extends BackendInterface {
   /**
    * The minimum required Solr schema version.
    */
-  const SEARCH_API_SOLR_MIN_SCHEMA_VERSION = '4.0.0';
+  const search_api_fusion_MIN_SCHEMA_VERSION = '4.0.0';
 
   /**
    * The separator to indicate the start of a language ID.
@@ -33,7 +33,7 @@ interface SolrBackendInterface extends BackendInterface {
    * @see http://de2.php.net/manual/en/regexp.reference.meta.php
    * @see https://www.w3.org/International/articles/language-tags/
    */
-  const SEARCH_API_SOLR_LANGUAGE_SEPARATOR = ';';
+  const search_api_fusion_LANGUAGE_SEPARATOR = ';';
 
   /**
    * Creates a list of all indexed field names mapped to their Solr field names.
@@ -90,7 +90,7 @@ interface SolrBackendInterface extends BackendInterface {
   /**
    * Returns the Solr connector used for this backend.
    *
-   * @return \Drupal\search_api_solr\SolrConnectorInterface
+   * @return \Drupal\search_api_fusion\SolrConnectorInterface
    *   The Solr connector object.
    *
    * @throws \Drupal\search_api\SearchApiException
@@ -209,7 +209,7 @@ interface SolrBackendInterface extends BackendInterface {
    * @return array
    *   An associative array of settings.
    *
-   * @deprecated use \Drupal\search_api_solr\Utility\Utility::getIndexSolrSettings()
+   * @deprecated use \Drupal\search_api_fusion\Utility\Utility::getIndexSolrSettings()
    */
   public function getIndexSolrSettings(IndexInterface $index);
 
@@ -265,7 +265,7 @@ interface SolrBackendInterface extends BackendInterface {
    *   The streaming expression result.
    *
    * @throws \Drupal\search_api\SearchApiException
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function executeStreamingExpression(QueryInterface $query);
 
@@ -279,7 +279,7 @@ interface SolrBackendInterface extends BackendInterface {
    *   The graph streaming expression result.
    *
    * @throws \Drupal\search_api\SearchApiException
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function executeGraphStreamingExpression(QueryInterface $query);
 
@@ -298,7 +298,7 @@ interface SolrBackendInterface extends BackendInterface {
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    * @throws \Drupal\search_api\SearchApiException
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function finalizeIndex(IndexInterface $index);
 
@@ -312,7 +312,7 @@ interface SolrBackendInterface extends BackendInterface {
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    * @throws \Drupal\search_api\SearchApiException
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function getSchemaLanguageStatistics();
 
@@ -324,7 +324,7 @@ interface SolrBackendInterface extends BackendInterface {
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    * @throws \Drupal\search_api\SearchApiException
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function getDocumentCounts();
 
@@ -338,7 +338,7 @@ interface SolrBackendInterface extends BackendInterface {
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    * @throws \Drupal\search_api\SearchApiException
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function getMaxDocumentVersions();
 

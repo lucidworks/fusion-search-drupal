@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\search_api_solr\Controller;
+namespace Drupal\search_api_fusion\Controller;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\search_api_solr\SearchApiSolrConflictingEntitiesException;
-use Drupal\search_api_solr\SearchApiSolrException;
-use Drupal\search_api_solr\SolrConfigInterface;
+use Drupal\search_api_fusion\SearchApiSolrConflictingEntitiesException;
+use Drupal\search_api_fusion\SearchApiSolrException;
+use Drupal\search_api_fusion\SolrConfigInterface;
 
 /**
  * Provides a listing of Solr Entities.
@@ -61,7 +61,7 @@ abstract class AbstractSolrEntityListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $solr_entity) {
-    /** @var \Drupal\search_api_solr\SolrConfigInterface $solr_entity */
+    /** @var \Drupal\search_api_fusion\SolrConfigInterface $solr_entity */
     $options = $solr_entity->getOptions();
     if (empty($options)) {
       $options = [$this->default_option];
@@ -97,12 +97,12 @@ abstract class AbstractSolrEntityListBuilder extends ConfigEntityListBuilder {
    * @return array
    *   An array of all enabled Solr config entities for current server.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrConflictingEntitiesException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrConflictingEntitiesException
    * @throws \Drupal\search_api\SearchApiException
    */
   public function getEnabledEntities(): array {
     $solr_entities = [];
-    /** @var \Drupal\search_api_solr\SolrConfigInterface[] $entities */
+    /** @var \Drupal\search_api_fusion\SolrConfigInterface[] $entities */
     $entities = $this->load();
     foreach ($this->load() as $solr_entity) {
       if (!$solr_entity->disabledOnServer) {
@@ -125,7 +125,7 @@ abstract class AbstractSolrEntityListBuilder extends ConfigEntityListBuilder {
    * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function getDefaultOperations(EntityInterface $solr_entity) {
-    /** @var \Drupal\search_api_solr\SolrConfigInterface $solr_entity */
+    /** @var \Drupal\search_api_fusion\SolrConfigInterface $solr_entity */
     $operations = parent::getDefaultOperations($solr_entity);
     unset($operations['delete']);
 
@@ -168,7 +168,7 @@ abstract class AbstractSolrEntityListBuilder extends ConfigEntityListBuilder {
       $warning = FALSE;
       $disabled_entities = [];
       try {
-        /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+        /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
         $backend = $this->getBackend();
         $disabled_entities = $this->getDisabledEntities();
         $option = $backend->getEnvironment();
@@ -188,7 +188,7 @@ abstract class AbstractSolrEntityListBuilder extends ConfigEntityListBuilder {
       $entity_ids = $this->getEntityIds();
       /** @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $storage */
       $storage = $this->getStorage();
-      /** @var \Drupal\search_api_solr\SolrConfigInterface[] $entities */
+      /** @var \Drupal\search_api_fusion\SolrConfigInterface[] $entities */
       $entities = $storage->loadMultipleOverrideFree($entity_ids);
 
       // We filter those entities that are relevant for the current server.
@@ -197,7 +197,7 @@ abstract class AbstractSolrEntityListBuilder extends ConfigEntityListBuilder {
       $selection = [];
       foreach ($entities as $key => $entity) {
         $entities[$key]->disabledOnServer = in_array($entity->id(), $disabled_entities);
-        /** @var \Drupal\search_api_solr\SolrConfigInterface $entity
+        /** @var \Drupal\search_api_fusion\SolrConfigInterface $entity
          */
         $version = $entity->getMinimumSolrVersion();
         $environments = $entity->getEnvironments();
@@ -269,9 +269,9 @@ abstract class AbstractSolrEntityListBuilder extends ConfigEntityListBuilder {
   /**
    * Merge two Solr config entities.
    *
-   * @param \Drupal\search_api_solr\SolrConfigInterface $target
+   * @param \Drupal\search_api_fusion\SolrConfigInterface $target
    *   The target Solr config entity.
-   * @param \Drupal\search_api_solr\SolrConfigInterface $source
+   * @param \Drupal\search_api_fusion\SolrConfigInterface $source
    *   The source Solr config entity.
    */
   protected function mergeSolrConfigs(SolrConfigInterface $target, SolrConfigInterface $source) {
@@ -290,7 +290,7 @@ abstract class AbstractSolrEntityListBuilder extends ConfigEntityListBuilder {
    */
   public function getXml() {
     $xml = '';
-    /** @var \Drupal\search_api_solr\SolrConfigInterface $solr_entities */
+    /** @var \Drupal\search_api_fusion\SolrConfigInterface $solr_entities */
     foreach ($this->getEnabledEntities() as $solr_entities) {
       $xml .= $solr_entities->getAsXml();
     }

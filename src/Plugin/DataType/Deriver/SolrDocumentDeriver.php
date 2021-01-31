@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\DataType\Deriver;
+namespace Drupal\search_api_fusion\Plugin\DataType\Deriver;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
-use Drupal\search_api_solr\SolrBackendInterface;
-use Drupal\search_api_solr\Utility\Utility;
+use Drupal\search_api_fusion\SolrBackendInterface;
+use Drupal\search_api_fusion\Utility\Utility;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

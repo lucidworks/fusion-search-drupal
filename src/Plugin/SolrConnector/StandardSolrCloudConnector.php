@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\SolrConnector;
+namespace Drupal\search_api_fusion\Plugin\SolrConnector;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\search_api_solr\SearchApiSolrException;
-use Drupal\search_api_solr\SolrCloudConnectorInterface;
-use Drupal\search_api_solr\Utility\Utility;
+use Drupal\search_api_fusion\SearchApiSolrException;
+use Drupal\search_api_fusion\SolrCloudConnectorInterface;
+use Drupal\search_api_fusion\Utility\Utility;
 use Solarium\Core\Client\Endpoint;
 use Solarium\Exception\HttpException;
 use Solarium\Exception\OutOfBoundsException;
@@ -281,7 +281,7 @@ class StandardSolrCloudConnector extends StandardSolrConnector implements SolrCl
    * @return bool
    *   TRUE if successful, FALSE otherwise.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function reloadCollection(?string $collection = NULL) {
     $this->connect();

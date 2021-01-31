@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Kernel;
+namespace Drupal\Tests\search_api_fusion\Kernel;
 
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -10,7 +10,7 @@ use Drupal\search_api\Entity\Server;
 /**
  * Tests location searches and distance facets using the Solr search backend.
  *
- * @group search_api_solr
+ * @group search_api_fusion
  * @group min_solr_5
  * @group not_drupal_9_ready
  */
@@ -115,7 +115,7 @@ class SearchApiSolrLocationTest extends SolrBackendTestBase {
    */
   public function testBackend() {
     // Regression test.
-    // @see https://www.drupal.org/project/search_api_solr/issues/2921774
+    // @see https://www.drupal.org/project/search_api_fusion/issues/2921774
     $query = $this->buildSearch(NULL, [], NULL, TRUE);
     $query->addCondition('location', NULL, '<>');
     $result = $query->execute();

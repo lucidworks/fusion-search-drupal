@@ -1,17 +1,17 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Functional;
+namespace Drupal\Tests\search_api_fusion\Functional;
 
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\search_api\Entity\Index;
 use Drupal\Tests\search_api\Functional\SearchApiBrowserTestBase;
 use Drupal\Tests\search_api\Functional\ViewsTest as SearchApiViewsTest;
-use Drupal\search_api_solr\Utility\SolrCommitTrait;
+use Drupal\search_api_fusion\Utility\SolrCommitTrait;
 
 /**
  * Tests the Views integration of the Search API.
  *
- * @group search_api_solr
+ * @group search_api_fusion
  */
 class ViewsTest extends SearchApiViewsTest {
 
@@ -22,7 +22,7 @@ class ViewsTest extends SearchApiViewsTest {
    *
    * @var string[]
    */
-  public static $modules = ['search_api_solr_test'];
+  public static $modules = ['search_api_fusion_test'];
 
   /**
    * {@inheritdoc}

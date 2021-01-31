@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr;
+namespace Drupal\Tests\search_api_fusion;
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;

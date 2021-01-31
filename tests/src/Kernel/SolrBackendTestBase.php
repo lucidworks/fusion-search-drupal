@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Kernel;
+namespace Drupal\Tests\search_api_fusion\Kernel;
 
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Entity\Server;
-use Drupal\search_api_solr_test\Logger\InMemoryLogger;
+use Drupal\search_api_fusion_test\Logger\InMemoryLogger;
 use Drupal\Tests\search_api\Kernel\BackendTestBase;
-use Drupal\search_api_solr\Utility\SolrCommitTrait;
+use Drupal\search_api_fusion\Utility\SolrCommitTrait;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
@@ -16,7 +16,7 @@ defined('SOLR_CLOUD') || define('SOLR_CLOUD', getenv('SOLR_CLOUD') ?: 'false');
 /**
  * Tests location searches and distance facets using the Solr search backend.
  *
- * @group search_api_solr
+ * @group search_api_fusion
  */
 abstract class SolrBackendTestBase extends BackendTestBase {
 
@@ -29,9 +29,9 @@ abstract class SolrBackendTestBase extends BackendTestBase {
    */
   public static $modules = [
     'devel',
-    'search_api_solr',
-    'search_api_solr_devel',
-    'search_api_solr_test',
+    'search_api_fusion',
+    'search_api_fusion_devel',
+    'search_api_fusion_test',
   ];
 
   /**
@@ -77,9 +77,9 @@ abstract class SolrBackendTestBase extends BackendTestBase {
     $this->logger = new InMemoryLogger();
     \Drupal::service('logger.factory')->addLogger($this->logger);
 
-    $this->travisLogger = new Logger('search_api_solr');
+    $this->travisLogger = new Logger('search_api_fusion');
     $this->travisLogger->pushHandler(new StreamHandler(TRAVIS_BUILD_DIR . '/solr_query.log', Logger::DEBUG));
-    \Drupal::service('search_api_solr_devel.solarium_request_logger')->setLogger($this->travisLogger);
+    \Drupal::service('search_api_fusion_devel.solarium_request_logger')->setLogger($this->travisLogger);
   }
 
   /**
@@ -88,8 +88,8 @@ abstract class SolrBackendTestBase extends BackendTestBase {
   protected function installConfigs() {
     $this->installConfig([
       'devel',
-      'search_api_solr',
-      'search_api_solr_test',
+      'search_api_fusion',
+      'search_api_fusion_test',
     ]);
   }
 
@@ -140,7 +140,7 @@ abstract class SolrBackendTestBase extends BackendTestBase {
    * A light weight alternative to $query->execute() if we don't want to get
    * heavy weight search_api results here, but more or less raw solr results.
    * The data as it is returned by Solr could be accessed by calling
-   * getExtraData('search_api_solr_response') on the result set returned here.
+   * getExtraData('search_api_fusion_response') on the result set returned here.
    *
    * @param \Drupal\search_api\Query\QueryInterface $query
    *   The query to be executed.
@@ -194,7 +194,7 @@ abstract class SolrBackendTestBase extends BackendTestBase {
     static $solr_version = FALSE;
 
     if (!$solr_version) {
-      /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+      /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
       $backend = Server::load($this->serverId)->getBackend();
       $connector = $backend->getSolrConnector();
       $solr_version = $connector->getSolrVersion();

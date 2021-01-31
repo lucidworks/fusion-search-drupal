@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\search_api_solr\Controller;
+namespace Drupal\search_api_fusion\Controller;
 
 use Drupal\search_api\ServerInterface;
-use Drupal\search_api_solr\SolrBackendInterface;
+use Drupal\search_api_fusion\SolrBackendInterface;
 
 /**
  * Provides a listing of Solr Entities.
@@ -13,7 +13,7 @@ trait BackendTrait {
   /**
    * The Search API server backend.
    *
-   * @var \Drupal\search_api_solr\SolrBackendInterface
+   * @var \Drupal\search_api_fusion\SolrBackendInterface
    */
   protected $backend;
 
@@ -56,7 +56,7 @@ trait BackendTrait {
   /**
    * Sets the Search API server backend.
    *
-   * @param \Drupal\search_api_solr\SolrBackendInterface $backend
+   * @param \Drupal\search_api_fusion\SolrBackendInterface $backend
    *   The Search API server backend.
    */
   public function setBackend(SolrBackendInterface $backend) {
@@ -67,7 +67,7 @@ trait BackendTrait {
   /**
    * Returns the Search API server backend.
    *
-   * @return \Drupal\search_api_solr\SolrBackendInterface
+   * @return \Drupal\search_api_fusion\SolrBackendInterface
    *   The Search API server backend.
    */
   protected function getBackend() {
@@ -77,7 +77,7 @@ trait BackendTrait {
   /**
    * Set assumed minimum version.
    *
-   * @param \Drupal\search_api_solr\Controller\string $assumedMinimumVersion
+   * @param \Drupal\search_api_fusion\Controller\string $assumedMinimumVersion
    *   Assumed minimum version.
    */
   public function setAssumedMinimumVersion(string $assumedMinimumVersion) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Utility;
+namespace Drupal\search_api_fusion\Utility;
 
 use Drupal\search_api\IndexInterface;
 
@@ -22,9 +22,9 @@ trait SolrCommitTrait {
    */
   protected function ensureCommit(IndexInterface $index) {
     if ($server = $index->getServerInstance()) {
-      /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+      /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
       $backend = $server->getBackend();
-      /** @var \Drupal\search_api_solr\SolrConnectorInterface $connector */
+      /** @var \Drupal\search_api_fusion\SolrConnectorInterface $connector */
       $connector = $backend->getSolrConnector();
       $update = $connector->getUpdateQuery();
       $update->addCommit(TRUE, TRUE, TRUE);

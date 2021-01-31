@@ -17,5 +17,5 @@ committed to Drupal Core and released you need to modify the composer command:
 
 ```
 cd $DRUPAL
-composer require symfony/event-dispatcher:"4.3.4 as 3.4.99" drupal/search_api_solr
+composer require symfony/event-dispatcher:"4.3.4 as 3.4.99" drupal/search_api_fusion
 ```

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Controller;
+namespace Drupal\search_api_fusion\Controller;
 
 /**
  * Provides a listing of SolrCache.
@@ -23,7 +23,7 @@ class SolrCacheListBuilder extends AbstractSolrEntityListBuilder {
    * @throws \Drupal\search_api\SearchApiException
    */
   protected function getDisabledEntities(): array {
-    /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+    /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
     $backend = $this->getBackend();
     return $backend->getDisabledCaches();
   }

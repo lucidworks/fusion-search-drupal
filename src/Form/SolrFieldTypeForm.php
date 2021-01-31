@@ -1,17 +1,17 @@
 <?php
 
-namespace Drupal\search_api_solr\Form;
+namespace Drupal\search_api_fusion\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\search_api_solr\Utility\Utility;
+use Drupal\search_api_fusion\Utility\Utility;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class SolrFieldTypeForm.
  *
- * @package Drupal\search_api_solr\Form
+ * @package Drupal\search_api_fusion\Form
  */
 class SolrFieldTypeForm extends EntityForm {
 
@@ -63,7 +63,7 @@ class SolrFieldTypeForm extends EntityForm {
       '#type' => 'machine_name',
       '#default_value' => $solr_field_type->id(),
       '#machine_name' => [
-        'exists' => '\Drupal\search_api_solr\Entity\SolrFieldType::load',
+        'exists' => '\Drupal\search_api_fusion\Entity\SolrFieldType::load',
       ],
       '#disabled' => !$solr_field_type->isNew(),
     ];
@@ -117,7 +117,7 @@ class SolrFieldTypeForm extends EntityForm {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function save(array $form, FormStateInterface $form_state) {
-    /** @var \Drupal\search_api_solr\SolrFieldTypeInterface $solr_field_type */
+    /** @var \Drupal\search_api_fusion\SolrFieldTypeInterface $solr_field_type */
     $solr_field_type = $this->entity;
     $solr_field_type->setFieldTypeAsJson($form_state->getValue('field_type'));
     $solr_field_type->setTextFiles($form_state->getValue('text_files'));

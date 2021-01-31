@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Solarium\Autocomplete;
+namespace Drupal\search_api_fusion\Solarium\Autocomplete;
 
 use Solarium\Core\Client\Request;
 use Solarium\Core\Query\AbstractQuery;
@@ -21,7 +21,7 @@ class RequestBuilder extends AbstractRequestBuilder {
    *   The Solarium request.
    */
   public function build(AbstractQuery $query): Request {
-    /** @var \Drupal\search_api_solr\Solarium\Autocomplete\Query $query */
+    /** @var \Drupal\search_api_fusion\Solarium\Autocomplete\Query $query */
     $request = parent::build($query);
 
     foreach ($query->getComponents() as $component) {

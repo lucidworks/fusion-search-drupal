@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr;
+namespace Drupal\search_api_fusion;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 

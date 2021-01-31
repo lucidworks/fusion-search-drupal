@@ -1,4 +1,4 @@
-search_api_solr_admin.solr_admin_form:
+search_api_fusion_admin.solr_admin_form:
   path: '/admin/config/search/search-api/server/{search_api_server}/solr-admin'
   options:
     parameters:
@@ -6,13 +6,13 @@ search_api_solr_admin.solr_admin_form:
         type: entity:search_api_server
         with_config_overrides: TRUE
   defaults:
-    _form: '\Drupal\search_api_solr_admin\Form\SolrAdminForm'
+    _form: '\Drupal\search_api_fusion_admin\Form\SolrAdminForm'
     _title: 'Solr Admin'
   requirements:
-    _search_api_solr_admin_access_check: 'TRUE'
+    _search_api_fusion_admin_access_check: 'TRUE'
     _permission: 'execute solr admin task'
 
-search_api_solr_admin.solr_reload_core_form:
+search_api_fusion_admin.solr_reload_core_form:
   path: '/admin/config/search/search-api/server/{search_api_server}/solr-admin/reload-core'
   options:
     parameters:
@@ -20,8 +20,8 @@ search_api_solr_admin.solr_reload_core_form:
         type: entity:search_api_server
         with_config_overrides: TRUE
   defaults:
-    _form: '\Drupal\search_api_solr_admin\Form\SolrReloadCoreForm'
+    _form: '\Drupal\search_api_fusion_admin\Form\SolrReloadCoreForm'
     _title: 'Reload Core'
   requirements:
-    _search_api_solr_admin_access_check: 'TRUE'
+    _search_api_fusion_admin_access_check: 'TRUE'
     _permission: 'execute solr admin task'

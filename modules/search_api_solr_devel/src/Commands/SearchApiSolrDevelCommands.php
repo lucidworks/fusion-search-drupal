@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\search_api_solr_devel\Commands;
+namespace Drupal\search_api_fusion_devel\Commands;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\search_api\SearchApiException;
-use Drupal\search_api_solr\SearchApiSolrException;
-use Drupal\search_api_solr\SolrBackendInterface;
-use Drupal\search_api_solr\Utility\SolrCommandHelper;
+use Drupal\search_api_fusion\SearchApiSolrException;
+use Drupal\search_api_fusion\SolrBackendInterface;
+use Drupal\search_api_fusion\Utility\SolrCommandHelper;
 use Drush\Commands\DrushCommands;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -20,7 +20,7 @@ class SearchApiSolrDevelCommands extends DrushCommands {
   /**
    * The command helper.
    *
-   * @var \Drupal\search_api_solr\Utility\SolrCommandHelper
+   * @var \Drupal\search_api_fusion\Utility\SolrCommandHelper
    */
   protected $commandHelper;
 
@@ -54,13 +54,13 @@ class SearchApiSolrDevelCommands extends DrushCommands {
    * @param string $server_id
    *   The ID of the server.
    *
-   * @command search-api-solr:devel-delete-all
+   * @command search-api-fusion:devel-delete-all
    *
-   * @usage search-api-solr-devel:delete-all server_id
+   * @usage search-api-fusion-devel:delete-all server_id
    *   Deletes *all* documents on server_id.
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    * @throws \Drupal\search_api\SearchApiException
    */
   public function deleteAll($server_id) {

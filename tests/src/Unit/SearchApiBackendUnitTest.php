@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Unit;
+namespace Drupal\Tests\search_api_fusion\Unit;
 
 use Drupal\Core\Config\Config;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -10,11 +10,11 @@ use Drupal\search_api\Plugin\search_api\data_type\value\TextToken;
 use Drupal\search_api\Plugin\search_api\data_type\value\TextValue;
 use Drupal\search_api\Utility\DataTypeHelperInterface;
 use Drupal\search_api\Utility\FieldsHelperInterface;
-use Drupal\search_api_solr\Controller\AbstractSolrEntityListBuilder;
-use Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend;
-use Drupal\search_api_solr\Plugin\search_api\data_type\value\DateRangeValue;
-use Drupal\search_api_solr\SolrConnector\SolrConnectorPluginManager;
-use Drupal\Tests\search_api_solr\Traits\InvokeMethodTrait;
+use Drupal\search_api_fusion\Controller\AbstractSolrEntityListBuilder;
+use Drupal\search_api_fusion\Plugin\search_api\backend\SearchApiSolrBackend;
+use Drupal\search_api_fusion\Plugin\search_api\data_type\value\DateRangeValue;
+use Drupal\search_api_fusion\SolrConnector\SolrConnectorPluginManager;
+use Drupal\Tests\search_api_fusion\Traits\InvokeMethodTrait;
 use Drupal\Tests\UnitTestCase;
 use Solarium\Core\Query\Helper;
 use Solarium\QueryType\Update\Query\Document;
@@ -22,16 +22,16 @@ use Solarium\QueryType\Update\Query\Document;
 /**
  * Tests functionality of the backend.
  *
- * @coversDefaultClass \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend
+ * @coversDefaultClass \Drupal\search_api_fusion\Plugin\search_api\backend\SearchApiSolrBackend
  *
- * @group search_api_solr
+ * @group search_api_fusion
  */
 class SearchApiBackendUnitTest extends UnitTestCase {
 
   use InvokeMethodTrait;
 
   /**
-   * @var \Drupal\search_api_solr\Controller\AbstractSolrEntityListBuilder|\Prophecy\Prophecy\ObjectProphecy
+   * @var \Drupal\search_api_fusion\Controller\AbstractSolrEntityListBuilder|\Prophecy\Prophecy\ObjectProphecy
    */
   protected $listBuilder;
 
@@ -46,7 +46,7 @@ class SearchApiBackendUnitTest extends UnitTestCase {
   protected $queryHelper;
 
   /**
-   * @var \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend
+   * @var \Drupal\search_api_fusion\Plugin\search_api\backend\SearchApiSolrBackend
    */
   protected $backend;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\search_api_solr\Entity;
+namespace Drupal\search_api_fusion\Entity;
 
-use Drupal\search_api_solr\SolrRequestHandlerInterface;
+use Drupal\search_api_fusion\SolrRequestHandlerInterface;
 
 /**
  * Defines the SolrRequestHandler entity.
@@ -11,7 +11,7 @@ use Drupal\search_api_solr\SolrRequestHandlerInterface;
  *   id = "solr_request_handler",
  *   label = @Translation("Solr Request Handler"),
  *   handlers = {
- *     "list_builder" = "Drupal\search_api_solr\Controller\SolrRequestHandlerListBuilder",
+ *     "list_builder" = "Drupal\search_api_fusion\Controller\SolrRequestHandlerListBuilder",
  *     "form" = {
  *     }
  *   },
@@ -98,7 +98,7 @@ class SolrRequestHandler extends AbstractSolrEntity implements SolrRequestHandle
    *   An array of environments as strings.
    */
   public static function getAvailableEnvironments() {
-    return parent::getAvailableOptions('environments', 'default', 'search_api_solr.solr_request_handler.');
+    return parent::getAvailableOptions('environments', 'default', 'search_api_fusion.solr_request_handler.');
   }
 
   /**

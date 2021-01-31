@@ -5,9 +5,9 @@ dependencies:
     - search_api.server.solr_search_server
   module:
     - search_api
-    - search_api_solr
+    - search_api_fusion
 third_party_settings:
-  search_api_solr:
+  search_api_fusion:
     finalize: false
     commit_before_finalize: false
     commit_after_finalize: false

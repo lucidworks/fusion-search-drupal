@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\search_api\parse_mode;
+namespace Drupal\search_api_fusion\Plugin\search_api\parse_mode;
 
 use Drupal\search_api\Plugin\search_api\parse_mode\Terms;
 

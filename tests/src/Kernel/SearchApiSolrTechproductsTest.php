@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Kernel;
+namespace Drupal\Tests\search_api_fusion\Kernel;
 
 /**
  * Tests the document datasources using the solr techproducts example.
  *
- * @group search_api_solr
+ * @group search_api_fusion
  */
 class SearchApiSolrTechproductsTest extends SolrBackendTestBase {
 
@@ -72,14 +72,14 @@ class SearchApiSolrTechproductsTest extends SolrBackendTestBase {
 
     // Techproducts is read only, the data should not be deleted on index
     // removal. Regression test for
-    // https://www.drupal.org/project/search_api_solr/issues/2847092
+    // https://www.drupal.org/project/search_api_fusion/issues/2847092
     $server->removeIndex($this->getIndex());
     $this->ensureCommit($this->getIndex());
     $server->addIndex($this->getIndex());
     $this->firstSearch();
 
     // Regression test for
-    // https://www.drupal.org/project/search_api_solr/issues/3068714
+    // https://www.drupal.org/project/search_api_fusion/issues/3068714
     $config['rows'] = 2;
     $server->setBackendConfig($config);
     $server->save();
@@ -120,8 +120,8 @@ class SearchApiSolrTechproductsTest extends SolrBackendTestBase {
 
     $index = $this->getIndex();
 
-    /** @var \Drupal\search_api_solr\Utility\StreamingExpressionQueryHelper $queryHelper */
-    $queryHelper = \Drupal::service('search_api_solr.streaming_expression_query_helper');
+    /** @var \Drupal\search_api_fusion\Utility\StreamingExpressionQueryHelper $queryHelper */
+    $queryHelper = \Drupal::service('search_api_fusion.streaming_expression_query_helper');
     $query = $queryHelper->createQuery($index);
     $exp = $queryHelper->getStreamingExpressionBuilder($query);
 
@@ -176,9 +176,9 @@ class SearchApiSolrTechproductsTest extends SolrBackendTestBase {
     $results = $query->execute();
     $this->assertEquals(0, $results->getResultCount());
 
-    /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+    /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
     $backend = $index->getServerInstance()->getBackend();
-    /** @var \Drupal\search_api_solr\SolrCloudConnectorInterface $connector */
+    /** @var \Drupal\search_api_fusion\SolrCloudConnectorInterface $connector */
     $connector = $backend->getSolrConnector();
     $connector->deleteCheckpoints($exp->_index_id(), $exp->_site_hash());
 

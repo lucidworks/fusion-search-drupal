@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\SolrConnector;
+namespace Drupal\search_api_fusion\SolrConnector;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
@@ -9,10 +9,10 @@ use Drupal\Core\Url;
 use Drupal\search_api\LoggerTrait;
 use Drupal\search_api\Plugin\ConfigurablePluginBase;
 use Drupal\search_api\Plugin\PluginFormTrait;
-use Drupal\search_api_solr\SearchApiSolrException;
-use Drupal\search_api_solr\Solarium\Autocomplete\Query as AutocompleteQuery;
-use Drupal\search_api_solr\SolrConnectorInterface;
-use Drupal\search_api_solr\Utility\Utility;
+use Drupal\search_api_fusion\SearchApiSolrException;
+use Drupal\search_api_fusion\Solarium\Autocomplete\Query as AutocompleteQuery;
+use Drupal\search_api_fusion\SolrConnectorInterface;
+use Drupal\search_api_fusion\Utility\Utility;
 use Solarium\Client;
 use Solarium\Core\Client\Adapter\Curl;
 use Solarium\Core\Client\Adapter\Http;
@@ -36,7 +36,7 @@ use Drupal\Core\Ajax\HtmlCommand;
  *
  * Plugins extending this class need to define a plugin definition array through
  * annotation. These definition arrays may be altered through
- * hook_search_api_solr_connector_info_alter(). The definition includes the
+ * hook_search_api_fusion_connector_info_alter(). The definition includes the
  * following keys:
  * - id: The unique, system-wide identifier of the backend class.
  * - label: The human-readable name of the backend class, translated.
@@ -53,9 +53,9 @@ use Drupal\Core\Ajax\HtmlCommand;
  * )
  * @endcode
  *
- * @see \Drupal\search_api_solr\Annotation\SolrConnector
- * @see \Drupal\search_api_solr\SolrConnector\SolrConnectorPluginManager
- * @see \Drupal\search_api_solr\SolrConnectorInterface
+ * @see \Drupal\search_api_fusion\Annotation\SolrConnector
+ * @see \Drupal\search_api_fusion\SolrConnector\SolrConnectorPluginManager
+ * @see \Drupal\search_api_fusion\SolrConnectorInterface
  * @see plugin_api
  */
 
@@ -472,7 +472,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 			// Try to orchestrate a server link from form values.
 			$values_copied = $values;
 			$solr = $this->createClient($values_copied);
-			$solr->createEndpoint($values_copied + ['key' => 'search_api_solr'], TRUE);
+			$solr->createEndpoint($values_copied + ['key' => 'search_api_fusion'], TRUE);
 			try {
 				$this->getServerLink();
 			}
@@ -514,7 +514,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 		if (!$this->solr) {
 			$configuration = $this->configuration;
 			$this->solr = $this->createClient($configuration);
-			$this->solr->createEndpoint($configuration + ['key' => 'search_api_solr'], TRUE);
+			$this->solr->createEndpoint($configuration + ['key' => 'search_api_fusion'], TRUE);
 		}
 	}
 
@@ -695,7 +695,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 	 * @return array
 	 *   Response data with system information.
 	 *
-	 * @throws \Drupal\search_api_solr\SearchApiSolrException
+	 * @throws \Drupal\search_api_fusion\SearchApiSolrException
 	 */
 	protected function getDataFromHandler($handler, $reset = FALSE) {
 		static $previous_calls = [];
@@ -705,7 +705,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 		// We keep the results in a state instead of a cache because we want to
 		// access parts of this data even if Solr is temporarily not reachable and
 		// caches are cleared.
-		$state_key = 'search_api_solr.endpoint.data';
+		$state_key = 'search_api_fusion.endpoint.data';
 		$state = \Drupal::state();
 		$endpoint_data = $state->get($state_key);
 		$server_uri = $this->getServerUri();
@@ -864,7 +864,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 	 * @return array
 	 *   The decoded response.
 	 *
-	 * @throws \Drupal\search_api_solr\SearchApiSolrException
+	 * @throws \Drupal\search_api_fusion\SearchApiSolrException
 	 */
 	protected function restRequest($handler, $method = Request::METHOD_GET, $command_json = '') {
 		$this->connect();
@@ -878,7 +878,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 
 		$response = $this->execute($query);
 		$output = $response->getData();
-		// \Drupal::logger('search_api_solr')->info(print_r($output, true));.
+		// \Drupal::logger('search_api_fusion')->info(print_r($output, true));.
 		if (!empty($output['errors'])) {
 			throw new SearchApiSolrException('Error trying to send a REST request.' .
 				"\nError message(s):" . print_r($output['errors'], TRUE));
@@ -1113,7 +1113,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 	 * @param \Solarium\Core\Client\Endpoint $endpoint
 	 *   The Solarium endpoint.
 	 *
-	 * @throws \Drupal\search_api_solr\SearchApiSolrException
+	 * @throws \Drupal\search_api_fusion\SearchApiSolrException
 	 */
 	protected function handleHttpException(HttpException $e, Endpoint $endpoint) {
 		$response_code = (int) $e->getCode();
@@ -1272,7 +1272,7 @@ abstract class SolrConnectorPluginBase extends ConfigurablePluginBase implements
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getEndpoint($key = 'search_api_solr') {
+	public function getEndpoint($key = 'search_api_fusion') {
 		$this->connect();
 		return $this->solr->getEndpoint($key);
 	}

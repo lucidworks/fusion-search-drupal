@@ -1,17 +1,17 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\Derivative;
+namespace Drupal\search_api_fusion\Plugin\Derivative;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
 use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\search_api_solr\Entity\SolrFieldType;
+use Drupal\search_api_fusion\Entity\SolrFieldType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides plugin definitions for custom full text data types.
  *
- * @see \Drupal\search_api_solr\Plugin\search_api\data_type\CustomTextDataType
+ * @see \Drupal\search_api_fusion\Plugin\search_api\data_type\CustomTextDataType
  */
 class CustomTextDataType extends DeriverBase implements ContainerDeriverInterface {
 

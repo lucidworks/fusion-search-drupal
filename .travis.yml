@@ -38,7 +38,7 @@ env:
 git:
   # The depth needs to be increased. The default of 50 leads to fatal: reference
   # repository '/home/travis/.cache/composer/vcs/-home-travis-build-mkalkbrenner
-  # -search-api-solr/' is shallow.
+  # -search-api-fusion/' is shallow.
   depth: 10000
 
 cache:
@@ -57,7 +57,7 @@ before_install:
   - tar -xzf solr_downloads/solr-${SOLR}.tgz
   - mysql -e 'CREATE DATABASE drupal;'
   - patch -p1 < tests/travis_no_deps.patch
-  - git commit -m 'no deps' search_api_solr.info.yml
+  - git commit -m 'no deps' search_api_fusion.info.yml
   - git tag 4.99.0
 
 install:
@@ -74,14 +74,14 @@ install:
   - cd $TRAVIS_BUILD_DIR/../drupal
   - patch -p1 < $TRAVIS_BUILD_DIR/tests/no_ext_dependencies.patch
   - composer install --ignore-platform-reqs
-  - composer config repositories.search_api_solr vcs $TRAVIS_BUILD_DIR
+  - composer config repositories.search_api_fusion vcs $TRAVIS_BUILD_DIR
   - |
     if [ ${DRUPAL} != "9.0.x" ]; then
       composer require --no-suggest --ignore-platform-reqs symfony/event-dispatcher:"4.3.4 as 3.4.99" drupal/composer_deploy
       composer run-script drupal-phpunit-upgrade
     fi
-  - composer require --no-suggest --ignore-platform-reqs solarium/solarium:"$SOLARIUM" drupal/search_api:1.x-dev drupal/search_api_autocomplete:1.x-dev drupal/search_api_solr:4.99.0 drupal/facets:1.x-dev drush/drush:$DRUSH drupal/drush_language:1.x-dev drupal/devel:3.x-dev monolog/monolog
-  # search_api_solr_location is not yet Drupal 9 ready
+  - composer require --no-suggest --ignore-platform-reqs solarium/solarium:"$SOLARIUM" drupal/search_api:1.x-dev drupal/search_api_autocomplete:1.x-dev drupal/search_api_fusion:4.99.0 drupal/facets:1.x-dev drush/drush:$DRUSH drupal/drush_language:1.x-dev drupal/devel:3.x-dev monolog/monolog
+  # search_api_fusion_location is not yet Drupal 9 ready
   # Solr 4 lacks the required features for search_api_location
   - |
     if [ ${DRUPAL} != "9.0.x" ] && [ ${SOLR} != "4.5.1" ]; then
@@ -154,19 +154,19 @@ before_script:
   # test modules before the tests.
   - |
     if [ ${SOLR} == "5.5.5" ] || [ ${SOLR} == "4.5.1" ]; then
-      ./vendor/bin/drush en --yes search_api_solr_legacy
+      ./vendor/bin/drush en --yes search_api_fusion_legacy
     fi
   - cp -a core/modules/system/tests/modules/entity_test core/modules/system/entity_test
   - cp -a modules/contrib/search_api/tests/search_api_test_example_content modules/contrib/search_api/search_api_test_example_content
-  - cp -a modules/contrib/search_api_solr/tests/modules/search_api_solr_test modules/contrib/search_api_solr/search_api_solr_test
-  - ./vendor/bin/drush en --yes search_api_solr_test
+  - cp -a modules/contrib/search_api_fusion/tests/modules/search_api_fusion_test modules/contrib/search_api_fusion/search_api_fusion_test
+  - ./vendor/bin/drush en --yes search_api_fusion_test
   - |
       if [ ${SOLR_CLOUD} == "true" ]; then
         ./vendor/bin/drush -v solr-gsc solr_search_server_cloud conf.zip $SOLR
       else
         ./vendor/bin/drush -v solr-gsc solr_search_server conf.zip $SOLR
       fi
-  - rm -rf core/modules/system/entity_test modules/contrib/search_api/search_api_test_example_content modules/contrib/search_api_solr/search_api_solr_test
+  - rm -rf core/modules/system/entity_test modules/contrib/search_api/search_api_test_example_content modules/contrib/search_api_fusion/search_api_fusion_test
   - |
     if [ ${SOLR} == "4.5.1" ]; then
       cd $TRAVIS_BUILD_DIR/solr-${SOLR}/example
@@ -202,11 +202,11 @@ script:
   - vendor/bin/phpunit --version
   - |
     if [ ${SOLR} == "4.5.1" ]; then
-      vendor/bin/phpunit -c core --group search_api_solr --exclude-group min_solr_5 modules/contrib/search_api_solr
+      vendor/bin/phpunit -c core --group search_api_fusion --exclude-group min_solr_5 modules/contrib/search_api_fusion
     elif [ ${DRUPAL} == "9.0.x" ]; then
-      vendor/bin/phpunit -c core --group search_api_solr --exclude-group not_drupal_9_ready modules/contrib/search_api_solr
+      vendor/bin/phpunit -c core --group search_api_fusion --exclude-group not_drupal_9_ready modules/contrib/search_api_fusion
     else
-      vendor/bin/phpunit -c core --group search_api_solr modules/contrib/search_api_solr
+      vendor/bin/phpunit -c core --group search_api_fusion modules/contrib/search_api_fusion
     fi
 
 after_script:

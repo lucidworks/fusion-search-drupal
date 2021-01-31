@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\search_api\data_type;
+namespace Drupal\search_api_fusion\Plugin\search_api\data_type;
 
 /**
  * Provides data type to feed the suggester component.

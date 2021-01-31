@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\SolrConnector;
+namespace Drupal\search_api_fusion\Plugin\SolrConnector;
 
-use Drupal\search_api_solr\SolrConnector\BasicAuthTrait;
+use Drupal\search_api_fusion\SolrConnector\BasicAuthTrait;
 
 /**
  * Basic auth Solr connector.

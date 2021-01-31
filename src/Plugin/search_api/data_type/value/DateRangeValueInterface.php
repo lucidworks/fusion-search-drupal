@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\search_api\data_type\value;
+namespace Drupal\search_api_fusion\Plugin\search_api\data_type\value;
 
 /**
  * Provides an interface for date range field values.

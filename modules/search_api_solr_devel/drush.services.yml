@@ -1,6 +1,6 @@
 services:
-  search_api_solr_devel.commands:
-    class: Drupal\search_api_solr_devel\Commands\SearchApiSolrDevelCommands
+  search_api_fusion_devel.commands:
+    class: Drupal\search_api_fusion_devel\Commands\SearchApiSolrDevelCommands
     arguments:
       - '@entity_type.manager'
       - '@module_handler'

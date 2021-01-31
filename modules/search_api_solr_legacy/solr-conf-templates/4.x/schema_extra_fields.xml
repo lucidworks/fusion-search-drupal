@@ -2,7 +2,7 @@
   The config generator will add dynamic fields here automatically as required by
   your individual drupal setup.
 
-  Since search_api_solr 8.x-2.0 it's required to use dynamically generated
+  Since search_api_fusion 8.x-2.0 it's required to use dynamically generated
   config files instead copying them.
 
   Having these fields in a separate file is better than modifying schema.xml.

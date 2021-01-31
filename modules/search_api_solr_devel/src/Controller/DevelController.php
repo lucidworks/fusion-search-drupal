@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr_devel\Controller;
+namespace Drupal\search_api_fusion_devel\Controller;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Controller\ControllerBase;
@@ -126,7 +126,7 @@ class DevelController extends ControllerBase {
     $backends = [];
     $plugin_definitions = $this->backendPluginManager->getDefinitions();
     foreach ($plugin_definitions as $plugin_id => $plugin_definition) {
-      if (is_a($plugin_definition['class'], $plugin_definitions['search_api_solr']['class'], TRUE)) {
+      if (is_a($plugin_definition['class'], $plugin_definitions['search_api_fusion']['class'], TRUE)) {
         $backends[] = $plugin_id;
       }
     }
@@ -156,7 +156,7 @@ class DevelController extends ControllerBase {
         $servers = $this->storage->loadByProperties(['backend' => $backend_id, 'status' => TRUE]);
         foreach ($servers as $server) {
           /** @var \Drupal\search_api\ServerInterface $server */
-          /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+          /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
           $backend = $server->getBackend();
           /** @var \Drupal\search_api\IndexInterface[] $indexes */
           $indexes = $server->getIndexes();
@@ -206,7 +206,7 @@ class DevelController extends ControllerBase {
                       ];
 
                       // Show current data for this item from the Solr backend.
-                      /** @var \Drupal\search_api_solr\SolrConnectorInterface $solr */
+                      /** @var \Drupal\search_api_fusion\SolrConnectorInterface $solr */
                       /** @var \Solarium\QueryType\Select\Query\Query $query */
                       $output_details[$details_id][] = [
                         '#markup' => '<h3>' . $this->t('Current data in Solr for this item:') . '</h3>',

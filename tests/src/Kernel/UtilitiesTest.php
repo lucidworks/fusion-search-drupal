@@ -1,14 +1,14 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Kernel;
+namespace Drupal\Tests\search_api_fusion\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\search_api_solr\Utility\Utility;
+use Drupal\search_api_fusion\Utility\Utility;
 
 /**
  * Provides tests for various utility functions.
  *
- * @group search_api_solr
+ * @group search_api_fusion
  */
 class UtilitiesTest extends KernelTestBase {
 
@@ -17,7 +17,7 @@ class UtilitiesTest extends KernelTestBase {
    */
   public static $modules = [
     'search_api',
-    'search_api_solr',
+    'search_api_fusion',
     'user',
   ];
 
@@ -137,7 +137,7 @@ class UtilitiesTest extends KernelTestBase {
           'include_language_independent' => TRUE,
         ],
       ],
-      search_api_solr_merge_default_index_third_party_settings($third_party_settings)
+      search_api_fusion_merge_default_index_third_party_settings($third_party_settings)
     );
   }
 

@@ -1,0 +1,9 @@
+type: module
+name: 'Search API Fusion'
+description: 'Offers an implementation of the Search API that uses Lucidworks Fusion server for site search.'
+core_version_requirement: ^8.8 || ^9
+php: 7.1.3
+package: Search
+dependencies:
+  - drupal:language
+  - search_api:search_api (>=8.x-1.15)

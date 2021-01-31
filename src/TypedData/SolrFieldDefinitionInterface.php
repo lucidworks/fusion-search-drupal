@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\TypedData;
+namespace Drupal\search_api_fusion\TypedData;
 
 use Drupal\Core\TypedData\DataDefinitionInterface;
 

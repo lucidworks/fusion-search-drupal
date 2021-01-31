@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\search_api\data_type;
+namespace Drupal\search_api_fusion\Plugin\search_api\data_type;
 
 use Drupal\search_api\Plugin\search_api\data_type\TextDataType;
 
@@ -13,7 +13,7 @@ use Drupal\search_api\Plugin\search_api\data_type\TextDataType;
  *   description = @Translation("Custom full text field which omits norms."),
  *   fallback_type = "text",
  *   prefix = "toc",
- *   deriver = "Drupal\search_api_solr\Plugin\Derivative\OmitNormsCustomTextDataType"
+ *   deriver = "Drupal\search_api_fusion\Plugin\Derivative\OmitNormsCustomTextDataType"
  * )
  */
 class OmitNormsCustomTextDataType extends TextDataType {}

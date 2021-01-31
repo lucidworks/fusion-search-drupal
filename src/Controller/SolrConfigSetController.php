@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\search_api_solr\Controller;
+namespace Drupal\search_api_fusion\Controller;
 
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\search_api\ServerInterface;
-use Drupal\search_api_solr\SearchApiSolrConflictingEntitiesException;
-use Drupal\search_api_solr\SolrBackendInterface;
-use Drupal\search_api_solr\Utility\Utility;
+use Drupal\search_api_fusion\SearchApiSolrConflictingEntitiesException;
+use Drupal\search_api_fusion\SolrBackendInterface;
+use Drupal\search_api_fusion\Utility\Utility;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use ZipStream\Option\Archive;
@@ -32,7 +32,7 @@ class SolrConfigSetController extends ControllerBase {
    * @throws \Drupal\search_api\SearchApiException
    */
   public function getSchemaExtraTypesXml(?ServerInterface $search_api_server = NULL): string {
-    /** @var \Drupal\search_api_solr\Controller\SolrFieldTypeListBuilder $list_builder */
+    /** @var \Drupal\search_api_fusion\Controller\SolrFieldTypeListBuilder $list_builder */
     $list_builder = $this->getListBuilder('solr_field_type', $search_api_server);
     return $list_builder->getSchemaExtraTypesXml();
   }
@@ -73,12 +73,12 @@ class SolrConfigSetController extends ControllerBase {
   public function getSchemaExtraFieldsXml(?ServerInterface $search_api_server = NULL): string {
     $solr_major_version = NULL;
     if ($search_api_server) {
-      /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+      /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
       $backend = $search_api_server->getBackend();
       $solr_major_version = $backend->getSolrConnector()->getSolrMajorVersion();
     }
 
-    /** @var \Drupal\search_api_solr\Controller\SolrFieldTypeListBuilder $list_builder */
+    /** @var \Drupal\search_api_fusion\Controller\SolrFieldTypeListBuilder $list_builder */
     $list_builder = $this->getListBuilder('solr_field_type', $search_api_server);
     return $list_builder->getSchemaExtraFieldsXml($solr_major_version);
   }
@@ -116,10 +116,10 @@ class SolrConfigSetController extends ControllerBase {
    * @throws \Drupal\search_api\SearchApiException
    */
   public function getSolrconfigExtraXml(?ServerInterface $search_api_server = NULL): string {
-    /** @var \Drupal\search_api_solr\Controller\SolrFieldTypeListBuilder $solr_field_type_list_builder */
+    /** @var \Drupal\search_api_fusion\Controller\SolrFieldTypeListBuilder $solr_field_type_list_builder */
     $solr_field_type_list_builder = $this->getListBuilder('solr_field_type', $search_api_server);
 
-    /** @var \Drupal\search_api_solr\Controller\SolrRequestHandlerListBuilder $solr_request_handler_list_builder */
+    /** @var \Drupal\search_api_fusion\Controller\SolrRequestHandlerListBuilder $solr_request_handler_list_builder */
     $solr_request_handler_list_builder = $this->getListBuilder('solr_request_handler', $search_api_server);
 
     return $solr_field_type_list_builder->getSolrconfigExtraXml() . $solr_request_handler_list_builder->getXml();
@@ -158,7 +158,7 @@ class SolrConfigSetController extends ControllerBase {
    * @throws \Drupal\search_api\SearchApiException
    */
   public function getSolrconfigQueryXml(?ServerInterface $search_api_server = NULL): string {
-    /** @var \Drupal\search_api_solr\Controller\SolrCacheListBuilder $list_builder */
+    /** @var \Drupal\search_api_fusion\Controller\SolrCacheListBuilder $list_builder */
     $list_builder = $this->getListBuilder('solr_cache', $search_api_server);
     return $list_builder->getXml();
   }
@@ -196,7 +196,7 @@ class SolrConfigSetController extends ControllerBase {
    * @throws \Drupal\search_api\SearchApiException
    */
   public function getSolrconfigRequestDispatcherXml(?ServerInterface $search_api_server = NULL): string {
-    /** @var \Drupal\search_api_solr\Controller\SolrRequestDispatcherListBuilder $list_builder */
+    /** @var \Drupal\search_api_fusion\Controller\SolrRequestDispatcherListBuilder $list_builder */
     $list_builder = $this->getListBuilder('solr_request_dispatcher', $search_api_server);
     return $list_builder->getXml();
   }
@@ -231,13 +231,13 @@ class SolrConfigSetController extends ControllerBase {
    * @throws \Drupal\search_api\SearchApiException
    */
   public function getConfigFiles(): array {
-    /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+    /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
     $backend = $this->getBackend();
     $connector = $backend->getSolrConnector();
     $solr_branch = $real_solr_branch = $connector->getSolrBranch($this->assumedMinimumVersion);
     $solr_major_version = $connector->getSolrMajorVersion($this->assumedMinimumVersion);
 
-    $template_path = drupal_get_path('module', 'search_api_solr') . '/solr-conf-templates/';
+    $template_path = drupal_get_path('module', 'search_api_fusion') . '/solr-conf-templates/';
     $solr_configset_template_mapping = [
       '6.x' => $template_path . '6.x',
       '7.x' => $template_path . '7.x',
@@ -246,10 +246,10 @@ class SolrConfigSetController extends ControllerBase {
       '8.x' => $template_path . '7.x',
     ];
 
-    $this->moduleHandler()->alter('search_api_solr_configset_template_mapping', $solr_configset_template_mapping);
+    $this->moduleHandler()->alter('search_api_fusion_configset_template_mapping', $solr_configset_template_mapping);
 
-    $search_api_solr_conf_path = $solr_configset_template_mapping[$solr_branch];
-    $solrcore_properties = parse_ini_file($search_api_solr_conf_path . '/solrcore.properties', FALSE, INI_SCANNER_RAW);
+    $search_api_fusion_conf_path = $solr_configset_template_mapping[$solr_branch];
+    $solrcore_properties = parse_ini_file($search_api_fusion_conf_path . '/solrcore.properties', FALSE, INI_SCANNER_RAW);
 
     $files = [
       'schema_extra_types.xml' => $this->getSchemaExtraTypesXml(),
@@ -266,7 +266,7 @@ class SolrConfigSetController extends ControllerBase {
     $list_builder = $this->getListBuilder('solr_field_type');
     $solr_field_types = $list_builder->getEnabledEntities();
 
-    /** @var \Drupal\search_api_solr\SolrFieldTypeInterface $solr_field_type */
+    /** @var \Drupal\search_api_fusion\SolrFieldTypeInterface $solr_field_type */
     foreach ($solr_field_types as $solr_field_type) {
       $text_files = $solr_field_type->getTextFiles();
       foreach ($text_files as $text_file_name => $text_file) {
@@ -287,7 +287,7 @@ class SolrConfigSetController extends ControllerBase {
 
     // Now add all remaining static files from the conf dir that have not been
     // generated dynamically above.
-    foreach (scandir($search_api_solr_conf_path) as $file) {
+    foreach (scandir($search_api_fusion_conf_path) as $file) {
       if (strpos($file, '.') !== 0) {
         foreach (array_keys($files) as $existing_file) {
           if ($file == $existing_file) {
@@ -295,15 +295,15 @@ class SolrConfigSetController extends ControllerBase {
           }
         }
         $files[$file] = str_replace(
-          ['SEARCH_API_SOLR_MIN_SCHEMA_VERSION', 'SEARCH_API_SOLR_BRANCH'],
-          [SolrBackendInterface::SEARCH_API_SOLR_MIN_SCHEMA_VERSION, $real_solr_branch],
-          file_get_contents($search_api_solr_conf_path . '/' . $file)
+          ['search_api_fusion_MIN_SCHEMA_VERSION', 'search_api_fusion_BRANCH'],
+          [SolrBackendInterface::search_api_fusion_MIN_SCHEMA_VERSION, $real_solr_branch],
+          file_get_contents($search_api_fusion_conf_path . '/' . $file)
         );
       }
     }
 
     $connector->alterConfigFiles($files, $solrcore_properties['solr.luceneMatchVersion'], $this->serverId);
-    $this->moduleHandler()->alter('search_api_solr_config_files', $files, $solrcore_properties['solr.luceneMatchVersion'], $this->serverId);
+    $this->moduleHandler()->alter('search_api_fusion_config_files', $files, $solrcore_properties['solr.luceneMatchVersion'], $this->serverId);
     return $files;
   }
 
@@ -321,7 +321,7 @@ class SolrConfigSetController extends ControllerBase {
    * @throws \ZipStream\Exception\FileNotReadableException
    */
   public function getConfigZip(Archive $archive_options): ZipStream {
-    /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+    /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
     $backend = $this->getBackend();
     $connector = $backend->getSolrConnector();
     $solr_branch = $connector->getSolrBranch($this->assumedMinimumVersion);
@@ -380,9 +380,9 @@ class SolrConfigSetController extends ControllerBase {
   /**
    * Provides an XML snippet containing all query cache settings as XML.
    *
-   * @param \Drupal\search_api_solr\Controller\string $file_name
+   * @param \Drupal\search_api_fusion\Controller\string $file_name
    *   The file name.
-   * @param \Drupal\search_api_solr\Controller\string $xml
+   * @param \Drupal\search_api_fusion\Controller\string $xml
    *   The XML.
    *
    * @return \Symfony\Component\HttpFoundation\Response
@@ -407,13 +407,13 @@ class SolrConfigSetController extends ControllerBase {
    * @param \Drupal\search_api\ServerInterface|null $search_api_server
    *   Search API Server.
    *
-   * @return \Drupal\search_api_solr\Controller\AbstractSolrEntityListBuilder
+   * @return \Drupal\search_api_fusion\Controller\AbstractSolrEntityListBuilder
    *   A ListBuilder.
    *
    * @throws \Drupal\search_api\SearchApiException
    */
   protected function getListBuilder(string $entity_type_id, ?ServerInterface $search_api_server = NULL): AbstractSolrEntityListBuilder {
-    /** @var \Drupal\search_api_solr\Controller\AbstractSolrEntityListBuilder $list_builder */
+    /** @var \Drupal\search_api_fusion\Controller\AbstractSolrEntityListBuilder $list_builder */
     $list_builder = $this->entityTypeManager()->getListBuilder($entity_type_id);
     if ($search_api_server) {
       $list_builder->setServer($search_api_server);

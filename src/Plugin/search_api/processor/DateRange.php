@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\search_api\processor;
+namespace Drupal\search_api_fusion\Plugin\search_api\processor;
 
 use Drupal\search_api\Processor\ProcessorPluginBase;
-use Drupal\search_api_solr\Plugin\search_api\data_type\value\DateRangeValue;
+use Drupal\search_api_fusion\Plugin\search_api\data_type\value\DateRangeValue;
 
 /**
  * Add date ranges to the index.

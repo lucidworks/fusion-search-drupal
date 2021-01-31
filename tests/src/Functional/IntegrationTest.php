@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Functional;
+namespace Drupal\Tests\search_api_fusion\Functional;
 
 use Drupal\search_api\Entity\Index;
-use Drupal\search_api_solr\Utility\SolrCommitTrait;
+use Drupal\search_api_fusion\Utility\SolrCommitTrait;
 use Drupal\Tests\search_api\Functional\IntegrationTest as SearchApiIntegrationTest;
 
 /**
  * Tests the overall functionality of the Search API framework and admin UI.
  *
- * @group search_api_solr
+ * @group search_api_fusion
  */
 class IntegrationTest extends SearchApiIntegrationTest {
 
@@ -19,14 +19,14 @@ class IntegrationTest extends SearchApiIntegrationTest {
    *
    * @var string
    */
-  protected $serverBackend = 'search_api_solr';
+  protected $serverBackend = 'search_api_fusion';
 
   /**
    * {@inheritdoc}
    */
   public static $modules = [
-    'search_api_solr',
-    'search_api_solr_test',
+    'search_api_fusion',
+    'search_api_fusion_test',
   ];
 
   /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Utility;
+namespace Drupal\search_api_fusion\Utility;
 
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\Utility\QueryHelper;
@@ -16,11 +16,11 @@ class StreamingExpressionQueryHelper extends QueryHelper {
    * @param \Drupal\search_api\Query\QueryInterface $query
    *   The Search API query.
    *
-   * @return \Drupal\search_api_solr\Utility\StreamingExpressionBuilder
+   * @return \Drupal\search_api_fusion\Utility\StreamingExpressionBuilder
    *   The StreamingExpressionBuilder object.
    *
    * @throws \Drupal\search_api\SearchApiException
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function getStreamingExpressionBuilder(QueryInterface $query) {
     return new StreamingExpressionBuilder($query->getIndex());
@@ -31,9 +31,9 @@ class StreamingExpressionQueryHelper extends QueryHelper {
    *
    * @param \Drupal\search_api\Query\QueryInterface $query
    *   The Search API query.
-   * @param \Drupal\search_api_solr\Utility\string $streaming_expression
+   * @param \Drupal\search_api_fusion\Utility\string $streaming_expression
    *   The streaming expression to set for this query.
-   * @param \Drupal\search_api_solr\Utility\string $comment
+   * @param \Drupal\search_api_fusion\Utility\string $comment
    *   A comment of the streaming expression.
    */
   public function setStreamingExpression(QueryInterface $query, string $streaming_expression, string $comment = '') {

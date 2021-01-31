@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\DataType;
+namespace Drupal\search_api_fusion\Plugin\DataType;
 
 /**
  * Defines the "Solr multisite field" data type.
@@ -12,7 +12,7 @@ namespace Drupal\search_api_solr\Plugin\DataType;
  *   id = "solr_multisite_field",
  *   label = @Translation("Solr multisite field"),
  *   description = @Translation("Fields from a multisite Solr document."),
- *   definition_class = "\Drupal\search_api_solr\TypedData\SolrMultisiteFieldDefinition"
+ *   definition_class = "\Drupal\search_api_fusion\TypedData\SolrMultisiteFieldDefinition"
  * )
  */
 class SolrMultisiteField extends SolrField {

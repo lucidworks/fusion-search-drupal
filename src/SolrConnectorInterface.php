@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\search_api_solr;
+namespace Drupal\search_api_fusion;
 
 use Drupal\Component\Plugin\ConfigurableInterface;
-use Drupal\search_api_solr\Solarium\Autocomplete\Query as AutocompleteQuery;
+use Drupal\search_api_fusion\Solarium\Autocomplete\Query as AutocompleteQuery;
 use Solarium\Core\Client\Endpoint;
 use Solarium\Core\Client\Request;
 use Solarium\Core\Client\Response;
@@ -107,7 +107,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return object
    *   A response object with server information.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function getServerInfo($reset = FALSE);
 
@@ -120,7 +120,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return object
    *   A response object with system information.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function getCoreInfo($reset = FALSE);
 
@@ -130,7 +130,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return object
    *   A response object filled with data from Solr's Luke.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function getLuke();
 
@@ -143,7 +143,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return string
    *   The full schema version string.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function getSchemaVersionString($reset = FALSE);
 
@@ -156,7 +156,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return string
    *   The schema version number.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function getSchemaVersion($reset = FALSE);
 
@@ -179,7 +179,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    *   The latency in milliseconds if the core can be accessed,
    *   otherwise FALSE.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function pingServer();
 
@@ -189,7 +189,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return array
    *   An array of stats about the solr core.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function getStatsSummary();
 
@@ -202,7 +202,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return string
    *   The decoded response.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function coreRestGet($path);
 
@@ -217,7 +217,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return string
    *   The decoded response.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function coreRestPost($path, $command_json = '');
 
@@ -230,7 +230,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return string
    *   The decoded response.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function serverRestGet($path);
 
@@ -245,7 +245,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return string
    *   The decoded response.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function serverRestPost($path, $command_json = '');
 
@@ -300,7 +300,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
   /**
    * Creates a new Solarium autocomplete query.
    *
-   * @return \Drupal\search_api_solr\Solarium\Autocomplete\Query
+   * @return \Drupal\search_api_fusion\Solarium\Autocomplete\Query
    *   The Autocomplete query.
    */
   public function getAutocompleteQuery();
@@ -335,7 +335,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return \Solarium\Core\Client\Response
    *   The Solarium response object.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function search(Query $query, ?Endpoint $endpoint = NULL);
 
@@ -363,14 +363,14 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return \Solarium\Core\Query\Result\ResultInterface
    *   The Solarium result object.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function update(UpdateQuery $query, ?Endpoint $endpoint = NULL);
 
   /**
    * Executes a search query and returns the raw response.
    *
-   * @param \Drupal\search_api_solr\Solarium\Autocomplete\Query $query
+   * @param \Drupal\search_api_fusion\Solarium\Autocomplete\Query $query
    *   The Solarium select query object.
    * @param \Solarium\Core\Client\Endpoint|null $endpoint
    *   (optional) The Solarium endpoint object.
@@ -378,7 +378,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return \Solarium\Core\Client\Response
    *   The Solarium response object.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function autocomplete(AutocompleteQuery $query, ?Endpoint $endpoint = NULL);
 
@@ -393,7 +393,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return \Solarium\Core\Query\Result\ResultInterface
    *   The Solarium result object.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function execute(QueryInterface $query, ?Endpoint $endpoint = NULL);
 
@@ -408,7 +408,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return \Solarium\Core\Client\Response
    *   The Solarium response object.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function executeRequest(Request $request, ?Endpoint $endpoint = NULL);
 
@@ -418,7 +418,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @param \Solarium\Core\Client\Endpoint|null $endpoint
    *   (optional) The Solarium endpoint object.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function optimize(?Endpoint $endpoint = NULL);
 
@@ -433,7 +433,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return \Solarium\QueryType\Extract\Result
    *   The Solarium extract result object.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function extract(QueryInterface $query, ?Endpoint $endpoint = NULL);
 
@@ -448,7 +448,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return string
    *   The extracted content as string.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function getContentFromExtractResult(ExtractResult $result, $filepath);
 
@@ -463,7 +463,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    *
    * @throws \Solarium\Exception\OutOfBoundsException
    */
-  public function getEndpoint($key = 'search_api_solr');
+  public function getEndpoint($key = 'search_api_fusion');
 
   /**
    * Creates an endpoint.
@@ -492,7 +492,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    *   A Solarium response object containing either the file contents or a file
    *   list.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function getFile($file = NULL);
 
@@ -519,7 +519,7 @@ interface SolrConnectorInterface extends ConfigurableInterface {
    * @return bool
    *   TRUE if successful, FALSE otherwise.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function reloadCore();
 

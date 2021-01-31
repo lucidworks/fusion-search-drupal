@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr;
+namespace Drupal\search_api_fusion;
 
 use Solarium\Core\Client\Endpoint;
 use Solarium\QueryType\Graph\Query as GraphQuery;
@@ -51,7 +51,7 @@ interface SolrCloudConnectorInterface extends SolrConnectorInterface {
    * @param string $site_hash
    *   The site hash.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function deleteCheckpoints(string $index_id, string $site_hash);
 
@@ -72,7 +72,7 @@ interface SolrCloudConnectorInterface extends SolrConnectorInterface {
    * @return object
    *   A response object with system information.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function getCollectionInfo($reset = FALSE);
 
@@ -112,7 +112,7 @@ interface SolrCloudConnectorInterface extends SolrConnectorInterface {
    * @return \Solarium\QueryType\Stream\Result
    *   The Solarium stream result.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function stream(StreamQuery $query, ?Endpoint $endpoint = NULL);
 
@@ -127,7 +127,7 @@ interface SolrCloudConnectorInterface extends SolrConnectorInterface {
    * @return \Solarium\QueryType\Graph\Result
    *   The Solarium graph result.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function graph(GraphQuery $query, ?Endpoint $endpoint = NULL);
 

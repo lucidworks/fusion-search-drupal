@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\DataType;
+namespace Drupal\search_api_fusion\Plugin\DataType;
 
 use Drupal\Core\TypedData\ComplexDataInterface;
 use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\Core\TypedData\TypedData;
 use Drupal\search_api\Item\ItemInterface;
-use Drupal\search_api_solr\TypedData\SolrDocumentDefinition;
+use Drupal\search_api_fusion\TypedData\SolrDocumentDefinition;
 use Solarium\Core\Query\DocumentInterface;
 
 /**
@@ -19,8 +19,8 @@ use Solarium\Core\Query\DocumentInterface;
  *   id = "solr_document",
  *   label = @Translation("Solr document"),
  *   description = @Translation("Records from a Solr index."),
- *   deriver = "\Drupal\search_api_solr\Plugin\DataType\Deriver\SolrDocumentDeriver",
- *   definition_class = "\Drupal\search_api_solr\TypedData\SolrDocumentDefinition"
+ *   deriver = "\Drupal\search_api_fusion\Plugin\DataType\Deriver\SolrDocumentDeriver",
+ *   definition_class = "\Drupal\search_api_fusion\TypedData\SolrDocumentDefinition"
  * )
  */
 class SolrDocument extends TypedData implements \IteratorAggregate, ComplexDataInterface {
@@ -88,7 +88,7 @@ class SolrDocument extends TypedData implements \IteratorAggregate, ComplexDataI
 
     // First, verify that this field actually exists in the Solr server. If we
     // can't get a definition for it, it doesn't exist.
-    /** @var \Drupal\search_api_solr\Plugin\DataType\SolrField $plugin */
+    /** @var \Drupal\search_api_fusion\Plugin\DataType\SolrField $plugin */
     $plugin = \Drupal::typedDataManager()->getDefinition($this->solrField)['class'];
     $field_manager = \Drupal::getContainer()->get($this->solrField . '.manager');
     $fields = $field_manager->getFieldDefinitions($this->item->getIndex());
@@ -114,7 +114,7 @@ class SolrDocument extends TypedData implements \IteratorAggregate, ComplexDataI
 
     if (!$found) {
       // If that didn't work, maybe we can get the field from the Solr document?
-      $document = $this->item->getExtraData('search_api_solr_document');
+      $document = $this->item->getExtraData('search_api_fusion_document');
       if (
         $document instanceof DocumentInterface &&
         isset($document[$property_name])

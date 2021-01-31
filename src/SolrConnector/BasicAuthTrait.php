@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\SolrConnector;
+namespace Drupal\search_api_fusion\SolrConnector;
 
 use Drupal\Core\Form\FormStateInterface;
 use Solarium\Core\Client\Endpoint;

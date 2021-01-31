@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\search_api_solr;
+namespace Drupal\search_api_fusion;
 
 use Drupal\search_api\IndexInterface;
-use Drupal\search_api_solr\TypedData\SolrMultisiteFieldDefinition;
+use Drupal\search_api_fusion\TypedData\SolrMultisiteFieldDefinition;
 
 /**
  * Manages the discovery of Solr fields.

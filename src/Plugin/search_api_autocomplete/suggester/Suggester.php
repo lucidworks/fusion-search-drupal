@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\search_api_autocomplete\suggester;
+namespace Drupal\search_api_fusion\Plugin\search_api_autocomplete\suggester;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
@@ -9,7 +9,7 @@ use Drupal\search_api\Plugin\PluginFormTrait;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api_autocomplete\SearchInterface;
 use Drupal\search_api_autocomplete\Suggester\SuggesterPluginBase;
-use Drupal\search_api_solr\Utility\Utility;
+use Drupal\search_api_fusion\Utility\Utility;
 
 /**
  * Provides a suggester plugin that retrieves suggestions from the server.
@@ -18,7 +18,7 @@ use Drupal\search_api_solr\Utility\Utility;
  * work.
  *
  * @SearchApiAutocompleteSuggester(
- *   id = "search_api_solr_suggester",
+ *   id = "search_api_fusion_suggester",
  *   label = @Translation("Solr Suggester"),
  *   description = @Translation("Suggest complete phrases for the entered string based on Solr's suggest component."),
  * )
@@ -35,7 +35,7 @@ class Suggester extends SuggesterPluginBase implements PluginFormInterface {
    * @throws \Drupal\search_api_autocomplete\SearchApiAutocompleteException
    */
   public static function supportsSearch(SearchInterface $search) {
-    /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+    /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
     $backend = static::getBackend($search->getIndex());
     return ($backend && version_compare($backend->getSolrConnector()->getSolrMajorVersion(), '6', '>='));
   }
@@ -45,7 +45,7 @@ class Suggester extends SuggesterPluginBase implements PluginFormInterface {
    */
   public function defaultConfiguration() {
     return [
-      'search_api_solr/site_hash' => TRUE,
+      'search_api_fusion/site_hash' => TRUE,
       'search_api/index' => '',
       'drupal/langcode' => 'any',
     ];
@@ -61,11 +61,11 @@ class Suggester extends SuggesterPluginBase implements PluginFormInterface {
     $search = $this->getSearch();
     $server = $search->getIndex()->getServerInstance();
 
-    $form['search_api_solr/site_hash'] = [
+    $form['search_api_fusion/site_hash'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('From this site only'),
       '#description' => $this->t('Limit the suggestion dictionary to entries created by this site in case of a multisite setup.'),
-      '#default_value' => $this->getConfiguration()['search_api_solr/site_hash'],
+      '#default_value' => $this->getConfiguration()['search_api_fusion/site_hash'],
     ];
 
     $index_options['any'] = $this->t('Any index');
@@ -120,8 +120,8 @@ class Suggester extends SuggesterPluginBase implements PluginFormInterface {
 
     $config = $this->getConfiguration();
     $options['context_filter_tags'] = [];
-    if ($config['search_api_solr/site_hash']) {
-      $options['context_filter_tags'][] = 'search_api_solr/site_hash:' . Utility::getSiteHash();
+    if ($config['search_api_fusion/site_hash']) {
+      $options['context_filter_tags'][] = 'search_api_fusion/site_hash:' . Utility::getSiteHash();
     }
     if (!empty($config['search_api/index']) && 'any' !== $config['search_api/index']) {
       $options['context_filter_tags'][] = 'search_api/index:' . $config['search_api/index'];

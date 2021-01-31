@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr_admin\Form;
+namespace Drupal\search_api_fusion_admin\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * The Solr admin form.
  *
- * @package Drupal\search_api_solr_admin\Form
+ * @package Drupal\search_api_fusion_admin\Form
  */
 class SolrAdminForm extends FormBase {
 

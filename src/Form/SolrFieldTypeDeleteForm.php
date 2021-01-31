@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Form;
+namespace Drupal\search_api_fusion\Form;
 
 use Drupal\Core\Entity\EntityConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;

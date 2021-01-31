@@ -1,18 +1,18 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr_defaults\Functional;
+namespace Drupal\Tests\search_api_fusion_defaults\Functional;
 
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Entity\Server;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\ServerInterface;
-use Drupal\search_api_solr\Utility\SolrCommitTrait;
+use Drupal\search_api_fusion\Utility\SolrCommitTrait;
 use Drupal\Tests\BrowserTestBase;
 
 /**
  * Tests the correct installation of the default configs.
  *
- * @group search_api_solr
+ * @group search_api_fusion
  */
 class IntegrationTest extends BrowserTestBase {
 
@@ -60,9 +60,9 @@ class IntegrationTest extends BrowserTestBase {
     // Installation invokes a batch and this breaks it.
     \Drupal::state()->set('search_api_use_tracking_batch', FALSE);
 
-    // Install the search_api_solr_defaults module.
+    // Install the search_api_fusion_defaults module.
     $edit_enable = [
-      'modules[search_api_solr_defaults][enable]' => TRUE,
+      'modules[search_api_fusion_defaults][enable]' => TRUE,
     ];
     $this->drupalPostForm('admin/modules', $edit_enable, 'Install');
 
@@ -113,12 +113,12 @@ class IntegrationTest extends BrowserTestBase {
     // Uninstall the module.
     $this->drupalLogin($this->adminUser);
     $edit_disable = [
-      'uninstall[search_api_solr_defaults]' => TRUE,
+      'uninstall[search_api_fusion_defaults]' => TRUE,
     ];
     $this->drupalPostForm('admin/modules/uninstall', $edit_disable, 'Uninstall');
     $this->submitForm([], 'Uninstall');
     $this->rebuildContainer();
-    $this->assertFalse($this->container->get('module_handler')->moduleExists('search_api_solr_defaults'), 'Solr Search Defaults module uninstalled.');
+    $this->assertFalse($this->container->get('module_handler')->moduleExists('search_api_fusion_defaults'), 'Solr Search Defaults module uninstalled.');
 
     // Check if the server is found in the Search API admin UI.
     $this->drupalGet('admin/config/search/search-api/server/default_solr_server');
@@ -173,7 +173,7 @@ class IntegrationTest extends BrowserTestBase {
     $this->assertSession()->statusCodeEquals(200);
     $this->submitForm([], 'Delete');
 
-    // Try to install search_api_solr_defaults module and test if it failed
+    // Try to install search_api_fusion_defaults module and test if it failed
     // because there was no content type "article".
     $this->drupalPostForm('admin/modules', $edit_enable, 'Install');
     $success_text = t('Content type @content_type not found. Solr Search Defaults module could not be installed.', ['@content_type' => 'article']);

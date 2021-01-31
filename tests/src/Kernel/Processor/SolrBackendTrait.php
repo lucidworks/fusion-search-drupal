@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Kernel\Processor;
+namespace Drupal\Tests\search_api_fusion\Kernel\Processor;
 
 use Drupal\search_api\Entity\Server;
-use Drupal\search_api_solr\Utility\SolrCommitTrait;
+use Drupal\search_api_fusion\Utility\SolrCommitTrait;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\Yaml\Yaml;
@@ -36,7 +36,7 @@ trait SolrBackendTrait {
     $config = '/config/install/search_api.server.solr_search_server' . ('true' === SOLR_CLOUD ? '_cloud' : '') . '.yml';
     $this->server = Server::create(
       Yaml::parse(file_get_contents(
-        drupal_get_path('module', 'search_api_solr_test') . $config
+        drupal_get_path('module', 'search_api_fusion_test') . $config
       ))
     );
     $this->server->save();
@@ -50,9 +50,9 @@ trait SolrBackendTrait {
     $index_storage->resetCache([$this->index->id()]);
     $this->index = $index_storage->load($this->index->id());
 
-    $logger = new Logger('search_api_solr');
+    $logger = new Logger('search_api_fusion');
     $logger->pushHandler(new StreamHandler(TRAVIS_BUILD_DIR . '/solr.query.log', Logger::DEBUG));
-    \Drupal::service('search_api_solr_devel.solarium_request_logger')->setLogger($logger);
+    \Drupal::service('search_api_fusion_devel.solarium_request_logger')->setLogger($logger);
   }
 
   /**

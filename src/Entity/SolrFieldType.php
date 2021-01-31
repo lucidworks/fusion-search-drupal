@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\search_api_solr\Entity;
+namespace Drupal\search_api_fusion\Entity;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\search_api_solr\SolrBackendInterface;
-use Drupal\search_api_solr\Utility\Utility as SearchApiSolrUtility;
-use Drupal\search_api_solr\SolrFieldTypeInterface;
+use Drupal\search_api_fusion\SolrBackendInterface;
+use Drupal\search_api_fusion\Utility\Utility as SearchApiSolrUtility;
+use Drupal\search_api_fusion\SolrFieldTypeInterface;
 
 /**
  * Defines the SolrFieldType entity.
@@ -15,11 +15,11 @@ use Drupal\search_api_solr\SolrFieldTypeInterface;
  *   id = "solr_field_type",
  *   label = @Translation("Solr Field Type"),
  *   handlers = {
- *     "list_builder" = "Drupal\search_api_solr\Controller\SolrFieldTypeListBuilder",
+ *     "list_builder" = "Drupal\search_api_fusion\Controller\SolrFieldTypeListBuilder",
  *     "form" = {
- *       "add" = "Drupal\search_api_solr\Form\SolrFieldTypeForm",
- *       "edit" = "Drupal\search_api_solr\Form\SolrFieldTypeForm",
- *       "delete" = "Drupal\search_api_solr\Form\SolrFieldTypeDeleteForm"
+ *       "add" = "Drupal\search_api_fusion\Form\SolrFieldTypeForm",
+ *       "edit" = "Drupal\search_api_fusion\Form\SolrFieldTypeForm",
+ *       "delete" = "Drupal\search_api_fusion\Form\SolrFieldTypeDeleteForm"
  *     }
  *   },
  *   config_prefix = "solr_field_type",
@@ -206,7 +206,7 @@ class SolrFieldType extends AbstractSolrEntity implements SolrFieldTypeInterface
    *   An array of domains as strings.
    */
   public static function getAvailableDomains() {
-    return parent::getAvailableOptions('domains', 'generic', 'search_api_solr.solr_field_type.');
+    return parent::getAvailableOptions('domains', 'generic', 'search_api_fusion.solr_field_type.');
   }
 
   /**
@@ -218,7 +218,7 @@ class SolrFieldType extends AbstractSolrEntity implements SolrFieldTypeInterface
   public static function getAvailableCustomCodes() {
     $custom_codes = [];
     $config_factory = \Drupal::configFactory();
-    foreach ($config_factory->listAll('search_api_solr.solr_field_type.') as $field_type_name) {
+    foreach ($config_factory->listAll('search_api_fusion.solr_field_type.') as $field_type_name) {
       $config = $config_factory->get($field_type_name);
       if ($custom_code = $config->get('custom_code')) {
         $custom_codes[] = $custom_code;
@@ -430,7 +430,7 @@ class SolrFieldType extends AbstractSolrEntity implements SolrFieldTypeInterface
     foreach ($prefixes as $prefix_without_cardinality) {
       foreach (['s', 'm'] as $cardinality) {
         $prefix = $prefix_without_cardinality . $cardinality;
-        $name = $prefix . SolrBackendInterface::SEARCH_API_SOLR_LANGUAGE_SEPARATOR . $this->field_type_language_code . '_';
+        $name = $prefix . SolrBackendInterface::search_api_fusion_LANGUAGE_SEPARATOR . $this->field_type_language_code . '_';
         $dynamic_fields[] = $dynamic_field = [
           'name' => SearchApiSolrUtility::encodeSolrName($name) . '*',
           'type' => ((strpos($prefix, 'tu') === 0 && !empty($this->unstemmed_field_type)) ? $this->unstemmed_field_type['name'] : $this->field_type['name']),
@@ -526,7 +526,7 @@ class SolrFieldType extends AbstractSolrEntity implements SolrFieldTypeInterface
 
     if ($this->collated_field_type) {
       $collated_field = [
-        'name' => SearchApiSolrUtility::encodeSolrName('sort' . SolrBackendInterface::SEARCH_API_SOLR_LANGUAGE_SEPARATOR . $this->field_type_language_code) . '_*',
+        'name' => SearchApiSolrUtility::encodeSolrName('sort' . SolrBackendInterface::search_api_fusion_LANGUAGE_SEPARATOR . $this->field_type_language_code) . '_*',
         'type' => $this->collated_field_type['name'],
         'stored' => FALSE,
         'indexed' => $solr_major_version === 4,

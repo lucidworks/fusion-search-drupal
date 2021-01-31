@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\search_api\processor;
+namespace Drupal\search_api_fusion\Plugin\search_api\processor;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\search_api\Plugin\search_api\data_type\value\TextValueInterface;
 use Drupal\search_api\Processor\FieldsProcessorPluginBase;
 use Drupal\search_api\Query\ResultSetInterface;
-use Drupal\search_api_solr\SolrProcessorInterface;
+use Drupal\search_api_fusion\SolrProcessorInterface;
 
 /**
  * Replaces double quotes in field values and query.

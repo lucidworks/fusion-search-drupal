@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\search_api\processor\Property;
+namespace Drupal\search_api_fusion\Plugin\search_api\processor\Property;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -10,7 +10,7 @@ use Drupal\search_api\Processor\ConfigurablePropertyBase;
 /**
  * Defines a "dummy field" property.
  *
- * @see \Drupal\search_api_solr\Plugin\search_api\processor\DummyFields
+ * @see \Drupal\search_api_fusion\Plugin\search_api\processor\DummyFields
  */
 class DummyFieldProperty extends ConfigurablePropertyBase {
 

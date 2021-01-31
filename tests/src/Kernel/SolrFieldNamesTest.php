@@ -1,20 +1,20 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Kernel;
+namespace Drupal\Tests\search_api_fusion\Kernel;
 
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\FieldStorageConfigInterface;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\search_api\Entity\Index;
-use Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend;
-use Drupal\Tests\search_api_solr\Traits\InvokeMethodTrait;
+use Drupal\search_api_fusion\Plugin\search_api\backend\SearchApiSolrBackend;
+use Drupal\Tests\search_api_fusion\Traits\InvokeMethodTrait;
 
 /**
  * Tests index and search capabilities using the Solr search backend.
  *
- * @group search_api_solr
- * @coversDefaultClass \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend
+ * @group search_api_fusion
+ * @coversDefaultClass \Drupal\search_api_fusion\Plugin\search_api\backend\SearchApiSolrBackend
  */
 class SolrFieldNamesTest extends KernelTestBase {
 
@@ -30,8 +30,8 @@ class SolrFieldNamesTest extends KernelTestBase {
     'link',
     'language',
     'search_api',
-    'search_api_solr',
-    'search_api_solr_test',
+    'search_api_fusion',
+    'search_api_fusion_test',
     'system',
   ];
 
@@ -105,8 +105,8 @@ class SolrFieldNamesTest extends KernelTestBase {
     $index = Index::create([
       'id' => 'typed_data_index',
       'datasource_settings' => [
-        'search_api_solr_test_widget' => [
-          'plugin_id' => 'search_api_solr_test_widget',
+        'search_api_fusion_test_widget' => [
+          'plugin_id' => 'search_api_fusion_test_widget',
           'settings' => [],
         ],
       ],
@@ -114,7 +114,7 @@ class SolrFieldNamesTest extends KernelTestBase {
         'widget_types' => [
           'label' => 'Widget Types',
           'type' => 'string',
-          'datasource_id' => 'search_api_solr_test_widget',
+          'datasource_id' => 'search_api_fusion_test_widget',
           'property_path' => 'widget_types',
         ],
       ],

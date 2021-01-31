@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Kernel\Processor;
+namespace Drupal\Tests\search_api_fusion\Kernel\Processor;
 
 use Drupal\Tests\search_api\Kernel\Processor\AddHierarchyTest as SearchApiAddHierarchyTest;
 
@@ -9,7 +9,7 @@ use Drupal\Tests\search_api\Kernel\Processor\AddHierarchyTest as SearchApiAddHie
  *
  * @see \Drupal\search_api\Plugin\search_api\processor\AddHierarchy
  *
- * @group search_api_solr
+ * @group search_api_fusion
  *
  * @coversDefaultClass \Drupal\search_api\Plugin\search_api\processor\AddHierarchy
  */
@@ -22,9 +22,9 @@ class AddHierarchyTest extends SearchApiAddHierarchyTest {
    */
   public static $modules = [
     'devel',
-    'search_api_solr',
-    'search_api_solr_devel',
-    'search_api_solr_test',
+    'search_api_fusion',
+    'search_api_fusion_devel',
+    'search_api_fusion_test',
   ];
 
   /**

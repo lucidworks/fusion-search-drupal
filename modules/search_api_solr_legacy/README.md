@@ -68,7 +68,7 @@ should (in theory) support
 
 However, the automated tests are only run against Solr 4.5.1 and 5.5.5!
 
-The search_api_solr main module only supports Solr 6.4 and newer. So there's a
+The search_api_fusion main module only supports Solr 6.4 and newer. So there's a
 gap and these Solr versions aren't natively supported:
 * 6.0.0
 * 6.0.1

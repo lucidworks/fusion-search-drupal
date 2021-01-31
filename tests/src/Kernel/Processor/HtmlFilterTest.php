@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Kernel\Processor;
+namespace Drupal\Tests\search_api_fusion\Kernel\Processor;
 
 use Drupal\node\Entity\NodeType;
 use Drupal\search_api\Query\Query;
@@ -11,7 +11,7 @@ use Drupal\Tests\search_api\Kernel\Processor\ProcessorTestBase;
 /**
  * Tests usages of Solr payloads.
  *
- * @group search_api_solr
+ * @group search_api_fusion
  *
  * @see \Drupal\search_api\Plugin\search_api\processor\HtmlFilter
  */
@@ -33,9 +33,9 @@ class HtmlFilterTest extends ProcessorTestBase {
   public static $modules = [
     'devel',
     'filter',
-    'search_api_solr',
-    'search_api_solr_devel',
-    'search_api_solr_test',
+    'search_api_fusion',
+    'search_api_fusion_devel',
+    'search_api_fusion_test',
   ];
 
   /**

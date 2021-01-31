@@ -193,4 +193,4 @@ langcode: en
 dependencies:
   module:
     - search_api
-    - search_api_solr
+    - search_api_fusion

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Functional;
+namespace Drupal\Tests\search_api_fusion\Functional;
 
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Tests\facets\Functional\BlockTestTrait;
@@ -8,13 +8,13 @@ use Drupal\Tests\facets\Functional\ExampleContentTrait;
 use Drupal\Tests\facets\Functional\TestHelperTrait;
 use Drupal\search_api\Entity\Index;
 use Drupal\Tests\search_api\Functional\SearchApiBrowserTestBase;
-use Drupal\search_api_solr\Utility\SolrCommitTrait;
+use Drupal\search_api_fusion\Utility\SolrCommitTrait;
 use Drupal\views\Entity\View;
 
 /**
  * Tests the facets functionality using the Solr backend.
  *
- * @group search_api_solr
+ * @group search_api_fusion
  */
 class FacetsTest extends SearchApiBrowserTestBase {
 
@@ -31,9 +31,9 @@ class FacetsTest extends SearchApiBrowserTestBase {
   public static $modules = [
     'block',
     'views',
-    'search_api_solr',
-    'search_api_solr_test',
-    'search_api_solr_test_facets',
+    'search_api_fusion',
+    'search_api_fusion_test',
+    'search_api_fusion_test_facets',
     'facets',
   ];
 

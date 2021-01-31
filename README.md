@@ -31,7 +31,7 @@ committed to Drupal Core and released you need to modify the composer command:
 
 ```
 cd $DRUPAL
-composer require symfony/event-dispatcher:"4.3.4 as 3.4.99" drupal/search_api_solr
+composer require symfony/event-dispatcher:"4.3.4 as 3.4.99" drupal/search_api_fusion
 ```
 
 
@@ -61,9 +61,9 @@ Regarding third-party features, the following are supported:
   - Lets you display items that are similar to a given one. Use, e.g., to create
     a "More like this" block for node pages build with Views.
 - multisite
-  - Introduced by module: search_api_solr
+  - Introduced by module: search_api_fusion
 - spellcheck
-  - Introduced by module: search_api_solr
+  - Introduced by module: search_api_fusion
   - Views integration provided by search_api_spellcheck
 - attachments
   - Introduced by module: search_api_attachments
@@ -72,7 +72,7 @@ Regarding third-party features, the following are supported:
 
 If you feel some service option is missing, or have other ideas for improving
 this implementation, please file a feature request in the project's issue queue,
-at https://drupal.org/project/issues/search_api_solr.
+at https://drupal.org/project/issues/search_api_fusion.
 
 Processors
 ----------
@@ -112,7 +112,7 @@ Whenever you need to enhance the functionality you should do it using the API
 instead of extending the SearchApiSolrBackend class!
 
 To customize connection-specific things you should provide your own
-implementation of the \Drupal\search_api_solr\SolrConnectorInterface.
+implementation of the \Drupal\search_api_fusion\SolrConnectorInterface.
 
 A lot of customization can be achieved using YAML files and drupal's
 configuration management.

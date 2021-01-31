@@ -3,7 +3,7 @@ name: 'Search API Test Solr search facets'
 description: 'Support module for Search API Solr search facets tests.'
 package: 'Search API'
 dependencies:
-  - search_api_solr_test
+  - search_api_fusion_test
   - drupal:node
   - drupal:taxonomy
   - drupal:views

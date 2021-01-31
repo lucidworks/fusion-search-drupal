@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\search_api_solr\Access;
+namespace Drupal\search_api_fusion\Access;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\search_api\ServerInterface;
-use Drupal\search_api_solr\SolrBackendInterface;
+use Drupal\search_api_fusion\SolrBackendInterface;
 
 /**
  * Checks access for displaying Solr configuration generator actions.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Kernel;
+namespace Drupal\Tests\search_api_fusion\Kernel;
 
 use Drupal\config_test\TestInstallStorage;
 use Drupal\Core\Config\InstallStorage;
@@ -12,7 +12,7 @@ use Drupal\Tests\SchemaCheckTestTrait;
 /**
  * Provides tests for Solr field typa configs.
  *
- * @group search_api_solr
+ * @group search_api_fusion
  */
 class SolrFieldTypeTest extends KernelTestBase {
 
@@ -38,7 +38,7 @@ class SolrFieldTypeTest extends KernelTestBase {
   public static $modules = [
     'language',
     'search_api',
-    'search_api_solr',
+    'search_api_fusion',
     'user',
   ];
 
@@ -49,9 +49,9 @@ class SolrFieldTypeTest extends KernelTestBase {
     parent::setUp();
 
     $fileSystem = \Drupal::service('file_system');
-    $this->configNames = array_keys(\Drupal::service('file_system')->scanDirectory(__DIR__ . '/../../../config', '/search_api_solr.solr_field_type.text_/', ['key' => 'name']));
+    $this->configNames = array_keys(\Drupal::service('file_system')->scanDirectory(__DIR__ . '/../../../config', '/search_api_fusion.solr_field_type.text_/', ['key' => 'name']));
     foreach ($this->configNames as $config_name) {
-      preg_match('/search_api_solr.solr_field_type.text_(.*)_\d+_\d+_\d+/', $config_name, $matches);
+      preg_match('/search_api_fusion.solr_field_type.text_(.*)_\d+_\d+_\d+/', $config_name, $matches);
       $this->languageIds[] = $matches[1];
     }
     $this->languageIds = array_unique($this->languageIds);
@@ -78,7 +78,7 @@ class SolrFieldTypeTest extends KernelTestBase {
 
     // Create a configuration storage with access to default configuration in
     // every module, profile and theme.
-    $default_config_storage = new TestInstallStorage('test_search_api_solr_multilingual');
+    $default_config_storage = new TestInstallStorage('test_search_api_fusion_multilingual');
 
     foreach ($this->configNames as $config_name) {
       $data = $default_config_storage->read($config_name);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\DataType;
+namespace Drupal\search_api_fusion\Plugin\DataType;
 
 use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\Core\TypedData\TypedData;
@@ -16,7 +16,7 @@ use Drupal\search_api\Item\FieldInterface;
  *   id = "solr_field",
  *   label = @Translation("Solr field"),
  *   description = @Translation("Fields from a Solr document."),
- *   definition_class = "\Drupal\search_api_solr\TypedData\SolrFieldDefinition"
+ *   definition_class = "\Drupal\search_api_fusion\TypedData\SolrFieldDefinition"
  * )
  */
 class SolrField extends TypedData implements \IteratorAggregate {
@@ -49,7 +49,7 @@ class SolrField extends TypedData implements \IteratorAggregate {
    */
   public static function createFromField(FieldInterface $field, $name, TypedDataInterface $parent) {
     // Get the Solr field definition from the SolrFieldManager.
-    /** @var \Drupal\search_api_solr\SolrFieldManagerInterface $field_manager */
+    /** @var \Drupal\search_api_fusion\SolrFieldManagerInterface $field_manager */
     $field_manager = \Drupal::getContainer()->get(static::$solrField . 'solr_field.manager');
     $field_id = $field->getPropertyPath();
     $definition = $field_manager->getFieldDefinitions($field->getIndex())[$field_id];

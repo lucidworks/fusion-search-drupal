@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Annotation;
+namespace Drupal\search_api_fusion\Annotation;
 
 use Drupal\Component\Annotation\Plugin;
 
@@ -12,9 +12,9 @@ use Drupal\Component\Annotation\Plugin;
  *
  * Plugin Namespace: Plugin\SolrConnector
  *
- * @see \Drupal\search_api_solr\SolrConnector\SolrConnectorManager
- * @see \Drupal\search_api_solr\SolrConnector\SolrConnectorInterface
- * @see \Drupal\search_api_solr\SolrConnector\SolrConnectorPluginBase
+ * @see \Drupal\search_api_fusion\SolrConnector\SolrConnectorManager
+ * @see \Drupal\search_api_fusion\SolrConnector\SolrConnectorInterface
+ * @see \Drupal\search_api_fusion\SolrConnector\SolrConnectorPluginBase
  *
  * @ingroup plugin_api
  *

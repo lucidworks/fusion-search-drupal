@@ -1,14 +1,14 @@
 <?php
 
-namespace Drupal\search_api_solr\Utility;
+namespace Drupal\search_api_fusion\Utility;
 
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Processor\ProcessorInterface;
-use Drupal\search_api_solr\SearchApiSolrException;
-use Drupal\search_api_solr\SolrBackendInterface;
-use Drupal\search_api_solr\SolrCloudConnectorInterface;
-use Drupal\search_api_solr\SolrProcessorInterface;
+use Drupal\search_api_fusion\SearchApiSolrException;
+use Drupal\search_api_fusion\SolrBackendInterface;
+use Drupal\search_api_fusion\SolrCloudConnectorInterface;
+use Drupal\search_api_fusion\SolrProcessorInterface;
 use Solarium\QueryType\Stream\ExpressionBuilder;
 
 /**
@@ -117,14 +117,14 @@ class StreamingExpressionBuilder extends ExpressionBuilder {
   /**
    * The Solr backend.
    *
-   * @var \Drupal\search_api_solr\SolrBackendInterface
+   * @var \Drupal\search_api_fusion\SolrBackendInterface
    */
   protected $backend;
 
   /**
    * The Solr connector.
    *
-   * @var \Drupal\search_api_solr\SolrBackendInterface
+   * @var \Drupal\search_api_fusion\SolrBackendInterface
    */
   protected $connector;
 
@@ -135,7 +135,7 @@ class StreamingExpressionBuilder extends ExpressionBuilder {
    *   The Search API index entity.
    *
    * @throws \Drupal\search_api\SearchApiException
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function __construct(IndexInterface $index) {
     $server = $index->getServerInstance();
@@ -189,7 +189,7 @@ class StreamingExpressionBuilder extends ExpressionBuilder {
       if (!Utility::hasIndexJustSolrDocumentDatasource($index)) {
         foreach ($this->allFieldsMapped[$language_id] as $search_api_field => $solr_field) {
           if (strpos($solr_field, 't') === 0 || strpos($solr_field, 's') === 0) {
-            $this->sortFieldsMapped[$language_id]['sort_' . $search_api_field] = Utility::encodeSolrName('sort' . SolrBackendInterface::SEARCH_API_SOLR_LANGUAGE_SEPARATOR . $language_id . '_' . $search_api_field);
+            $this->sortFieldsMapped[$language_id]['sort_' . $search_api_field] = Utility::encodeSolrName('sort' . SolrBackendInterface::search_api_fusion_LANGUAGE_SEPARATOR . $language_id . '_' . $search_api_field);
           }
           elseif (preg_match('/^([a-z]+)m(_.*)/', $solr_field, $matches) && strpos($solr_field, 'random_') !== 0) {
             $this->sortFieldsMapped[$language_id]['sort' . Utility::decodeSolrName($matches[2])] = $matches[1] . 's' . $matches[2];
@@ -761,7 +761,7 @@ class StreamingExpressionBuilder extends ExpressionBuilder {
    * counts are "normalized" to the nearest higher power of 2. Setting them to
    * a very high fixed value makes no sense as this would waste memory in Solr
    * Cloud and might lead to out of memory exceptions. The numbers are prepared
-   * via search_api_solr_cron(). If the cron hasn't run yet the function return
+   * via search_api_fusion_cron(). If the cron hasn't run yet the function return
    * 1024 as fallback.
    *
    * @return int
@@ -769,19 +769,19 @@ class StreamingExpressionBuilder extends ExpressionBuilder {
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    * @throws \Drupal\search_api\SearchApiException
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    *
-   * @see search_api_solr_cron()
+   * @see search_api_fusion_cron()
    */
   public function getSearchAllRows() {
     if (!$this->searchAllRows) {
-      $rows = \Drupal::state()->get('search_api_solr.search_all_rows', []);
+      $rows = \Drupal::state()->get('search_api_fusion.search_all_rows', []);
       $this->searchAllRows = $rows[$this->serverId][$this->targetedSiteHash][$this->targetedIndexId] ?? FALSE;
       if (FALSE === $this->searchAllRows) {
         $counts = $this->backend->getDocumentCounts();
         $this->searchAllRows = $rows[$this->serverId][$this->targetedSiteHash][$this->targetedIndexId] =
           Utility::normalizeMaxRows($counts[$this->targetedSiteHash][$this->targetedIndexId] ?? ($counts['#total'] ?? 512));
-        \Drupal::state()->set('search_api_solr.search_all_rows', $rows);
+        \Drupal::state()->set('search_api_fusion.search_all_rows', $rows);
       }
     }
     return $this->searchAllRows;

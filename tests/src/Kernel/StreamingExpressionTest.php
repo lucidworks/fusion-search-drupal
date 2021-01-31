@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Kernel;
+namespace Drupal\Tests\search_api_fusion\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\search_api\Entity\Index;
-use Drupal\search_api_solr\Utility\Utility;
+use Drupal\search_api_fusion\Utility\Utility;
 
 /**
  * Provides tests for building streaming expressions.
  *
- * @group search_api_solr
+ * @group search_api_fusion
  */
 class StreamingExpressionTest extends KernelTestBase {
 
@@ -20,8 +20,8 @@ class StreamingExpressionTest extends KernelTestBase {
     'field',
     'entity_test',
     'search_api',
-    'search_api_solr',
-    'search_api_solr_test',
+    'search_api_fusion',
+    'search_api_fusion_test',
     'search_api_test_example_content',
     'text',
     'user',
@@ -30,7 +30,7 @@ class StreamingExpressionTest extends KernelTestBase {
   /**
    * The streaming expression query helper.
    *
-   * @var \Drupal\search_api_solr\Utility\StreamingExpressionQueryHelper
+   * @var \Drupal\search_api_fusion\Utility\StreamingExpressionQueryHelper
    */
   protected $queryHelper;
 
@@ -44,7 +44,7 @@ class StreamingExpressionTest extends KernelTestBase {
   /**
    * The streaming expression builder.
    *
-   * @var \Drupal\search_api_solr\Utility\StreamingExpressionBuilder
+   * @var \Drupal\search_api_fusion\Utility\StreamingExpressionBuilder
    */
   protected $exp;
 
@@ -63,8 +63,8 @@ class StreamingExpressionTest extends KernelTestBase {
     $this->installConfig([
       'search_api_test_example_content',
       'search_api',
-      'search_api_solr',
-      'search_api_solr_test',
+      'search_api_fusion',
+      'search_api_fusion_test',
     ]);
 
     $this->index = Index::load('solr_search_index');
@@ -73,7 +73,7 @@ class StreamingExpressionTest extends KernelTestBase {
     // Streaming expressions are only supported by Solr Cloud.
     $config['connector'] = 'solr_cloud';
     $backend->setConfiguration($config);
-    $this->queryHelper = \Drupal::getContainer()->get('search_api_solr.streaming_expression_query_helper');
+    $this->queryHelper = \Drupal::getContainer()->get('search_api_fusion.streaming_expression_query_helper');
     $this->query = $this->queryHelper->createQuery($this->index);
     $this->exp = $this->queryHelper->getStreamingExpressionBuilder($this->query);
   }

@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\search_api_solr\Controller;
+namespace Drupal\search_api_fusion\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\search_api\ServerInterface;
-use Drupal\search_api_solr\SolrConfigInterface;
+use Drupal\search_api_fusion\SolrConfigInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -70,13 +70,13 @@ abstract class AbstractSolrEntityController extends ControllerBase {
    * @param \Drupal\search_api\ServerInterface $search_api_server
    *   The Search API server entity.
    *
-   * @return \Drupal\search_api_solr\Controller\AbstractSolrEntityListBuilder
+   * @return \Drupal\search_api_fusion\Controller\AbstractSolrEntityListBuilder
    *   The SolrRequestHandler list builder object.
    *
    * @throws \Drupal\search_api\SearchApiException
    */
   protected function getListBuilder(ServerInterface $search_api_server) {
-    /** @var \Drupal\search_api_solr\Controller\AbstractSolrEntityListBuilder $list_builder */
+    /** @var \Drupal\search_api_fusion\Controller\AbstractSolrEntityListBuilder $list_builder */
     $list_builder = $this->entityTypeManager()->getListBuilder($this->entityTypeId);
     $list_builder->setServer($search_api_server);
     return $list_builder;
@@ -87,7 +87,7 @@ abstract class AbstractSolrEntityController extends ControllerBase {
    *
    * @param \Drupal\search_api\ServerInterface $search_api_server
    *   Search API server.
-   * @param \Drupal\search_api_solr\SolrConfigInterface $solr_entity
+   * @param \Drupal\search_api_fusion\SolrConfigInterface $solr_entity
    *   Solr entity.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -111,7 +111,7 @@ abstract class AbstractSolrEntityController extends ControllerBase {
    *
    * @param \Drupal\search_api\ServerInterface $search_api_server
    *   Search API server.
-   * @param \Drupal\search_api_solr\SolrConfigInterface $solr_entity
+   * @param \Drupal\search_api_fusion\SolrConfigInterface $solr_entity
    *   Solr entity.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse

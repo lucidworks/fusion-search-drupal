@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr_admin\Form;
+namespace Drupal\search_api_fusion_admin\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * The core reload form.
  *
- * @package Drupal\search_api_solr_admin\Form
+ * @package Drupal\search_api_fusion_admin\Form
  */
 class SolrReloadCoreForm extends FormBase {
 
@@ -25,7 +25,7 @@ class SolrReloadCoreForm extends FormBase {
   /**
    * SolrReloadCoreForm constructor.
    *
-   * @param \Drupal\search_api_solr\Form\MessengerInterface $messenger
+   * @param \Drupal\search_api_fusion\Form\MessengerInterface $messenger
    *   The messenger.
    */
   public function __construct(MessengerInterface $messenger) {
@@ -64,7 +64,7 @@ class SolrReloadCoreForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $core = $this->search_api_server->getBackendConfig()['connector_config']['core'];
     try {
-      /** @var \Drupal\search_api_solr\SolrConnectorInterface $connector */
+      /** @var \Drupal\search_api_fusion\SolrConnectorInterface $connector */
       $connector = $this->search_api_server->getBackend()->getSolrConnector();
       $result = $connector->reloadCore();
 
@@ -74,7 +74,7 @@ class SolrReloadCoreForm extends FormBase {
     }
     catch (\Exception $e) {
       $this->messenger->addError($e->getMessage());
-      watchdog_exception('search_api_solr', $e);
+      watchdog_exception('search_api_fusion', $e);
     }
   }
 

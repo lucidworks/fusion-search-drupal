@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\search_api_solr_admin\Access;
+namespace Drupal\search_api_fusion_admin\Access;
 
-use Drupal\search_api_solr\SolrBackendInterface;
+use Drupal\search_api_fusion\SolrBackendInterface;
 use Drupal\search_api\ServerInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Routing\Access\AccessInterface;

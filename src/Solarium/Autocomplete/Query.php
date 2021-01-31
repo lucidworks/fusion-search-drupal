@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Solarium\Autocomplete;
+namespace Drupal\search_api_fusion\Solarium\Autocomplete;
 
 use Solarium\Component\ComponentAwareQueryInterface;
 use Solarium\Component\ComponentAwareQueryTrait;

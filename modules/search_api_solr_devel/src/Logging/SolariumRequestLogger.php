@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\search_api_solr_devel\Logging;
+namespace Drupal\search_api_fusion_devel\Logging;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\devel\DevelDumperManagerInterface;
 use Drupal\search_api\LoggerTrait;
-use Drupal\search_api_solr\Utility\Utility;
+use Drupal\search_api_fusion\Utility\Utility;
 use Solarium\Core\Event\Events;
 use Solarium\Core\Event\PreExecuteRequest;
 use Solarium\Core\Event\PostExecuteRequest;

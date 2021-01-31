@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\EventSubscriber;
+namespace Drupal\search_api_fusion\EventSubscriber;
 
 use Drupal\Core\Config\ConfigCrudEvent;
 use Drupal\Core\Config\ConfigEvents;
@@ -57,7 +57,7 @@ class ConfigSubscriber implements EventSubscriberInterface {
     if (preg_match('@^language\.entity\.(.+)@', $saved_config->getName(), $matches) &&
         $matches[1] != LanguageInterface::LANGCODE_NOT_SPECIFIED) {
       $restrict_by_dependency = [
-        'module' => 'search_api_solr',
+        'module' => 'search_api_fusion',
       ];
       // installOptionalConfig will not replace existing configs and it contains
       // a dependency check so we need not perform any checks ourselves.
@@ -65,7 +65,7 @@ class ConfigSubscriber implements EventSubscriberInterface {
 
       // If a new language is added, the existing indexes must be re-indexed to
       // fill the language-specific sort fields for the new language.
-      foreach (search_api_solr_get_servers() as $server) {
+      foreach (search_api_fusion_get_servers() as $server) {
         foreach ($server->getIndexes() as $index) {
           if ($index->status() && !$index->isReadOnly() && !$index->isReindexing()) {
             $index->reindex();
@@ -73,11 +73,11 @@ class ConfigSubscriber implements EventSubscriberInterface {
         }
       }
     }
-    elseif (preg_match('@^search_api_solr\.solr_field_type\..+@', $saved_config->getName(), $matches)) {
+    elseif (preg_match('@^search_api_fusion\.solr_field_type\..+@', $saved_config->getName(), $matches)) {
       \Drupal::messenger()
         ->addMessage(t('A new Solr field type has been installed due to configuration changes. It is advisable to download and deploy an updated config.zip to your Solr server.'), MessengerInterface::TYPE_WARNING);
     }
-    elseif (preg_match('@^search_api_solr\.solr_cache\..+@', $saved_config->getName(), $matches) || preg_match('@^search_api_solr\.solr_request\..+@', $saved_config->getName(), $matches)) {
+    elseif (preg_match('@^search_api_fusion\.solr_cache\..+@', $saved_config->getName(), $matches) || preg_match('@^search_api_fusion\.solr_request\..+@', $saved_config->getName(), $matches)) {
       \Drupal::messenger()
         ->addMessage(t('There have been some configuration changes. It is advisable to download and deploy an updated config.zip to your Solr server.'), MessengerInterface::TYPE_WARNING);
     }

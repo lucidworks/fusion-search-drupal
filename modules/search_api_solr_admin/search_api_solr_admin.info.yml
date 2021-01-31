@@ -4,4 +4,4 @@ description: 'Provides various Solr administration tasks.'
 core_version_requirement: ^8.8 || ^9
 package: Search
 dependencies:
-  - search_api_solr:search_api_solr
+  - search_api_fusion:search_api_fusion

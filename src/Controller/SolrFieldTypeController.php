@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\search_api_solr\Controller;
+namespace Drupal\search_api_fusion\Controller;
 
 use Drupal\search_api\ServerInterface;
-use Drupal\search_api_solr\SolrConfigInterface;
+use Drupal\search_api_fusion\SolrConfigInterface;
 use ZipStream\Option\Archive;
 
 /**
@@ -56,7 +56,7 @@ class SolrFieldTypeController extends AbstractSolrEntityController {
    *
    * @param \Drupal\search_api\ServerInterface $search_api_server
    *   Search API server.
-   * @param \Drupal\search_api_solr\SolrConfigInterface $solr_field_type
+   * @param \Drupal\search_api_fusion\SolrConfigInterface $solr_field_type
    *   Solr field type.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -73,7 +73,7 @@ class SolrFieldTypeController extends AbstractSolrEntityController {
    *
    * @param \Drupal\search_api\ServerInterface $search_api_server
    *   Search API server.
-   * @param \Drupal\search_api_solr\SolrConfigInterface $solr_field_type
+   * @param \Drupal\search_api_fusion\SolrConfigInterface $solr_field_type
    *   Solr field type.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse

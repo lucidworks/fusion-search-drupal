@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\search_api_solr\Entity;
+namespace Drupal\search_api_fusion\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
-use Drupal\search_api_solr\SolrConfigInterface;
+use Drupal\search_api_fusion\SolrConfigInterface;
 
 /**
  * Defines the abstract base class for Solr config entities.

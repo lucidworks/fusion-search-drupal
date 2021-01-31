@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Kernel\Processor;
+namespace Drupal\Tests\search_api_fusion\Kernel\Processor;
 
 use Drupal\Tests\search_api\Kernel\Processor\ProcessorTestBase;
 
 /**
  * Tests the "Double Quote Workaround" processor.
  *
- * @group search_api_solr
+ * @group search_api_fusion
  *
- * @see \Drupal\search_api_solr\Plugin\search_api\processor\DoubleQuoteWorkaround
+ * @see \Drupal\search_api_fusion\Plugin\search_api\processor\DoubleQuoteWorkaround
  */
 class DoubleQuoteWorkaroundTest extends ProcessorTestBase {
 
@@ -27,9 +27,9 @@ class DoubleQuoteWorkaroundTest extends ProcessorTestBase {
    */
   public static $modules = [
     'devel',
-    'search_api_solr',
-    'search_api_solr_devel',
-    'search_api_solr_test',
+    'search_api_fusion',
+    'search_api_fusion_devel',
+    'search_api_fusion_test',
   ];
 
   /**
@@ -44,7 +44,7 @@ class DoubleQuoteWorkaroundTest extends ProcessorTestBase {
     // Streaming expressions are only supported by Solr Cloud.
     $config['connector'] = 'solr_cloud';
     $backend->setConfiguration($config);
-    $this->queryHelper = \Drupal::getContainer()->get('search_api_solr.streaming_expression_query_helper');
+    $this->queryHelper = \Drupal::getContainer()->get('search_api_fusion.streaming_expression_query_helper');
     $this->query = $this->queryHelper->createQuery($this->index);
     $this->exp = $this->queryHelper->getStreamingExpressionBuilder($this->query);
   }

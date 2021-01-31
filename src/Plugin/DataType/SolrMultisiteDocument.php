@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\DataType;
+namespace Drupal\search_api_fusion\Plugin\DataType;
 
 /**
  * Defines the "Solr document" data type.
@@ -12,7 +12,7 @@ namespace Drupal\search_api_solr\Plugin\DataType;
  *   id = "solr_multisite_document",
  *   label = @Translation("Solr multisite document"),
  *   description = @Translation("Records from a Solr multisite index."),
- *   definition_class = "\Drupal\search_api_solr\TypedData\SolrDocumentDefinition"
+ *   definition_class = "\Drupal\search_api_fusion\TypedData\SolrDocumentDefinition"
  * )
  */
 class SolrMultisiteDocument extends SolrDocument {

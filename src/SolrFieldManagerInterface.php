@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr;
+namespace Drupal\search_api_fusion;
 
 use Drupal\search_api\IndexInterface;
 
@@ -15,7 +15,7 @@ interface SolrFieldManagerInterface {
    * @param \Drupal\search_api\IndexInterface $index
    *   The Search Api index.
    *
-   * @return \Drupal\search_api_solr\TypedData\SolrFieldDefinitionInterface[]
+   * @return \Drupal\search_api_fusion\TypedData\SolrFieldDefinitionInterface[]
    *   The array of field definitions for the server, keyed by field name.
    */
   public function getFieldDefinitions(IndexInterface $index);

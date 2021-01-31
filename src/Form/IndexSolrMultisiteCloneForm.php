@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\search_api_solr\Form;
+namespace Drupal\search_api_fusion\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\search_api\Form\IndexForm;
 use Drupal\search_api\Utility\Utility as SearchApiUtility;
-use Drupal\search_api_solr\SolrBackendInterface;
-use Drupal\search_api_solr\Utility\Utility;
+use Drupal\search_api_fusion\SolrBackendInterface;
+use Drupal\search_api_fusion\Utility\Utility;
 
 /**
  * Provides a form for the Index entity.
@@ -34,7 +34,7 @@ class IndexSolrMultisiteCloneForm extends IndexForm {
     if (!$this->entity->isNew()) {
       /** @var \Drupal\search_api\ServerInterface $server */
       $server = $this->entity->getServerInstance();
-      /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+      /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
       $backend = $server->getBackend();
 
       /** @var \Drupal\search_api\IndexInterface $index */

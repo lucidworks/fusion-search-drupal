@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr;
+namespace Drupal\search_api_fusion;
 
 use Drupal\search_api\Item\ItemInterface;
 
@@ -15,7 +15,7 @@ interface SolrDocumentFactoryInterface {
    * @param \Drupal\search_api\Item\ItemInterface $item
    *   The result item to be wrapped with the data type class.
    *
-   * @return \Drupal\search_api_solr\Plugin\DataType\SolrDocument
+   * @return \Drupal\search_api_fusion\Plugin\DataType\SolrDocument
    *   The wrapped item.
    */
   public function create(ItemInterface $item);

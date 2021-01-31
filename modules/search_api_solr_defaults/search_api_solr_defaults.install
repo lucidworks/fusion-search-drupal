@@ -10,7 +10,7 @@ use Drupal\node\Entity\NodeType;
 /**
  * Implements hook_requirements().
  */
-function search_api_solr_defaults_requirements($phase) {
+function search_api_fusion_defaults_requirements($phase) {
   $requirements = [];
 
   if ($phase == 'install') {
@@ -25,7 +25,7 @@ function search_api_solr_defaults_requirements($phase) {
 
     foreach ($required_types as $required_type_id => $required_fields) {
       if (!isset($node_types[$required_type_id])) {
-        $requirements['search_api_solr_defaults:' . $required_type_id] = [
+        $requirements['search_api_fusion_defaults:' . $required_type_id] = [
           'severity' => REQUIREMENT_ERROR,
           'description' => t('Content type @content_type not found. Solr Search Defaults module could not be installed.', ['@content_type' => $required_type_id]),
         ];
@@ -35,7 +35,7 @@ function search_api_solr_defaults_requirements($phase) {
         $fields = $entity_field_manager->getFieldDefinitions('node', $required_type_id);
         foreach ($required_fields as $required_field) {
           if (!isset($fields[$required_field])) {
-            $requirements['search_api_solr_defaults:' . $required_type_id . ':' . $required_field] = [
+            $requirements['search_api_fusion_defaults:' . $required_type_id . ':' . $required_field] = [
               'severity' => REQUIREMENT_ERROR,
               'description' => t('Field @field in content type @node_type not found. Solr Search Defaults module could not be installed', ['@node_type' => $required_type_id, '@field' => $required_field]),
             ];
@@ -44,7 +44,7 @@ function search_api_solr_defaults_requirements($phase) {
       }
     }
 
-    if (\Drupal::moduleHandler()->moduleExists('search_api_solr')) {
+    if (\Drupal::moduleHandler()->moduleExists('search_api_fusion')) {
       $entities_to_check = [
         'search_api_index' => 'default_solr_index',
         'search_api_server' => 'default_solr_server',
@@ -61,7 +61,7 @@ function search_api_solr_defaults_requirements($phase) {
         $entity = $entity_storage->load($entity_id);
 
         if ($entity) {
-          $requirements['search_api_solr_defaults:defaults_exist'] = [
+          $requirements['search_api_fusion_defaults:defaults_exist'] = [
             'severity' => REQUIREMENT_ERROR,
             'description' => t('It looks like the default setup provided by this module already exists on your site. Cannot re-install module.'),
           ];
@@ -77,7 +77,7 @@ function search_api_solr_defaults_requirements($phase) {
 /**
  * Implements hook_install().
  */
-function search_api_solr_defaults_install() {
+function search_api_fusion_defaults_install() {
   // Clear the display plugin cache after installation so the plugin for the new
   // view (display) gets found.
   \Drupal::service('plugin.manager.search_api.display')

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\Plugin\search_api\datasource;
+namespace Drupal\search_api_fusion\Plugin\search_api\datasource;
 
 use Drupal\Core\Form\FormStateInterface;
 

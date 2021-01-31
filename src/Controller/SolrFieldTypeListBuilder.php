@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\search_api_solr\Controller;
+namespace Drupal\search_api_fusion\Controller;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\search_api_solr\SearchApiSolrException;
-use Drupal\search_api_solr\SolrFieldTypeInterface;
+use Drupal\search_api_fusion\SearchApiSolrException;
+use Drupal\search_api_fusion\SolrFieldTypeInterface;
 
 /**
  * Provides a listing of SolrFieldType.
@@ -32,7 +32,7 @@ class SolrFieldTypeListBuilder extends AbstractSolrEntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $solr_field_type) {
-    /** @var \Drupal\search_api_solr\SolrFieldTypeInterface $solr_field_type */
+    /** @var \Drupal\search_api_fusion\SolrFieldTypeInterface $solr_field_type */
     $domains = $solr_field_type->getDomains();
     if (empty($domains)) {
       $domains = ['generic'];
@@ -90,7 +90,7 @@ class SolrFieldTypeListBuilder extends AbstractSolrEntityListBuilder {
       $warning = FALSE;
       $disabled_field_types = [];
       try {
-        /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+        /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
         $backend = $this->getBackend();
         $disabled_field_types = $this->getDisabledEntities();
         $domain = $backend->getDomain();
@@ -110,7 +110,7 @@ class SolrFieldTypeListBuilder extends AbstractSolrEntityListBuilder {
       $entity_ids = $this->getEntityIds();
       /** @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $storage */
       $storage = $this->getStorage();
-      /** @var \Drupal\search_api_solr\Entity\SolrFieldType[] $entities */
+      /** @var \Drupal\search_api_fusion\Entity\SolrFieldType[] $entities */
       $entities = $storage->loadMultipleOverrideFree($entity_ids);
 
       // We filter those field types that are relevant for the current server.
@@ -119,7 +119,7 @@ class SolrFieldTypeListBuilder extends AbstractSolrEntityListBuilder {
       $selection = [];
       foreach ($entities as $key => $solr_field_type) {
         $entities[$key]->disabledOnServer = in_array($solr_field_type->id(), $disabled_field_types);
-        /** @var \Drupal\search_api_solr\SolrFieldTypeInterface $solr_field_type */
+        /** @var \Drupal\search_api_fusion\SolrFieldTypeInterface $solr_field_type */
         $version = $solr_field_type->getMinimumSolrVersion();
         $domains = $solr_field_type->getDomains();
         list($language,) = explode('-', $solr_field_type->getFieldTypeLanguageCode());
@@ -198,7 +198,7 @@ class SolrFieldTypeListBuilder extends AbstractSolrEntityListBuilder {
    * @throws \Drupal\search_api\SearchApiException
    */
   protected function getDisabledEntities(): array {
-    /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+    /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
     $backend = $this->getBackend();
     return $backend->getDisabledFieldTypes();
   }
@@ -206,9 +206,9 @@ class SolrFieldTypeListBuilder extends AbstractSolrEntityListBuilder {
   /**
    * Merge two Solr field type entities.
    *
-   * @param \Drupal\search_api_solr\SolrFieldTypeInterface $target
+   * @param \Drupal\search_api_fusion\SolrFieldTypeInterface $target
    *   The target Solr field type entity.
-   * @param \Drupal\search_api_solr\SolrFieldTypeInterface $source
+   * @param \Drupal\search_api_fusion\SolrFieldTypeInterface $source
    *   The source Solr field type entity.
    */
   protected function mergeFieldTypes(SolrFieldTypeInterface $target, SolrFieldTypeInterface $source) {
@@ -236,7 +236,7 @@ class SolrFieldTypeListBuilder extends AbstractSolrEntityListBuilder {
    */
   public function getSchemaExtraTypesXml() {
     $xml = '';
-    /** @var \Drupal\search_api_solr\SolrFieldTypeInterface $solr_field_type */
+    /** @var \Drupal\search_api_fusion\SolrFieldTypeInterface $solr_field_type */
     foreach ($this->getEnabledEntities() as $solr_field_type) {
       $xml .= $solr_field_type->getAsXml();
       $xml .= $solr_field_type->getSpellcheckFieldTypeAsXml();
@@ -255,7 +255,7 @@ class SolrFieldTypeListBuilder extends AbstractSolrEntityListBuilder {
    */
   public function getSchemaExtraFieldsXml(?int $solr_major_version = NULL) {
     $xml = '';
-    /* @var \Drupal\search_api_solr\SolrFieldTypeInterface $solr_field_type */
+    /* @var \Drupal\search_api_fusion\SolrFieldTypeInterface $solr_field_type */
     foreach ($this->getEnabledEntities() as $solr_field_type) {
       foreach ($solr_field_type->getStaticFields() as $static_field) {
         $xml .= '<field ';
@@ -293,7 +293,7 @@ class SolrFieldTypeListBuilder extends AbstractSolrEntityListBuilder {
    */
   public function getSolrconfigExtraXml() {
     $search_components = [];
-    /** @var \Drupal\search_api_solr\SolrFieldTypeInterface $solr_field_type */
+    /** @var \Drupal\search_api_fusion\SolrFieldTypeInterface $solr_field_type */
     foreach ($this->getEnabledEntities() as $solr_field_type) {
       $xml = $solr_field_type->getSolrConfigsAsXml();
       if (preg_match_all('@(<searchComponent name="[^"]+"[^>]*?>)(.*?)</searchComponent>@sm', $xml, $matches)) {

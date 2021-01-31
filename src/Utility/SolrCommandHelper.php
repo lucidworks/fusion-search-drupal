@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\search_api_solr\Utility;
+namespace Drupal\search_api_fusion\Utility;
 
-use Drupal\search_api_solr\Controller\SolrConfigSetController;
-use Drupal\search_api_solr\SearchApiSolrException;
+use Drupal\search_api_fusion\Controller\SolrConfigSetController;
+use Drupal\search_api_fusion\SearchApiSolrException;
 use ZipStream\Option\Archive;
 use Drupal\search_api\Utility\CommandHelper;
 
@@ -16,7 +16,7 @@ class SolrCommandHelper extends CommandHelper {
    * Re-install all Solr Field Types from their yml files.
    */
   public function reinstallFieldtypesCommand() {
-    search_api_solr_install_missing_field_types();
+    search_api_fusion_install_missing_field_types();
   }
 
   /**
@@ -77,10 +77,10 @@ class SolrCommandHelper extends CommandHelper {
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    * @throws \Drupal\search_api\SearchApiException
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public function finalizeIndexCommand(array $indexIds = NULL, $force = FALSE) {
-    $servers = search_api_solr_get_servers();
+    $servers = search_api_fusion_get_servers();
 
     if ($force) {
       // It's important to mark all indexes as "dirty" before the first
@@ -89,14 +89,14 @@ class SolrCommandHelper extends CommandHelper {
       foreach ($servers as $server) {
         foreach ($server->getIndexes() as $index) {
           if ($index->status() && !$index->isReadOnly() && (!$indexIds || in_array($index->id(), $indexIds))) {
-            \Drupal::state()->set('search_api_solr.' . $index->id() . '.last_update', \Drupal::time()->getRequestTime());
+            \Drupal::state()->set('search_api_fusion.' . $index->id() . '.last_update', \Drupal::time()->getRequestTime());
           }
         }
       }
     }
 
     foreach ($servers as $server) {
-      /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+      /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
       $backend = $server->getBackend();
       foreach ($server->getIndexes() as $index) {
         if ($index->status() && !$index->isReadOnly() && (!$indexIds || in_array($index->id(), $indexIds))) {

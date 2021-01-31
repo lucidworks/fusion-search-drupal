@@ -1,0 +1,39 @@
+services:
+  plugin.manager.search_api_fusion.connector:
+    class: Drupal\search_api_fusion\SolrConnector\SolrConnectorPluginManager
+    parent: default_plugin_manager
+
+  search_api_fusion.config_subscriber:
+    class: Drupal\search_api_fusion\EventSubscriber\ConfigSubscriber
+    arguments: ['@config.installer']
+    tags:
+      - {name: event_subscriber}
+
+  search_api_fusion.local_action_access_check:
+    class: Drupal\search_api_fusion\Access\LocalActionAccessCheck
+    arguments: ['@current_user']
+    tags:
+      - { name: access_check, applies_to: _search_api_fusion_local_action_access_check }
+
+  solr_document.factory:
+    class: Drupal\search_api_fusion\SolrDocumentFactory
+    arguments: ['@typed_data_manager']
+
+  solr_field.manager:
+    class: Drupal\search_api_fusion\SolrFieldManager
+    arguments: ['@cache.discovery', '@entity_type.manager', '@logger.channel.search_api']
+
+  solr_multisite_document.factory:
+    class: Drupal\search_api_fusion\SolrMultisiteDocumentFactory
+    arguments: ['@typed_data_manager']
+
+  solr_multisite_field.manager:
+    class: Drupal\search_api_fusion\SolrMultisiteFieldManager
+    arguments: ['@cache.discovery', '@entity_type.manager', '@logger.channel.search_api']
+
+  solarium.query_helper:
+    class: Solarium\Core\Query\Helper
+
+  search_api_fusion.streaming_expression_query_helper:
+    class: Drupal\search_api_fusion\Utility\StreamingExpressionQueryHelper
+    arguments: ['@request_stack', '@module_handler', '@plugin.manager.search_api.parse_mode']

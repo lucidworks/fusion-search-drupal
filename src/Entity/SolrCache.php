@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\search_api_solr\Entity;
+namespace Drupal\search_api_fusion\Entity;
 
-use Drupal\search_api_solr\SolrCacheInterface;
+use Drupal\search_api_fusion\SolrCacheInterface;
 
 /**
  * Defines the SolrCache entity.
@@ -11,7 +11,7 @@ use Drupal\search_api_solr\SolrCacheInterface;
  *   id = "solr_cache",
  *   label = @Translation("Solr Cache"),
  *   handlers = {
- *     "list_builder" = "Drupal\search_api_solr\Controller\SolrCacheListBuilder",
+ *     "list_builder" = "Drupal\search_api_fusion\Controller\SolrCacheListBuilder",
  *     "form" = {
  *     }
  *   },
@@ -89,7 +89,7 @@ class SolrCache extends AbstractSolrEntity implements SolrCacheInterface {
    *   An array of environments as strings.
    */
   public static function getAvailableEnvironments() {
-    return parent::getAvailableOptions('environments', 'default', 'search_api_solr.solr_cache.');
+    return parent::getAvailableOptions('environments', 'default', 'search_api_fusion.solr_cache.');
   }
 
   /**

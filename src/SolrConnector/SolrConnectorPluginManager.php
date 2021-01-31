@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr\SolrConnector;
+namespace Drupal\search_api_fusion\SolrConnector;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -9,9 +9,9 @@ use Drupal\Core\Plugin\DefaultPluginManager;
 /**
  * A plugin manager for Solr connector plugins.
  *
- * @see \Drupal\search_api_solr\Annotation\SolrConnector
- * @see \Drupal\search_api_solr\SolrConnector\SolrConnectorInterface
- * @see \Drupal\search_api_solr\SolrConnector\SolrConnectorPluginBase
+ * @see \Drupal\search_api_fusion\Annotation\SolrConnector
+ * @see \Drupal\search_api_fusion\SolrConnector\SolrConnectorInterface
+ * @see \Drupal\search_api_fusion\SolrConnector\SolrConnectorPluginBase
  *
  * @ingroup plugin_api
  */
@@ -29,10 +29,10 @@ class SolrConnectorPluginManager extends DefaultPluginManager {
    *   The module handler to invoke the alter hook with.
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
-    $this->alterInfo('search_api_solr_connector_info');
-    $this->setCacheBackend($cache_backend, 'search_api_solr_connector_plugins');
+    $this->alterInfo('search_api_fusion_connector_info');
+    $this->setCacheBackend($cache_backend, 'search_api_fusion_connector_plugins');
 
-    parent::__construct('Plugin/SolrConnector', $namespaces, $module_handler, 'Drupal\search_api_solr\SolrConnectorInterface', 'Drupal\search_api_solr\Annotation\SolrConnector');
+    parent::__construct('Plugin/SolrConnector', $namespaces, $module_handler, 'Drupal\search_api_fusion\SolrConnectorInterface', 'Drupal\search_api_fusion\Annotation\SolrConnector');
   }
 
 }

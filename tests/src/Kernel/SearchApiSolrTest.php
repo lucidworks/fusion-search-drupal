@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Kernel;
+namespace Drupal\Tests\search_api_fusion\Kernel;
 
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\language\Entity\ConfigurableLanguage;
@@ -10,18 +10,18 @@ use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\Utility\Utility;
 use Drupal\search_api_autocomplete\Entity\Search;
-use Drupal\search_api_solr\Controller\SolrConfigSetController;
-use Drupal\search_api_solr\SearchApiSolrException;
-use Drupal\search_api_solr\SolrBackendInterface;
-use Drupal\Tests\search_api_solr\Traits\InvokeMethodTrait;
-use Drupal\search_api_solr\Utility\SolrCommitTrait;
-use Drupal\search_api_solr\Utility\Utility as SolrUtility;
+use Drupal\search_api_fusion\Controller\SolrConfigSetController;
+use Drupal\search_api_fusion\SearchApiSolrException;
+use Drupal\search_api_fusion\SolrBackendInterface;
+use Drupal\Tests\search_api_fusion\Traits\InvokeMethodTrait;
+use Drupal\search_api_fusion\Utility\SolrCommitTrait;
+use Drupal\search_api_fusion\Utility\Utility as SolrUtility;
 use Drupal\user\Entity\User;
 
 /**
  * Tests index and search capabilities using the Solr search backend.
  *
- * @group search_api_solr
+ * @group search_api_fusion
  */
 class SearchApiSolrTest extends SolrBackendTestBase {
 
@@ -38,7 +38,7 @@ class SearchApiSolrTest extends SolrBackendTestBase {
   public static $modules = [
     'language',
     'search_api_autocomplete',
-    'search_api_solr_legacy',
+    'search_api_fusion_legacy',
     'user',
   ];
 
@@ -379,7 +379,7 @@ class SearchApiSolrTest extends SolrBackendTestBase {
    * Tests the conversion of Search API queries into Solr queries.
    */
   protected function checkQueryConditions() {
-    /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+    /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
     $backend = Server::load($this->serverId)->getBackend();
     $options = [];
 
@@ -617,7 +617,7 @@ class SearchApiSolrTest extends SolrBackendTestBase {
     /** @var \Drupal\search_api\Item\ItemInterface $result */
     foreach ($results as $result) {
       /** @var \Solarium\QueryType\Select\Result\Document $solr_document */
-      $solr_document = $result->getExtraData('search_api_solr_document', NULL);
+      $solr_document = $result->getExtraData('search_api_fusion_document', NULL);
       $fields = $solr_document->getFields();
       $this->assertEquals('entity:entity_test_mulrev_changed/3:en', $fields['ss_search_api_id']);
       $this->assertEquals('en', $fields['ss_search_api_language']);
@@ -639,7 +639,7 @@ class SearchApiSolrTest extends SolrBackendTestBase {
     /** @var \Drupal\search_api\Item\ItemInterface $result */
     foreach ($results as $result) {
       /** @var \Solarium\QueryType\Select\Result\Document $solr_document */
-      $solr_document = $result->getExtraData('search_api_solr_document', NULL);
+      $solr_document = $result->getExtraData('search_api_fusion_document', NULL);
       $fields = $solr_document->getFields();
       $this->assertEquals('entity:entity_test_mulrev_changed/3:en', $fields['ss_search_api_id']);
       $this->assertEquals('en', $fields['ss_search_api_language']);
@@ -658,7 +658,7 @@ class SearchApiSolrTest extends SolrBackendTestBase {
     /** @var \Drupal\search_api\Item\ItemInterface $result */
     foreach ($results as $result) {
       /** @var \Solarium\QueryType\Select\Result\Document $solr_document */
-      $solr_document = $result->getExtraData('search_api_solr_document', NULL);
+      $solr_document = $result->getExtraData('search_api_fusion_document', NULL);
       $fields = $solr_document->getFields();
       $this->assertEquals('entity:entity_test_mulrev_changed/3:en', $fields['ss_search_api_id']);
       $this->assertEquals('en', $fields['ss_search_api_language']);
@@ -733,7 +733,7 @@ class SearchApiSolrTest extends SolrBackendTestBase {
     $config['connector_config']['username'] = 'foo';
     $config['connector_config']['password'] = 'bar';
     $server->setBackendConfig($config);
-    /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+    /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
     $backend = $server->getBackend();
     $auth = $backend->getSolrConnector()->getEndpoint()->getAuthentication();
     $this->assertEquals(['username' => 'foo', 'password' => 'bar'], $auth);
@@ -845,7 +845,7 @@ class SearchApiSolrTest extends SolrBackendTestBase {
       $results = $query->execute();
 
       $this->assertEquals(2, $results->getResultCount(), 'Get the results count grouping by type.');
-      $data = $results->getExtraData('search_api_solr_response');
+      $data = $results->getExtraData('search_api_fusion_response');
       $this->assertEquals(5, $data['grouped']['ss_type']['matches'], 'Get the total documents after grouping.');
       $this->assertEquals(2, $data['grouped']['ss_type']['ngroups'], 'Get the number of groups after grouping.');
       $this->assertResults([1, 4], $results, 'Grouping by type');
@@ -975,7 +975,7 @@ class SearchApiSolrTest extends SolrBackendTestBase {
 
     $this->indexItems($this->indexId);
 
-    /** @var \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend $backend */
+    /** @var \Drupal\search_api_fusion\Plugin\search_api\backend\SearchApiSolrBackend $backend */
     $backend = Server::load($this->serverId)->getBackend();
     $solr_major_version = $backend->getSolrConnector()->getSolrMajorVersion();
     $autocompleteSearch = new Search([], 'search_api_autocomplete_search');
@@ -1141,13 +1141,13 @@ class SearchApiSolrTest extends SolrBackendTestBase {
     $params = $connector->getRequestParams();
     $this->assertEquals('ss_search_api_language:"de-at"', $params['fq'][1]);
 
-    $settings = $index->getThirdPartySettings('search_api_solr');
+    $settings = $index->getThirdPartySettings('search_api_fusion');
     $settings['multilingual']['limit_to_content_language'] = FALSE;
     $settings['multilingual']['include_language_independent'] = FALSE;
-    $index->setThirdPartySetting('search_api_solr', 'multilingual', $settings['multilingual']);
+    $index->setThirdPartySetting('search_api_fusion', 'multilingual', $settings['multilingual']);
     $index->save();
-    $this->assertFalse($this->getIndex()->getThirdPartySetting('search_api_solr', 'multilingual')['limit_to_content_language']);
-    $this->assertFalse($this->getIndex()->getThirdPartySetting('search_api_solr', 'multilingual')['include_language_independent']);
+    $this->assertFalse($this->getIndex()->getThirdPartySetting('search_api_fusion', 'multilingual')['limit_to_content_language']);
+    $this->assertFalse($this->getIndex()->getThirdPartySetting('search_api_fusion', 'multilingual')['include_language_independent']);
 
     // Stemming "en":
     // gene => gene
@@ -1168,9 +1168,9 @@ class SearchApiSolrTest extends SolrBackendTestBase {
     $this->assertResults($expected_results, $results, 'Search all languages for "gene".');
 
     $settings['multilingual']['limit_to_content_language'] = TRUE;
-    $index->setThirdPartySetting('search_api_solr', 'multilingual', $settings['multilingual']);
+    $index->setThirdPartySetting('search_api_fusion', 'multilingual', $settings['multilingual']);
     $index->save();
-    $this->assertTrue($this->getIndex()->getThirdPartySetting('search_api_solr', 'multilingual')['limit_to_content_language']);
+    $this->assertTrue($this->getIndex()->getThirdPartySetting('search_api_fusion', 'multilingual')['limit_to_content_language']);
 
     // Current content language is "en".
     $results = $this->buildSearch('gene', [], ['body'])->execute();
@@ -1193,9 +1193,9 @@ class SearchApiSolrTest extends SolrBackendTestBase {
     $this->assertResults($expected_results, $results, 'Search all languages for "gene".');
 
     $settings['multilingual']['include_language_independent'] = TRUE;
-    $index->setThirdPartySetting('search_api_solr', 'multilingual', $settings['multilingual']);
+    $index->setThirdPartySetting('search_api_fusion', 'multilingual', $settings['multilingual']);
     $index->save();
-    $this->assertTrue($this->getIndex()->getThirdPartySetting('search_api_solr', 'multilingual')['include_language_independent']);
+    $this->assertTrue($this->getIndex()->getThirdPartySetting('search_api_fusion', 'multilingual')['include_language_independent']);
 
     $results = $this->buildSearch('gene', [], ['body'])->execute();
     $expected_results = [
@@ -1207,9 +1207,9 @@ class SearchApiSolrTest extends SolrBackendTestBase {
     $this->assertResults($expected_results, $results, 'Search content and unspecified language for "gene".');
 
     $settings['multilingual']['limit_to_content_language'] = FALSE;
-    $index->setThirdPartySetting('search_api_solr', 'multilingual', $settings['multilingual']);
+    $index->setThirdPartySetting('search_api_fusion', 'multilingual', $settings['multilingual']);
     $index->save();
-    $this->assertFalse($this->getIndex()->getThirdPartySetting('search_api_solr', 'multilingual')['limit_to_content_language']);
+    $this->assertFalse($this->getIndex()->getThirdPartySetting('search_api_fusion', 'multilingual')['limit_to_content_language']);
 
     $results = $this->buildSearch('gene', [], ['body'])->execute();
     $expected_results = [
@@ -1339,7 +1339,7 @@ class SearchApiSolrTest extends SolrBackendTestBase {
       }
     }
 
-    $config_name = 'name="drupal-' . SolrBackendInterface::SEARCH_API_SOLR_MIN_SCHEMA_VERSION . '-solr-' . $solr_major_version . '.x"';
+    $config_name = 'name="drupal-' . SolrBackendInterface::search_api_fusion_MIN_SCHEMA_VERSION . '-solr-' . $solr_major_version . '.x"';
     $this->assertStringContainsString($config_name, $config_files['solrconfig.xml']);
     $this->assertStringContainsString($config_name, $config_files['schema.xml']);
     $this->assertStringContainsString('solr.luceneMatchVersion=' . $solr_major_version, $config_files['solrcore.properties']);
@@ -1379,7 +1379,7 @@ class SearchApiSolrTest extends SolrBackendTestBase {
     $this->assertStringContainsString('ts_X3b_en_*', $config_files['schema_extra_fields.xml']);
     $this->assertStringNotContainsString('ts_X3b_de_*', $config_files['schema_extra_fields.xml']);
 
-    /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+    /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
     $backend = $server->getBackend();
     if ($backend->getSolrConnector()->isCloud()) {
       $this->assertStringNotContainsString('solr.replication', $config_files['solrcore.properties']);
@@ -1485,7 +1485,7 @@ class SearchApiSolrTest extends SolrBackendTestBase {
       'schema.xml' => [],
       'solrconfig.xml' => [],
       'test.txt' => [
-        'hook_search_api_solr_config_files_alter() works'
+        'hook_search_api_fusion_config_files_alter() works'
       ],
     ]]];
     // @codingStandardsIgnoreEnd

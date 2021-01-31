@@ -1,18 +1,18 @@
 <?php
 
-namespace Drupal\search_api_solr\Utility;
+namespace Drupal\search_api_fusion\Utility;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\ServerInterface;
-use Drupal\search_api_solr\Entity\SolrCache;
-use Drupal\search_api_solr\Entity\SolrRequestDispatcher;
-use Drupal\search_api_solr\Entity\SolrRequestHandler;
-use Drupal\search_api_solr\SearchApiSolrException;
-use Drupal\search_api_solr\SolrBackendInterface;
-use Drupal\search_api_solr\SolrFieldTypeInterface;
+use Drupal\search_api_fusion\Entity\SolrCache;
+use Drupal\search_api_fusion\Entity\SolrRequestDispatcher;
+use Drupal\search_api_fusion\Entity\SolrRequestHandler;
+use Drupal\search_api_fusion\SearchApiSolrException;
+use Drupal\search_api_fusion\SolrBackendInterface;
+use Drupal\search_api_fusion\SolrFieldTypeInterface;
 use Solarium\Core\Client\Request;
 
 /**
@@ -32,7 +32,7 @@ class Utility {
    * We're adding some extra Solr field information for the default search api
    * data types (as well as on behalf of a couple contrib field types). The
    * extra information we're adding is documented in
-   * search_api_solr_hook_search_api_data_type_info(). You can use the same
+   * search_api_fusion_hook_search_api_data_type_info(). You can use the same
    * additional keys in hook_search_api_data_type_info() to support custom
    * dynamic fields in your indexes with Solr.
    *
@@ -46,7 +46,7 @@ class Utility {
    *   for search_api_get_data_type_info().
    *
    * @see search_api_get_data_type_info()
-   * @see search_api_solr_hook_search_api_data_type_info()
+   * @see search_api_fusion_hook_search_api_data_type_info()
    */
   public static function getDataTypeInfo($type = NULL) {
     $types = &drupal_static(__FUNCTION__);
@@ -132,10 +132,10 @@ class Utility {
    */
   public static function getSiteHash() {
     // Copied from apachesolr_site_hash().
-    if (!($hash = \Drupal::state()->get('search_api_solr.site_hash', FALSE))) {
+    if (!($hash = \Drupal::state()->get('search_api_fusion.site_hash', FALSE))) {
       global $base_url;
       $hash = substr(base_convert(hash('sha256', uniqid($base_url, TRUE)), 16, 36), 0, 6);
-      \Drupal::state()->set('search_api_solr.site_hash', $hash);
+      \Drupal::state()->set('search_api_fusion.site_hash', $hash);
     }
     return $hash;
   }
@@ -158,7 +158,7 @@ class Utility {
    *   If a problem occurred while retrieving the files.
    */
   public static function getServerFiles(ServerInterface $server, $dir_name = NULL) {
-    /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+    /** @var \Drupal\search_api_fusion\SolrBackendInterface $backend */
     $backend = $server->getBackend();
     $response = $backend->getSolrConnector()->getFile($dir_name);
 
@@ -291,7 +291,7 @@ class Utility {
    * @return string
    *   The decoded field name
    *
-   * @see \Drupal\search_api_solr\Utility\Utility::modifySolrDynamicFieldName()
+   * @see \Drupal\search_api_fusion\Utility\Utility::modifySolrDynamicFieldName()
    */
   public static function decodeSolrName($field_name) {
     return preg_replace_callback('/_X([\dabcdef]+?)_/',
@@ -326,7 +326,7 @@ class Utility {
    * @return string
    *   The language-specific name.
    *
-   * @see \Drupal\search_api_solr\Utility\Utility::encodeSolrName()
+   * @see \Drupal\search_api_fusion\Utility\Utility::encodeSolrName()
    * @see https://wiki.apache.org/solr/SchemaXml#Dynamic_fields
    */
   public static function getLanguageSpecificSolrDynamicFieldNameForSolrDynamicFieldName($field_name, $language_id) {
@@ -334,7 +334,7 @@ class Utility {
       return 'twm_suggest';
     }
 
-    return Utility::modifySolrDynamicFieldName($field_name, '@^([a-z]+)_@', '$1' . SolrBackendInterface::SEARCH_API_SOLR_LANGUAGE_SEPARATOR . $language_id . '_');
+    return Utility::modifySolrDynamicFieldName($field_name, '@^([a-z]+)_@', '$1' . SolrBackendInterface::search_api_fusion_LANGUAGE_SEPARATOR . $language_id . '_');
   }
 
   /**
@@ -348,12 +348,12 @@ class Utility {
    * @return string
    *   The language-unspecific field name.
    *
-   * @see \Drupal\search_api_solr\Utility\Utility::getLanguageSpecificSolrDynamicFieldNameForSolrDynamicFieldName()
-   * @see \Drupal\search_api_solr\Utility\Utility::encodeSolrName()
+   * @see \Drupal\search_api_fusion\Utility\Utility::getLanguageSpecificSolrDynamicFieldNameForSolrDynamicFieldName()
+   * @see \Drupal\search_api_fusion\Utility\Utility::encodeSolrName()
    * @see https://wiki.apache.org/solr/SchemaXml#Dynamic_fields
    */
   public static function getSolrDynamicFieldNameForLanguageSpecificSolrDynamicFieldName($field_name) {
-    return Utility::modifySolrDynamicFieldName($field_name, '@^([a-z]+)' . SolrBackendInterface::SEARCH_API_SOLR_LANGUAGE_SEPARATOR . '[^_]+?_@', '$1_');
+    return Utility::modifySolrDynamicFieldName($field_name, '@^([a-z]+)' . SolrBackendInterface::search_api_fusion_LANGUAGE_SEPARATOR . '[^_]+?_@', '$1_');
   }
 
   /**
@@ -372,7 +372,7 @@ class Utility {
    * @return string
    *   The modified dynamic Solr field name.
    *
-   * @see \Drupal\search_api_solr\Utility\Utility::encodeSolrName()
+   * @see \Drupal\search_api_fusion\Utility\Utility::encodeSolrName()
    */
   protected static function modifySolrDynamicFieldName($field_name, $pattern, $replacement) {
     $decoded_field_name = Utility::decodeSolrName($field_name);
@@ -395,7 +395,7 @@ class Utility {
    *   The language-specific prefix.
    */
   public static function getLanguageSpecificSolrDynamicFieldPrefix($prefix, $language_id) {
-    return $prefix . SolrBackendInterface::SEARCH_API_SOLR_LANGUAGE_SEPARATOR . $language_id . '_';
+    return $prefix . SolrBackendInterface::search_api_fusion_LANGUAGE_SEPARATOR . $language_id . '_';
   }
 
   /**
@@ -410,7 +410,7 @@ class Utility {
    */
   public static function getLanguageIdFromLanguageSpecificSolrDynamicFieldName($field_name) {
     $decoded_field_name = Utility::decodeSolrName($field_name);
-    if (preg_match('@^[a-z]+' . SolrBackendInterface::SEARCH_API_SOLR_LANGUAGE_SEPARATOR . '([^_]+?)_@', $decoded_field_name, $matches)) {
+    if (preg_match('@^[a-z]+' . SolrBackendInterface::search_api_fusion_LANGUAGE_SEPARATOR . '([^_]+?)_@', $decoded_field_name, $matches)) {
       return $matches[1];
     }
     return FALSE;
@@ -428,7 +428,7 @@ class Utility {
    */
   public static function extractLanguageSpecificSolrDynamicFieldDefinition($field_name) {
     $decoded_field_name = Utility::decodeSolrName($field_name);
-    if (preg_match('@^[a-z]+' . SolrBackendInterface::SEARCH_API_SOLR_LANGUAGE_SEPARATOR . '[^_]+?_@', $decoded_field_name, $matches)) {
+    if (preg_match('@^[a-z]+' . SolrBackendInterface::search_api_fusion_LANGUAGE_SEPARATOR . '[^_]+?_@', $decoded_field_name, $matches)) {
       return Utility::encodeSolrName($matches[0]) . '*';
     }
     return FALSE;
@@ -456,7 +456,7 @@ class Utility {
    *
    * @param string $text_file_name
    *   The base name of the text file.
-   * @param \Drupal\search_api_solr\SolrFieldTypeInterface $solr_field_type
+   * @param \Drupal\search_api_fusion\SolrFieldTypeInterface $solr_field_type
    *   The Solr field type.
    *
    * @return string
@@ -524,7 +524,7 @@ class Utility {
    * @return string
    *   The sortable Solr field name.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public static function getSortableSolrField(string $field_name, array $solr_field_names, QueryInterface $query) {
     $first_solr_field_name = reset($solr_field_names[$field_name]);
@@ -559,7 +559,7 @@ class Utility {
       // and language specific sorts. If multiple languages are specified, use
       // the first one.
       $language_ids = $query->getLanguages();
-      return Utility::encodeSolrName('sort' . SolrBackendInterface::SEARCH_API_SOLR_LANGUAGE_SEPARATOR . reset($language_ids) . '_' . $field_name);
+      return Utility::encodeSolrName('sort' . SolrBackendInterface::search_api_fusion_LANGUAGE_SEPARATOR . reset($language_ids) . '_' . $field_name);
     }
     elseif (preg_match('/^([a-z]+)m(_.*)/', $first_solr_field_name, $matches)) {
       // For other multi-valued fields (which aren't sortable by nature) we
@@ -662,7 +662,7 @@ class Utility {
    * @return string
    *   A Solr query string representing the same keys.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public static function flattenKeys($keys, array $fields = [], string $parse_mode_id = 'phrase'): string {
     switch ($parse_mode_id) {
@@ -848,7 +848,7 @@ class Utility {
    * @return string
    *   A Solr query string representing the same keys.
    *
-   * @throws \Drupal\search_api_solr\SearchApiSolrException
+   * @throws \Drupal\search_api_fusion\SearchApiSolrException
    */
   public static function flattenKeysToPayloadScore($keys, string $parse_mode_id = 'phrase'): string {
     $k = [];
@@ -1005,8 +1005,8 @@ class Utility {
    *   An associative array of settings.
    */
   public static function getIndexSolrSettings(IndexInterface $index): array {
-    return \search_api_solr_merge_default_index_third_party_settings(
-      $index->getThirdPartySettings('search_api_solr')
+    return \search_api_fusion_merge_default_index_third_party_settings(
+      $index->getThirdPartySettings('search_api_fusion')
     );
   }
 

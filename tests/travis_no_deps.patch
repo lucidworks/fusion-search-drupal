@@ -1,7 +1,7 @@
-diff --git a/search_api_solr.info.yml b/search_api_solr.info.yml
+diff --git a/search_api_fusion.info.yml b/search_api_fusion.info.yml
 index 1dc0335c..3e75b8fa 100644
---- a/search_api_solr.info.yml
-+++ b/search_api_solr.info.yml
+--- a/search_api_fusion.info.yml
++++ b/search_api_fusion.info.yml
 @@ -6,4 +6,4 @@ php: 7.1.3
  package: Search
  dependencies:

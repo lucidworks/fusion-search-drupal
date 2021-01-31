@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\search_api_solr\Traits;
+namespace Drupal\Tests\search_api_fusion\Traits;
 
 /**
  * Provides a function to invoke protected/private methods of a class.

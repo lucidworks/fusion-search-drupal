@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\search_api_solr\Entity;
+namespace Drupal\search_api_fusion\Entity;
 
-use Drupal\search_api_solr\SolrRequestDispatcherInterface;
+use Drupal\search_api_fusion\SolrRequestDispatcherInterface;
 
 /**
  * Defines the SolrRequestDispatcher entity.
@@ -11,7 +11,7 @@ use Drupal\search_api_solr\SolrRequestDispatcherInterface;
  *   id = "solr_request_dispatcher",
  *   label = @Translation("Solr Request Dispatcher"),
  *   handlers = {
- *     "list_builder" = "Drupal\search_api_solr\Controller\SolrRequestDispatcherListBuilder",
+ *     "list_builder" = "Drupal\search_api_fusion\Controller\SolrRequestDispatcherListBuilder",
  *     "form" = {
  *     }
  *   },
@@ -96,7 +96,7 @@ class SolrRequestDispatcher extends AbstractSolrEntity implements SolrRequestDis
    *   An array of environments as strings.
    */
   public static function getAvailableEnvironments() {
-    return parent::getAvailableOptions('environments', 'default', 'search_api_solr.solr_request_dispatcher.');
+    return parent::getAvailableOptions('environments', 'default', 'search_api_fusion.solr_request_dispatcher.');
   }
 
   /**

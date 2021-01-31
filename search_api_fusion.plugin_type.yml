@@ -1,0 +1,4 @@
+search_api_fusion_connector:
+  label: Connector
+  plugin_manager_service_id: plugin.manager.search_api_fusion.connector
+  plugin_definition_decorator_class: Drupal\plugin\PluginDefinition\ArrayPluginDefinitionDecorator

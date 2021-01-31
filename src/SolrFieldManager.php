@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\search_api_solr;
+namespace Drupal\search_api_fusion;
 
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\Cache;
@@ -10,7 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\LoggerTrait;
-use Drupal\search_api_solr\TypedData\SolrFieldDefinition;
+use Drupal\search_api_fusion\TypedData\SolrFieldDefinition;
 use Psr\Log\LoggerInterface;
 
 /**
