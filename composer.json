@@ -4,6 +4,8 @@
     "type": "drupal-module",
     "homepage": "https://www.drupal.org/project/<TBD>",
     "license": "GPL-2.0+",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Markus Kalkbrenner",
@@ -58,6 +60,7 @@
     },
     "repositories": [
         {"type": "composer", "url": "https://repo.packagist.com/lucidworks/"},
+        {"type": "composer", "url": "https://packages.drupal.org/8"},
         {"packagist.org": false}
     ]
 }
