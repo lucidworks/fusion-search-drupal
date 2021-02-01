@@ -30,7 +30,6 @@ use Drupal\search_api_fusion\Utility\Utility as SearchApiSolrUtility;
 function search_api_fusion_requirements($phase) {
   $requirements = [];
 
-  print_r("fusion orig: inside search_api_fusion's installation requirements");
   if ($phase === 'install') {
     if (!class_exists('\Solarium\Core\Client\Request')) {
       $requirements['search_api_fusion_library'] = [
@@ -40,8 +39,6 @@ function search_api_fusion_requirements($phase) {
     }
   }
   elseif ($phase === 'runtime') {
-    print_r("fusion orig: phase is runtime");
-    print_r(search_api_fusion_get_servers());
     $servers = search_api_fusion_get_servers();
     $count = 0;
     $unavailable = 0;
@@ -124,8 +121,6 @@ function search_api_fusion_requirements($phase) {
       ];
 
       $connector = $backend->getSolrConnector();
-      print_r("is backend available?");
-      print_r($backend->isAvailable());
       if ($backend->isAvailable() && $connector->pingCore()) {
 
         $requirements['search_api_fusion_schema_' . $server->id() . '_modifications'] = [
@@ -289,7 +284,6 @@ function search_api_fusion_requirements($phase) {
  * @throws \Drupal\search_api\SearchApiException
  */
 function search_api_fusion_uninstall() {
-  print_r("fusion orig: uninstalling the plugin");
   \Drupal::state()->delete('search_api_fusion.last_optimize');
   \Drupal::state()->delete('search_api_fusion.endpoint.data');
   \Drupal::state()->delete('search_api_fusion.site_hash');
