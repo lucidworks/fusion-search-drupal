@@ -101,9 +101,7 @@ use the configuration of the Highlighting processor.
 Support
 -------
 
-// TODO: Update support section
-
-Support is currently provided via TBD.
+This is a community supported extension. 
 
 Developers
 ----------
