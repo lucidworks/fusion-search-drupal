@@ -2,22 +2,29 @@
     "name": "lucidworks/fusion-search-drupal",
     "description": "Offers an implementation of the Search API that uses a Fusion backend for providing the site search experience for Drupal users.",
     "type": "drupal-module",
-    "homepage": "https://www.drupal.org/project/<TBD>",
-    "license": "GPL-2.0+",
+    "homepage": "https://www.drupal.org/project/lucidworksfusion",
+    "license": "MIT",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "authors": [
         {
-            "name": "Markus Kalkbrenner",
-            "homepage": "https://www.drupal.org/u/mkalkbrenner"
+            "name": "Andrew Thanalertvisuti",
+            "homepage": "https://github.com/athana"
         },
         {
-            "name": "Other contributors",
-            "homepage": "https://www.drupal.org/node/982682/committers"
+            "name": "Tom Allen",
+            "homepage": "https://www.drupal.org/u/tomkatsu"
+        },
+        {
+            "name": "Serban Bajdechi",
+            "homepage": "https://www.drupal.org/u/serbanbjd2"
+        },
+        {
+            "name": "Sid Kothari"
         }
     ],
     "support": {
-        "issues": "https://www.drupal.org/project/issues/<TBD>",
+        "issues": "https://www.drupal.org/project/issues/lucidworksfusion",
         "source": "http://github.com/lucidworks/fusion-search-drupal.git"
     },
     "require": {
